@@ -1,6 +1,10 @@
 export const CONFIG = {
     SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+<<<<<<< HEAD
     SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+=======
+    SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
+>>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY, // optional for server
     XAI_BASE_URL: process.env.XAI_BASE_URL ?? "https://api.x.ai/v1",
     XAI_API_KEY: process.env.XAI_API_KEY,

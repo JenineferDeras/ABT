@@ -12,10 +12,17 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request: { headers: request.headers } });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+<<<<<<< HEAD
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.");
+=======
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY. Authentication checks will be skipped.");
+>>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
     return response;
   }
 

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+=======
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+>>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
 
 /**
  * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
@@ -8,7 +13,7 @@ import { twMerge } from "tailwind-merge";
  * @returns A single class name string with conflicting Tailwind classes merged
  */
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 const defaultNumberFormat = new Intl.NumberFormat("en-US", {
@@ -93,3 +98,12 @@ export function formatDateTime(value: string) {
     timeStyle: "short",
   }).format(date);
 }
+<<<<<<< HEAD
+=======
+
+export const hasEnvVars = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+);
+>>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
