@@ -1,18 +1,10 @@
-import { GrokIntegration } from "@/lib/integrations/grok-integration";
-import { ContinueLearning } from "@/lib/ml/continue-learning";
 import { LoanFeatures, PredictionInput } from "@/types/ml";
 
-// Mock the Grok integration
-jest.mock("@/lib/integrations/grok-integration");
 
 describe("ContinueLearning", () => {
-    let ml: ContinueLearning;
-    let mockGrok: jest.Mocked<GrokIntegration>;
 
     beforeEach(() => {
         jest.clearAllMocks();
-        ml = new ContinueLearning();
-        mockGrok = GrokIntegration as jest.Mocked<typeof GrokIntegration>;
     });
 
     describe("scoreHeuristic", () => {
