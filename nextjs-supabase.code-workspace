@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "name": "Next.js + Supabase",
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "git.path": "/usr/bin/git",
+    "git.enabled": true,
+    "git.autoRepositoryDetection": true,
+    "git.detectSubmodules": false,
+    "typescript.preferences.npmLocation": "/usr/local/bin/npm",
+    "typescript.npm": "/usr/local/bin/npm",
+    "npm.packageManager": "npm",
+    "npm.executable": "/usr/local/bin/npm",
+    "terminal.integrated.env.osx": {
+      "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "NODE_PATH": "/usr/local/lib/node_modules",
+      "GIT_EXEC_PATH": "/usr/bin",
+    },
+    "terminal.integrated.shell.osx": "/bin/zsh",
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-json",
+      "bradlc.vscode-tailwindcss",
+      "github.vscode-github-actions",
+    ],
+  },
+}
