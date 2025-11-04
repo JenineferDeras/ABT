@@ -3,13 +3,30 @@
 import { useMCPIntegration } from "./hooks/useMCPIntegration";
 
 import AIInsights from "./components/AIInsights";
+import AIRunbooks from "./components/AIRunbooks";
 import FinancialMetrics from "./components/FinancialMetrics";
 import GrowthChart from "./components/GrowthChart";
 import RiskAnalysis from "./components/RiskAnalysis";
+import PredictiveSignals from "./components/PredictiveSignals";
+import ProductOpportunities from "./components/ProductOpportunities";
 import { Button } from "@/components/ui/button";
 
 export default function FinancialDashboard() {
-    const { metrics, growthSeries, riskProfile, providers, insights, summary, isLoading, error, refresh, isInitialized } =
+    const {
+        metrics,
+        growthSeries,
+        riskProfile,
+        providers,
+        insights,
+        predictiveSignals,
+        productOpportunities,
+        aiRunbooks,
+        summary,
+        isLoading,
+        error,
+        refresh,
+        isInitialized,
+    } =
         useMCPIntegration();
 
     return (
@@ -59,6 +76,16 @@ export default function FinancialDashboard() {
                         updatedAt={summary.updatedAt}
                         metadata={summary.metadata}
                     />
+                </div>
+
+                <PredictiveSignals signals={predictiveSignals} isLoading={isLoading && predictiveSignals.length === 0} />
+
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                    <ProductOpportunities
+                        opportunities={productOpportunities}
+                        isLoading={isLoading && productOpportunities.length === 0}
+                    />
+                    <AIRunbooks runbooks={aiRunbooks} isLoading={isLoading && aiRunbooks.length === 0} />
                 </div>
             </div>
         </div>
