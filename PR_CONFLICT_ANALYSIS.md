@@ -39,7 +39,7 @@ Three open PRs have conflicts with main branch. Analysis of changes and conflict
    - Better documentation
 
 2. **lib/supabase/client.ts**
-   - Changed: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Changed: `NEXT_PUBLIC_SUPABASE_ANON_KEY` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 3. **lib/supabase/server.ts**
    - Same environment variable rename

@@ -11,7 +11,7 @@ describe('Test Environment Setup', () => {
 
     test('Environment variables are loaded', () => {
         expect(process.env.NEXT_PUBLIC_SUPABASE_URL).toBeDefined()
-        expect(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY).toBeDefined()
+        expect(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY).toBeDefined()
     })
 
     test('TypeScript types are working', () => {
