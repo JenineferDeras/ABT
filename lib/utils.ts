@@ -103,7 +103,7 @@ export function formatDateTime(value: string) {
 
 export const hasEnvVars = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY ||
+    (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 );
 >>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
