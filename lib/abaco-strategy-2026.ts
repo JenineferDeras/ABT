@@ -180,8 +180,11 @@ export function validateDataQuality(data: any): QualityAuditResult {
         )
     }
 
-    if (data.rows) {
+    let aggregatedTotalRows: number | null = null
+
+    if (Array.isArray(data.rows) && data.rows.length > 0) {
         const totalRows = data.rows.length
+        aggregatedTotalRows = totalRows
         let nullCount = 0
 
         data.rows.forEach((row: any) => {
@@ -204,6 +207,18 @@ export function validateDataQuality(data: any): QualityAuditResult {
         })
 
         const nullRows = data.nullRows ?? nullCount
+        const duplicateRows = data.duplicateRows ?? 0
+        const outOfRangeRows = data.outOfRangeRows ?? 0
+        const staleRows = data.staleDateRows ?? 0
+
+        completeness = totalRows > 0 ? (totalRows - nullRows) / totalRows : 1
+        uniqueness = totalRows > 0 ? (totalRows - duplicateRows) / totalRows : 1
+        accuracy = totalRows > 0 ? (totalRows - outOfRangeRows) / totalRows : 1
+        timeliness = totalRows > 0 ? (totalRows - staleRows) / totalRows : 1
+    } else if (typeof data.totalRows === 'number' && data.totalRows > 0) {
+        aggregatedTotalRows = data.totalRows
+        const totalRows = data.totalRows
+        const nullRows = data.nullRows ?? 0
         const duplicateRows = data.duplicateRows ?? 0
         const outOfRangeRows = data.outOfRangeRows ?? 0
         const staleRows = data.staleDateRows ?? 0
@@ -259,7 +274,11 @@ export function validateFeatureEngineering(data: any): FeatureValidationResult {
     if (data.features) {
         result.nansByFeature = {}
         Object.entries(data.features).forEach(([featureName, values]: [string, any]) => {
-            const nanCount = (values as any[]).filter((v) => v === null || v === undefined || isNaN(v)).length
+            const nanCount = (values as any[]).filter((v) => {
+                if (v === null || v === undefined) return true
+                if (typeof v === 'number') return Number.isNaN(v)
+                return false
+            }).length
             result.nansByFeature![featureName] = nanCount
         })
     }
@@ -370,7 +389,7 @@ export function validateAuditTrail(data: any): AuditTrailResult {
     if (data.transformations) {
         result.transformationCount = data.transformations.length
 
-        const requiredFields = ['id', 'operation', 'sourceRows', 'targetRows']
+        const requiredFields = ['id', 'operation', 'sourceRows', 'targetRows', 'timestamp']
         const missingFields: Set<string> = new Set()
 
         data.transformations.forEach((t: any) => {

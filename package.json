@@ -5,14 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:-3000}",
     "lint": "next lint",
     "test": "jest --config jest.config.ts",
     "test:watch": "jest --config jest.config.ts --watch",
     "test:coverage": "jest --config jest.config.ts --coverage",
     "test:ci": "jest --config jest.config.ts --ci --coverage --maxWorkers=2",
-    "supabase:migrate": "supabase db push",
-    "supabase:reset": "supabase db reset",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

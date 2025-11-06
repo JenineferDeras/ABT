@@ -54,7 +54,7 @@ describe("ContinueLearning", () => {
     ]);
   });
 
-  it("submits feedback, recalculates metrics, and flags correctness", async () => {
+  it("submits feedback, updates the row, and recalculates accuracy", async () => {
     const predictionRow = {
       id: "mock-id",
       model_id: "model-1",
@@ -70,13 +70,23 @@ describe("ContinueLearning", () => {
       data: predictionRow,
       error: null,
     });
-    const selectPredictionEq = jest.fn(() => ({ single: selectPredictionSingle }));
+    const selectPredictionEq = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("mock-id");
+      return { single: selectPredictionSingle };
+    });
 
     const selectWasCorrectFinal = jest.fn().mockResolvedValue({
       data: [{ was_correct: true }, { was_correct: false }],
       error: null,
     });
-    const selectWasCorrectModel = jest.fn(() => ({ eq: selectWasCorrectFinal }));
+    const selectWasCorrectStatus = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("feedback_received");
+      return selectWasCorrectFinal();
+    });
+    const selectWasCorrectModel = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("model-1");
+      return { eq: selectWasCorrectStatus };
+    });
 
     const select = jest.fn((columns: string) => {
       if (columns === "*") {
@@ -111,7 +121,7 @@ describe("ContinueLearning", () => {
 
     const result = await ContinueLearning.submitFeedback("mock-id", 0.21, "Looks good");
 
-    expect(result).toEqual({ learned: true, accuracy: 50, wasCorrect: true });
+    expect(result).toEqual({ accuracy: 50 });
     expect(updateEq).toHaveBeenCalledWith("id", "mock-id");
     expect(upsert).toHaveBeenCalledWith({
       model_id: "model-1",
@@ -127,7 +137,10 @@ describe("ContinueLearning", () => {
       data: null,
       error: { code: "PGRST116", message: "No rows" },
     });
-    const eq = jest.fn(() => ({ single }));
+    const eq = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("model-1");
+      return { single };
+    });
     const select = jest.fn(() => ({ eq }));
 
     const from = jest.fn().mockImplementation((table: string) => {
@@ -139,23 +152,47 @@ describe("ContinueLearning", () => {
 
     const metrics = await ContinueLearning.getMetrics("model-1");
 
-    expect(metrics.modelId).toBe("model-1");
-    expect(metrics.totalPredictions).toBe(0);
-    expect(metrics.correctPredictions).toBe(0);
-    expect(metrics.accuracy).toBe(0);
-    expect(typeof metrics.lastUpdated).toBe("string");
+    expect(metrics).toEqual({
+      modelId: "model-1",
+      totalPredictions: 0,
+      correctPredictions: 0,
+      accuracy: 0,
+      lastUpdated: expect.any(String),
+    });
   });
 
-  describe("getMetrics", () => {
-    it("should return model metrics", async () => {
-      const metrics = await ContinueLearning.getMetrics("test-model");
+  it("maps metric rows into the domain model when found", async () => {
+    const single = jest.fn().mockResolvedValue({
+      data: {
+        model_id: "model-1",
+        total_predictions: 10,
+        correct_predictions: 7,
+        accuracy: 70,
+        last_updated: "2025-11-06T00:00:00.000Z",
+      },
+      error: null,
+    });
+    const eq = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("model-1");
+      return { single };
+    });
+    const select = jest.fn(() => ({ eq }));
 
-      expect(metrics).toHaveProperty("modelId");
-      expect(metrics).toHaveProperty("totalPredictions");
-      expect(metrics).toHaveProperty("correctPredictions");
-      expect(metrics).toHaveProperty("accuracy");
-      expect(metrics).toHaveProperty("lastUpdated");
+    const from = jest.fn().mockImplementation((table: string) => {
+      expect(table).toBe("ml_model_metrics");
+      return { select };
+    });
+
+    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+
+    const metrics = await ContinueLearning.getMetrics("model-1");
+
+    expect(metrics).toEqual({
+      modelId: "model-1",
+      totalPredictions: 10,
+      correctPredictions: 7,
+      accuracy: 70,
+      lastUpdated: "2025-11-06T00:00:00.000Z",
     });
   });
 });
-

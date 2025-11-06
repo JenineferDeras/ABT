@@ -1,17 +1,17 @@
-import type { Prediction, ModelMetrics } from './types';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from "@/lib/supabase/server";
+import type { ModelMetrics, Prediction } from "./types";
 
 export class ContinueLearning {
   /**
    * Save a new prediction – returns the record id
    */
   static async recordPrediction(
-    pred: Omit<Prediction, 'id' | 'createdAt' | 'status'>
+    pred: Omit<Prediction, "id" | "createdAt" | "status">
   ): Promise<string> {
     const supabase = await createClient();
-    
+
     const { data, error } = await supabase
-      .from('ml_predictions')
+      .from("ml_predictions")
       .insert([
         {
           model_id: pred.modelId,
@@ -20,10 +20,10 @@ export class ContinueLearning {
           predicted_value: pred.predictedValue,
           confidence: pred.confidence,
           reasoning: pred.reasoning,
-          status: 'awaiting_feedback',
+          status: "awaiting_feedback",
         },
       ])
-      .select('id')
+      .select("id")
       .single();
 
     if (error) throw new Error(`Failed to record prediction: ${error.message}`);
@@ -42,9 +42,9 @@ export class ContinueLearning {
 
     // Fetch prediction
     const { data: pred, error: fetchErr } = await supabase
-      .from('ml_predictions')
-      .select('*')
-      .eq('id', predictionId)
+      .from("ml_predictions")
+      .select("*")
+      .eq("id", predictionId)
       .single();
 
     if (fetchErr) throw new Error(`Prediction not found: ${fetchErr.message}`);
@@ -52,11 +52,11 @@ export class ContinueLearning {
     const errorMag = Math.abs(actual - pred.predicted_value);
     const wasCorrect = errorMag < 0.1 * pred.predicted_value; // 10% tolerance
     const errorType =
-      actual > pred.predicted_value ? 'underestimate' : 'overestimate';
+      actual > pred.predicted_value ? "underestimate" : "overestimate";
 
     // Update prediction
     await supabase
-      .from('ml_predictions')
+      .from("ml_predictions")
       .update({
         actual_outcome: actual,
         was_correct: wasCorrect,
@@ -64,24 +64,25 @@ export class ContinueLearning {
         error_type: errorType,
         user_feedback: userFeedback,
         feedback_at: new Date().toISOString(),
-        status: 'feedback_received',
+        status: "feedback_received",
       })
-      .eq('id', predictionId);
+      .eq("id", predictionId);
 
     // Recalculate model metrics
     const { data: all, error: metricErr } = await supabase
-      .from('ml_predictions')
-      .select('was_correct')
-      .eq('model_id', pred.model_id)
-      .eq('status', 'feedback_received');
+      .from("ml_predictions")
+      .select("was_correct")
+      .eq("model_id", pred.model_id)
+      .eq("status", "feedback_received");
 
-    if (metricErr) throw new Error(`Failed to fetch metrics: ${metricErr.message}`);
+    if (metricErr)
+      throw new Error(`Failed to fetch metrics: ${metricErr.message}`);
 
     const correct = all.filter((r) => r.was_correct).length;
     const total = all.length;
     const accuracy = total ? (correct / total) * 100 : 0;
 
-    await supabase.from('ml_model_metrics').upsert({
+    await supabase.from("ml_model_metrics").upsert({
       model_id: pred.model_id,
       total_predictions: total,
       correct_predictions: correct,
@@ -99,12 +100,12 @@ export class ContinueLearning {
     const supabase = await createClient();
 
     const { data, error } = await supabase
-      .from('ml_model_metrics')
-      .select('*')
-      .eq('model_id', modelId)
+      .from("ml_model_metrics")
+      .select("*")
+      .eq("model_id", modelId)
       .single();
 
-    if (error && error.code === 'PGRST116') {
+    if (error && error.code === "PGRST116") {
       // No row yet
       return {
         modelId,

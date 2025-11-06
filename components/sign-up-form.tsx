@@ -157,6 +157,7 @@ export function SignUpForm({
               <Button
                 type="submit"
                 className="w-full"
+                aria-busy={isLoading}
                 disabled={isLoading || !!passwordMatchError}
               >
                 {isLoading ? "Creating an account..." : "Sign up"}

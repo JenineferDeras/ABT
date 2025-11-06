@@ -1,91 +1,149 @@
-import { ContinueLearning } from '@/lib/ml/continue-learning';
-import type { Prediction } from '@/lib/ml/types';
+import { ContinueLearning } from "@/lib/ml/continue-learning";
+import type { Prediction } from "@/lib/ml/types";
+import { createClient } from "@/lib/supabase/server";
 
-// Mock Supabase client
-jest.mock('@/lib/supabase/server', () => ({
-  createClient: jest.fn(() => ({
-    from: jest.fn(() => ({
-      insert: jest.fn(() => ({
-        select: jest.fn(() => ({
-          single: jest.fn(() => ({
-            data: { id: 'mock-prediction-id' },
-            error: null,
-          })),
-        })),
-      })),
-      select: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          single: jest.fn(() => ({
-            data: mockPrediction,
-            error: null,
-          })),
-        })),
-      })),
-      update: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          error: null,
-        })),
-      })),
-      upsert: jest.fn(() => ({
-        error: null,
-      })),
-    })),
-  })),
+jest.mock("@/lib/supabase/server", () => ({
+  createClient: jest.fn(),
 }));
 
-const mockPrediction: Prediction = {
-  id: 'mock-prediction-id',
-  modelId: 'test-model',
-  customerId: 'cust-1',
-  metric: 'default_risk',
-  predictedValue: 0.12,
-  confidence: 0.88,
-  reasoning: 'Test prediction',
-  createdAt: new Date().toISOString(),
-  status: 'awaiting_feedback',
-};
+const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
 
-describe('ContinueLearning', () => {
+describe("ContinueLearning (functional behaviours)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockCreateClient.mockReset();
   });
 
-  describe('recordPrediction', () => {
-    it('should record a prediction and return its ID', async () => {
-      const predictionData = {
-        modelId: 'test-model',
-        customerId: 'cust-1',
-        metric: 'default_risk',
-        predictedValue: 0.12,
-        confidence: 0.88,
-        reasoning: 'Test prediction',
-      };
+  it("records a prediction and returns the Supabase id", async () => {
+    const single = jest.fn().mockResolvedValue({ data: { id: "mock-id" }, error: null });
+    const select = jest.fn(() => ({ single }));
+    const insert = jest.fn(() => ({ select }));
+    const from = jest.fn().mockImplementation((table: string) => {
+      expect(table).toBe("ml_predictions");
+      return { insert };
+    });
 
-      const id = await ContinueLearning.recordPrediction(predictionData);
+    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
 
-      expect(id).toBe('mock-prediction-id');
+    const payload: Omit<Prediction, "id" | "createdAt" | "status"> = {
+      modelId: "model-1",
+      customerId: "cust-1",
+      metric: "default_risk",
+      predictedValue: 0.25,
+      confidence: 0.9,
+      reasoning: "Forecast based on payment history",
+    };
+
+    const id = await ContinueLearning.recordPrediction(payload);
+
+    expect(id).toBe("mock-id");
+    expect(insert).toHaveBeenCalledWith([
+      {
+        model_id: "model-1",
+        customer_id: "cust-1",
+        metric: "default_risk",
+        predicted_value: 0.25,
+        confidence: 0.9,
+        reasoning: "Forecast based on payment history",
+        status: "awaiting_feedback",
+      },
+    ]);
+  });
+
+  it("submits feedback, persists evaluation data, and recalculates accuracy", async () => {
+    const predictionRow = {
+      id: "mock-id",
+      model_id: "model-1",
+      customer_id: "cust-1",
+      metric: "default_risk",
+      predicted_value: 0.4,
+      confidence: 0.75,
+      reasoning: "Baseline",
+      status: "awaiting_feedback",
+    };
+
+    const selectPredictionSingle = jest.fn().mockResolvedValue({ data: predictionRow, error: null });
+    const selectPredictionEq = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("mock-id");
+      return { single: selectPredictionSingle };
+    });
+
+    const selectWasCorrectFinal = jest.fn().mockResolvedValue({
+      data: [{ was_correct: true }, { was_correct: true }, { was_correct: false }],
+      error: null,
+    });
+    const selectWasCorrectStatus = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("feedback_received");
+      return selectWasCorrectFinal();
+    });
+    const selectWasCorrectModel = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("model-1");
+      return { eq: selectWasCorrectStatus };
+    });
+
+    const select = jest.fn((columns: string) => {
+      if (columns === "*") {
+        return { eq: selectPredictionEq };
+      }
+
+      if (columns === "was_correct") {
+        return { eq: selectWasCorrectModel };
+      }
+
+      throw new Error(`Unexpected select columns: ${columns}`);
+    });
+
+    const updateEq = jest.fn().mockResolvedValue({ error: null });
+    const update = jest.fn(() => ({ eq: updateEq }));
+    const upsert = jest.fn().mockResolvedValue({ error: null });
+
+    const from = jest.fn().mockImplementation((table: string) => {
+      if (table === "ml_predictions") {
+        return { select, update };
+      }
+      if (table === "ml_model_metrics") {
+        return { upsert };
+      }
+      throw new Error(`Unexpected table: ${table}`);
+    });
+
+    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+
+    const result = await ContinueLearning.submitFeedback("mock-id", 0.36, "Slightly below expectation");
+
+    expect(result).toEqual({ accuracy: (2 / 3) * 100 });
+    expect(updateEq).toHaveBeenCalledWith("id", "mock-id");
+    expect(upsert).toHaveBeenCalledWith({
+      model_id: "model-1",
+      total_predictions: 3,
+      correct_predictions: 2,
+      accuracy: (2 / 3) * 100,
+      last_updated: expect.any(String),
     });
   });
 
-  describe('submitFeedback', () => {
-    it('should submit feedback and return accuracy', async () => {
-      const result = await ContinueLearning.submitFeedback('mock-prediction-id', 0.15);
-
-      expect(result).toHaveProperty('accuracy');
-      expect(typeof result.accuracy).toBe('number');
-      expect(result.accuracy).toBeGreaterThanOrEqual(0);
+  it("returns zeroed metrics when Supabase indicates no rows", async () => {
+    const single = jest.fn().mockResolvedValue({
+      data: null,
+      error: { code: "PGRST116", message: "No rows" },
     });
-  });
+    const eq = jest.fn((_column: string, value: unknown) => {
+      expect(value).toBe("model-1");
+      return { single };
+    });
+    const select = jest.fn(() => ({ eq }));
+    const from = jest.fn().mockImplementation((table: string) => ({ select }));
 
-  describe('getMetrics', () => {
-    it('should return model metrics', async () => {
-      const metrics = await ContinueLearning.getMetrics('test-model');
+    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
 
-      expect(metrics).toHaveProperty('modelId');
-      expect(metrics).toHaveProperty('totalPredictions');
-      expect(metrics).toHaveProperty('correctPredictions');
-      expect(metrics).toHaveProperty('accuracy');
-      expect(metrics).toHaveProperty('lastUpdated');
+    const metrics = await ContinueLearning.getMetrics("model-1");
+
+    expect(metrics).toEqual({
+      modelId: "model-1",
+      totalPredictions: 0,
+      correctPredictions: 0,
+      accuracy: 0,
+      lastUpdated: expect.any(String),
     });
   });
 });

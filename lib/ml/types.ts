@@ -13,10 +13,10 @@ export interface Prediction {
   actualOutcome?: number;
   wasCorrect?: boolean;
   errorMagnitude?: number;
-  errorType?: 'underestimate' | 'overestimate' | 'correct';
+  errorType?: "underestimate" | "overestimate" | "correct";
   userFeedback?: string;
   feedbackAt?: string;
-  status?: 'awaiting_feedback' | 'feedback_received' | 'archived';
+  status?: "awaiting_feedback" | "feedback_received" | "archived";
 }
 
 /**
