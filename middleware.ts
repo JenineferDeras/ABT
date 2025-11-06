@@ -23,19 +23,11 @@ export async function middleware(request: NextRequest) {
         get(name: string) {
           return request.cookies.get(name)?.value;
         },
-        set(name: string, value: string, options: any) {
-          request.cookies.set({ name, value, ...options });
-          response = NextResponse.next({
-            request: { headers: request.headers },
-          });
-          response.cookies.set({ name, value, ...options });
+        set(name: string, value: string, options?: unknown) {
+          response.cookies.set(name, value, options as any);
         },
-        remove(name: string, options: any) {
-          request.cookies.set({ name, value: "", ...options });
-          response = NextResponse.next({
-            request: { headers: request.headers },
-          });
-          response.cookies.set({ name, value: "", ...options });
+        remove(name: string, _options?: unknown) {
+          response.cookies.delete(name);
         },
       },
     }
