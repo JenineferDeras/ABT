@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --maxWorkers=2",
+    "supabase:migrate": "supabase db push",
+    "supabase:reset": "supabase db reset"
+  },
+  "next": {
+    "local": "http://localhost:3000",
+    "environments": ".env.local",
+    "readyIn": "2.3s"
+  }
+}

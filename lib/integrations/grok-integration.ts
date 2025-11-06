@@ -37,7 +37,8 @@ export interface RiskContext {
  * @returns Promise with AI-generated risk summary
  */
 export async function grokRiskSummary(context: RiskContext): Promise<string> {
-  const prompt = `You are a senior risk officer for a digital factoring fintech platform. Analyze the following portfolio metrics and provide a concise risk assessment in 2-3 sentences.
+  // Remove example/production language from prompt
+  const prompt = `Analyze the following portfolio metrics and provide a risk assessment in 2-3 sentences.
 
 Portfolio Metrics:
 - Assets Under Management (AUM): $${context.aum.toLocaleString()}
@@ -108,8 +109,10 @@ export async function grokDefaultRisk(customerData: {
   industry: string;
   outstandingAmount: number;
 }): Promise<{ probability: number; reasoning: string }> {
-  const prompt = `You are a credit risk analyst. Assess the default risk for a business with the following characteristics:
+  // Use actual customer data for analysis
+  const prompt = `Assess the default risk for a business with the following characteristics:
 
+Business Profile:
 - Average Days to Pay: ${customerData.avgDaysToPay} days
 - Years in Business: ${customerData.yearsInBusiness}
 - Industry: ${customerData.industry}

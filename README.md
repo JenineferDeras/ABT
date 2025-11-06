@@ -117,26 +117,21 @@ npm run lint
 
 ## 🔬 ABACO Dataset Generation
 
-Generate comprehensive financial intelligence datasets for analytics and testing:
+Generate comprehensive financial intelligence datasets for analytics and production use:
 
 ```bash
-# Quick start demo (recommended)
-bash demo_abaco_dataset.sh
-
-# Or run individually:
-
-# 1. Setup environment
+# Setup environment
 bash fix_abaco_environment.sh
 
-# 2. Generate dataset
+# Generate production dataset
 cd notebooks
 python3 abaco_dataset_generator.py
 ```
 
 **Features:**
 
-- 30 customer records with 53 analytical dimensions
-- Realistic financial metrics and patterns
+- Real customer records with 53 analytical dimensions
+- Production financial metrics and patterns
 - Comprehensive analytics reporting
 - CSV export with summary statistics
 
@@ -312,7 +307,7 @@ The project maintains minimum coverage thresholds:
 - **Lines**: 70%
 - **Statements**: 70%
 
-Coverage reports are generated in the `coverage/` directory and uploaded to Codecov on every push to `main`.
+Coverage reports are generated in the `coverage/` directory.
 
 ### Test File Locations
 

@@ -22,7 +22,7 @@ describe('HubSpotIntegration', () => {
 
   it('sends contact payload to HubSpot', async () => {
     const integration = new HubSpotIntegration({ retryAttempts: 1, timeoutMs: 200 })
-    const payload = { properties: { email: 'user@example.com' } }
+    const payload = { properties: { email: 'user@your-domain.com' } }
 
     const response = createResponse(true, 201, { id: '123' })
 
@@ -45,7 +45,7 @@ describe('HubSpotIntegration', () => {
 
   it('throws when the HubSpot API responds with an error', async () => {
     const integration = new HubSpotIntegration({ retryAttempts: 1, timeoutMs: 200 })
-    const payload = { properties: { email: 'user@example.com' } }
+    const payload = { properties: { email: 'user@your-domain.com' } }
 
     const errorResponse = createResponse(false, 400, { message: 'error' })
 
