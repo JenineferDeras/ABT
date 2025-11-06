@@ -1,157 +1,147 @@
 {
-    "git.autofetch": true,
-    "json.schemaDownload.enable": true,
-    "typescript.disableAutomaticTypeAcquisition": true,
-    "redhat.telemetry.enabled": false,
-    "typescript.preferences.importModuleSpecifier": "relative",
-    "typescript.suggest.autoImports": true,
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit",
-        "source.organizeImports": "explicit"
-    },
-    "files.associations": {
-        "*.tsx": "typescriptreact",
-        "*.ts": "typescript",
-        "*.json": "jsonc"
-    },
-    "emmet.includeLanguages": {
-        "typescript": "html",
-        "typescriptreact": "html"
-    },
-    "tailwindCSS.includeLanguages": {
-        "typescript": "html",
-        "typescriptreact": "html"
-    },
-    "tailwindCSS.experimental.classRegex": [
-        "cn\\(([^)]*)\\)"
-    ],
-    "python.defaultInterpreterPath": "/usr/local/bin/python3",
-    "python.terminal.activateEnvironment": false,
-    "files.exclude": {
-        "**/.git": true,
-        "**/.DS_Store": true,
-        "**/node_modules": true,
-        "**/.next": true,
-        "**/__pycache__": true,
-        "**/*.pyc": true
-    },
-    "search.exclude": {
-        "**/node_modules": true,
-        "**/.next": true,
-        "**/dist": true,
-        "**/__pycache__": true
-    },
-    "eslint.workingDirectories": [
-        {
-            "directory": ".",
-            "changeProcessCWD": true
-        }
-    ],
-    "nextjs.serverPort": 3000,
-    "cs-script.execMode": "Standard",
-    "cs-script.syntaxCheckOnSave": true,
-    "spellright.language": [
-        "en",
-        "cs",
-        "da",
-        "de",
-        "fr",
-        "id",
-        "it",
-        "is",
-        "lt",
-        "hu",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "sl",
-        "fi",
-        "sv",
-        "vi",
-        "tr",
-        "el",
-        "bg",
-        "ru",
-        "uk",
-        "he",
-        "ar",
-        "hi",
-        "pa",
-        "te",
-        "ko"
-    ],
-    "spellright.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext",
-        "shellscript"
-    ],
-    "python.analysis.extraPaths": [
-        "/Users/jenineferderas/.vscode/extensions/ms-security.ms-sentinel-1.0.0/python"
-    ],
-    "sonarlint.connectedMode.project": {
-        "connectionId": "jeninefer",
-        "projectKey": "Jeninefer_nextjs-with-supabase"
-    },
-    "editor.codeActions.triggerOnFocusChange": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    // Exclude generated or library files from SonarLint analysis
-    "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
-    // Enable on-the-fly analysis (default: true)
-    "sonarlint.automaticAnalysis": true,
-    // Example: connect to SonarQube/SonarCloud (add your connection info if needed)
-    // "sonarlint.connectedMode.connections.sonarcloud": [
-    //   {
-    //     "serverId": "my_orga_in_sonarcloud.io",
-    //     "serverUrl": "https://sonarcloud.io",
-    //     "organizationKey": "my_organization",
-    //     "token": "V2VkIE1..."
-    //   }
-    // ],
-    // Focus on new code issues (optional)
-    "sonarlint.focusOnNewCode": false,
-    // Disable telemetry (recommended for privacy)
-    "sonarlint.disableTelemetry": true,
-<<<<<<< HEAD
-=======
-    "Lingma.aI Chat.mcpToolsInAgentMode": true,
-    "chat.mcp.discovery.enabled": {
-        "claude-desktop": true,
-        "windsurf": true,
-        "cursor-global": true,
-        "cursor-workspace": true
-    },
-    "chatgpt.openOnStartup": true,
-    "chat.mcp.assisted.nuget.enabled": true,
-    "[github-actions-workflow]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml"
-    },
-    "githubIssues.alwaysPromptForNewIssueRepo": true,
-    "DockerRun.DisableDockerrc": true,
-    "DockerRun.Containers": [
-        "28e1467e9591",
-        "769ae62b37f1",
-        "3321652c7d9f",
-        "b9286e98fd76",
-        "76dc2c40bfea",
-        "655762c6c651",
-        "caa54601d229",
-        "32401fd05dce",
-        "fc39ca3a14db",
-        "d15721d149b5",
-        "0cabce70cba5",
-        "002adf66b921",
-        "fe36f65c4305",
-        "9a9e7912c6ca"
-    ],
->>>>>>> 420d661fb588b567d48bc8c8f6ee52b18239beb5
-    // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
-    // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
-    // Example: custom rule overrides (uncomment and customize as needed)
-    // "sonarlint.rules": {
-    //   "javascript:S1481": { "level": "off" },
-    //   "javascript:S103": { "level": "on", "parameters": { "maximumLineLength": "120" } }
-    // }
+  "git.autofetch": true,
+  "json.schemaDownload.enable": true,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "redhat.telemetry.enabled": false,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+    "*.ts": "typescript",
+    "*.json": "jsonc"
+  },
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.experimental.classRegex": ["cn\\(([^)]*)\\)"],
+  "python.defaultInterpreterPath": "/usr/local/bin/python3",
+  "python.terminal.activateEnvironment": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/__pycache__": true
+  },
+  "eslint.workingDirectories": [
+    {
+      "directory": ".",
+      "changeProcessCWD": true
+    }
+  ],
+  "nextjs.serverPort": 3000,
+  "cs-script.execMode": "Standard",
+  "cs-script.syntaxCheckOnSave": true,
+  "spellright.language": [
+    "en",
+    "cs",
+    "da",
+    "de",
+    "fr",
+    "id",
+    "it",
+    "is",
+    "lt",
+    "hu",
+    "nl",
+    "pl",
+    "pt",
+    "ro",
+    "sl",
+    "fi",
+    "sv",
+    "vi",
+    "tr",
+    "el",
+    "bg",
+    "ru",
+    "uk",
+    "he",
+    "ar",
+    "hi",
+    "pa",
+    "te",
+    "ko"
+  ],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext", "shellscript"],
+  "python.analysis.extraPaths": [
+    "/Users/jenineferderas/.vscode/extensions/ms-security.ms-sentinel-1.0.0/python"
+  ],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "jeninefer",
+    "projectKey": "Jeninefer_nextjs-with-supabase"
+  },
+  "editor.codeActions.triggerOnFocusChange": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Exclude generated or library files from SonarLint analysis
+  "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
+  // Enable on-the-fly analysis (default: true)
+  "sonarlint.automaticAnalysis": true,
+  // Example: connect to SonarQube/SonarCloud (add your connection info if needed)
+  // "sonarlint.connectedMode.connections.sonarcloud": [
+  //   {
+  //     "serverId": "my_orga_in_sonarcloud.io",
+  //     "serverUrl": "https://sonarcloud.io",
+  //     "organizationKey": "my_organization",
+  //     "token": "V2VkIE1..."
+  //   }
+  // ],
+  // Focus on new code issues (optional)
+  "sonarlint.focusOnNewCode": false,
+  // Disable telemetry (recommended for privacy)
+  "sonarlint.disableTelemetry": true,
+  "Lingma.aI Chat.mcpToolsInAgentMode": true,
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true,
+    "windsurf": true,
+    "cursor-global": true,
+    "cursor-workspace": true
+  },
+  "chatgpt.openOnStartup": true,
+  "chat.mcp.assisted.nuget.enabled": true,
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "githubIssues.alwaysPromptForNewIssueRepo": true,
+  "DockerRun.DisableDockerrc": true,
+  "DockerRun.Containers": [
+    "28e1467e9591",
+    "769ae62b37f1",
+    "3321652c7d9f",
+    "b9286e98fd76",
+    "76dc2c40bfea",
+    "655762c6c651",
+    "caa54601d229",
+    "32401fd05dce",
+    "fc39ca3a14db",
+    "d15721d149b5",
+    "0cabce70cba5",
+    "002adf66b921",
+    "fe36f65c4305",
+    "9a9e7912c6ca"
+  ]
+  // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
+  // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
+  // Example: custom rule overrides (uncomment and customize as needed)
+  // "sonarlint.rules": {
+  //   "javascript:S1481": { "level": "off" },
+  //   "javascript:S103": { "level": "on", "parameters": { "maximumLineLength": "120" } }
+  // }
 }
