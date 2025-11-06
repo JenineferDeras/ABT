@@ -1,0 +1,14 @@
+name: "CodeQL Config"
+
+paths-ignore:
+  - 'notebooks/charts/**/*.html'
+  - '**/*.generated.html'
+
+query-filters:
+  - exclude:
+      id:
+        - js/insecure-randomness
+        - js/incomplete-url-substring-sanitization
+        - js/prototype-polluting-function
+      paths:
+        - 'notebooks/charts/**'
