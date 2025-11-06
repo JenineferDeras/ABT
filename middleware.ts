@@ -1,6 +1,5 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-import { normalizeCookieOptions } from "./lib/supabase/cookie-utils";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -9,43 +8,38 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options?: CookieOptions) {
-          const formattedOptions = normalizeCookieOptions(options);
-          if (formattedOptions) {
-            response.cookies.set({
-              name,
-              value,
-              ...formattedOptions,
-            });
-          } else {
-            response.cookies.set({
-              name,
-              value,
-            });
-          }
-        },
-        remove(name: string, options?: CookieOptions) {
-          const formattedOptions = normalizeCookieOptions(options);
-          if (formattedOptions) {
-            response.cookies.delete({
-              name,
-              ...formattedOptions,
-            });
-          } else {
-            response.cookies.delete(name);
-          }
-        },
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    return response;
+  }
+
+  const supabase = createServerClient(url, anonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
       },
-    }
-  );
+      setAll(
+        cookiesToSet: Array<{
+          name: string;
+          value: string;
+          options?: {
+            maxAge?: number;
+            path?: string;
+            domain?: string;
+            sameSite?: "strict" | "lax" | "none";
+            secure?: boolean;
+            httpOnly?: boolean;
+          };
+        }>
+      ) {
+        for (const { name, value, options } of cookiesToSet) {
+          response.cookies.set(name, value, options);
+        }
+      },
+    },
+  });
 
   try {
     await supabase.auth.getUser();
@@ -57,5 +51,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
+  matcher: [String.raw`/((?!_next/static|_next/image|favicon.ico|.*\.svg$).*)`],
 };

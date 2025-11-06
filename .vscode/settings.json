@@ -189,5 +189,8 @@
   "[python]": {
     "editor.defaultFormatter": "black",
     "editor.formatOnSave": true
-  }
+  },
+  // Disable direct file execution (use npm scripts instead)
+  "code-runner.executorMap": {},
+  "code-runner.runInTerminal": false
 }

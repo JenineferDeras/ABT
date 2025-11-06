@@ -1,91 +1,15 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Development
+.env.local
+.env.*.local
+.next/
+out/
+build/
+dist/
+
 # Dependencies
 node_modules/
-/.pnp
-.pnp.js
-
-# Testing
-coverage/
-.nyc_output/
-*.lcov
-
-# Next.js
-/.next/
-/out/
-.next
-
-# Production
-/build
-/dist
-
-# Misc
-.DS_Store
-*.pem
-
-# Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Local env files
-.env*.local
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Vercel
-.vercel
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
-# NPM analysis and debug files
-npm-list.txt
-licenses.json
-package-lock.json.bak
-yarn.lock
-pnpm-lock.yaml
-
-# Backup files
-backup_*/
-*.backup
-*.bak
-*.old
-*.orig
-*~
-*.swp
-*.swo
-.*.swp
-
-# IDE
-.idea/
-.vscode/settings.json.bak
-*.swp
-*.swo
-
-# OS
-Thumbs.db
-
-# Google Cloud credentials
-**/service-account-key.json
-**/gcloud-credentials.json
-
-# Python
-**/__pycache__/
-**/*.pyc
-**/notebooks/__pycache__/
-**/notebooks/abaco_venv/
-*.py[cod]
-*$py.class
-venv/
-ENV/
-env/
-
-# Python virtual environments
 streamlit_env/
 venv/
 env/
@@ -93,33 +17,32 @@ env/
 .Python
 __pycache__/
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Temporary files
+tempCodeRunnerFile.*
 *.tmp
-*.temp
-# Local Netlify folder
-.netlify
-
-# Dependency outputs
-npm-list.txt
-
-# Environment files
-.env.local
-.env.*.local
-.env
-
-# Secrets and credentials
-*.pem
-*.key
-secrets/
-.streamlit/secrets.toml
-
-# Docker secrets (if using Docker secrets)
-.docker/secrets/
-
-# OAuth tokens and API keys
-.auth/
-auth-token
-
-# Database files
-*.db
-*.sqlite
