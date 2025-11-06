@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
+import { normalizeCookieOptions } from "./lib/supabase/cookie-utils";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -7,21 +8,6 @@ export async function middleware(request: NextRequest) {
       headers: request.headers,
     },
   });
-
-  const formatOptions = (options?: CookieOptions) => {
-    if (!options) {
-      return undefined;
-    }
-
-    if (typeof options.sameSite === "string") {
-      return {
-        ...options,
-        sameSite: options.sameSite.toLowerCase() as "lax" | "strict" | "none",
-      };
-    }
-
-    return options;
-  };
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -32,7 +18,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options?: CookieOptions) {
-          const formattedOptions = formatOptions(options);
+          const formattedOptions = normalizeCookieOptions(options);
           if (formattedOptions) {
             response.cookies.set({
               name,
@@ -47,7 +33,7 @@ export async function middleware(request: NextRequest) {
           }
         },
         remove(name: string, options?: CookieOptions) {
-          const formattedOptions = formatOptions(options);
+          const formattedOptions = normalizeCookieOptions(options);
           if (formattedOptions) {
             response.cookies.delete({
               name,

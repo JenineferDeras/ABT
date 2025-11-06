@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { normalizeCookieOptions } from "./cookie-utils";
 
 /**
  * Creates a Supabase server client for use in Server Components and Server Actions.
@@ -7,21 +8,6 @@ import { cookies } from "next/headers";
  */
 export async function createClient() {
   const cookieStore = await cookies();
-
-  const formatOptions = (options?: CookieOptions) => {
-    if (!options) {
-      return undefined;
-    }
-
-    if (typeof options.sameSite === "string") {
-      return {
-        ...options,
-        sameSite: options.sameSite.toLowerCase() as "lax" | "strict" | "none",
-      };
-    }
-
-    return options;
-  };
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -32,7 +18,7 @@ export async function createClient() {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options?: CookieOptions) {
-          const formattedOptions = formatOptions(options);
+          const formattedOptions = normalizeCookieOptions(options);
           try {
             if (formattedOptions) {
               cookieStore.set({
@@ -51,7 +37,7 @@ export async function createClient() {
           }
         },
         remove(name: string, options?: CookieOptions) {
-          const formattedOptions = formatOptions(options);
+          const formattedOptions = normalizeCookieOptions(options);
           try {
             if (formattedOptions) {
               cookieStore.delete({
