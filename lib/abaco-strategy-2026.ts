@@ -98,6 +98,26 @@ export interface AI2026StrategyResult {
   allOutputsHaveRecommendations?: boolean;
 }
 
+export interface Portfolio {
+  readonly id: string;
+  readonly clientId: string;
+  readonly assets: readonly Asset[];
+  readonly metrics: PortfolioMetrics;
+}
+
+export interface Asset {
+  readonly id: string;
+  readonly name: string;
+  readonly value: number;
+  readonly riskRating: number;
+}
+
+export interface PortfolioMetrics {
+  readonly totalValue: number;
+  readonly riskScore: number;
+  readonly concentration: number;
+}
+
 /**
  * Tier 1: Validate data ingestion from 6+ sources
  * Checkpoints: File hashes match, row counts logged

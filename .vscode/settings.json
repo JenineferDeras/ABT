@@ -134,6 +134,16 @@
     "typescript",
     "typescriptreact"
   ],
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  // Jest/Testing Library configuration
+  "jest.showCoverageOnLoad": false,
+  "jest.autoRun": "off",
+  "jest.runMode": "on-demand",
   "nextjs.serverPort": 3000,
   "sonarlint.connectedMode.project": {
     "connectionId": "jeninefer",

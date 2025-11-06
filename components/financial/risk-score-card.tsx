@@ -4,36 +4,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 
 interface RiskScoreCardProps {
-  clientName: string;
-  riskScore: number;
-  trend: "up" | "down" | "stable";
+  readonly clientName: string;
+  readonly riskScore: number;
+  readonly trend: "up" | "down" | "stable";
 }
 
 export function RiskScoreCard({
   clientName,
   riskScore,
   trend,
-}: RiskScoreCardProps) {
+}: Readonly<RiskScoreCardProps>) {
   const getRiskColor = (score: number): string => {
-    if (score >= 80) return "text-green-600 dark:text-green-400";
-    if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
+    if (score >= 80) {
+      return "text-green-600 dark:text-green-400";
+    }
+    if (score >= 60) {
+      return "text-yellow-600 dark:text-yellow-400";
+    }
     return "text-red-600 dark:text-red-400";
   };
 
   const getTrendIcon = () => {
-    switch (trend) {
-      case "up":
-        return <TrendingUp className="h-5 w-5 text-green-600" />;
-      case "down":
-        return <TrendingDown className="h-5 w-5 text-red-600" />;
-      default:
-        return <Minus className="h-5 w-5 text-gray-600" />;
+    if (trend === "up") {
+      return <TrendingUp className="h-5 w-5 text-green-600" />;
     }
+    if (trend === "down") {
+      return <TrendingDown className="h-5 w-5 text-red-600" />;
+    }
+    return <Minus className="h-5 w-5 text-gray-600" />;
   };
 
   const getRiskLevel = (score: number): string => {
-    if (score >= 80) return "Low Risk";
-    if (score >= 60) return "Medium Risk";
+    if (score >= 80) {
+      return "Low Risk";
+    }
+    if (score >= 60) {
+      return "Medium Risk";
+    }
     return "High Risk";
   };
 

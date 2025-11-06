@@ -9,14 +9,14 @@ import type { Prediction } from "@/lib/ml/types";
 import { useState } from "react";
 
 interface PredictionFeedbackFormProps {
-  prediction: Prediction;
-  onSuccess?: () => void;
+  readonly prediction: Prediction;
+  readonly onSuccess?: () => void;
 }
 
 export function PredictionFeedbackForm({
   prediction,
   onSuccess,
-}: PredictionFeedbackFormProps) {
+}: Readonly<PredictionFeedbackFormProps>) {
   const [actualOutcome, setActualOutcome] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -37,7 +37,7 @@ export function PredictionFeedbackForm({
         },
         body: JSON.stringify({
           predictionId: prediction.id,
-          actualOutcome: parseFloat(actualOutcome),
+          actualOutcome: Number.parseFloat(actualOutcome),
           userFeedback: feedback,
         }),
       });

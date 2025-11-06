@@ -1,4 +1,4 @@
-import { createServerClient, type CookieMethods } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
@@ -7,50 +7,39 @@ export async function middleware(request: NextRequest) {
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!url || !anonKey) {
-      console.error(
-        "Missing required environment variables in middleware: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
-      );
+      console.error("Missing Supabase environment variables");
       return NextResponse.next();
     }
 
-    const response = NextResponse.next({
+    let response = NextResponse.next({
       request: {
         headers: request.headers,
       },
     });
 
-    const cookieMethods: CookieMethods = {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(
-        cookiesToSet: Array<{ name: string; value: string; options?: unknown }>
-      ) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          // Only set cookie options if provided and valid
-          if (options && typeof options === "object") {
-            response.cookies.set(
-              name,
-              value,
-              options as Parameters<typeof response.cookies.set>[2]
-            );
-          } else {
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(
+          cookiesToSet: Array<{
+            name: string;
+            value: string;
+            options?: unknown;
+          }>
+        ) {
+          for (const { name, value } of cookiesToSet) {
             response.cookies.set(name, value);
           }
-        });
+        },
       },
-    };
-
-    const supabase = createServerClient(url, anonKey, {
-      cookies: cookieMethods,
     });
 
-    // Call getUser with error handling
     try {
       await supabase.auth.getUser();
     } catch (authError) {
       console.error("Auth error in middleware:", authError);
-      // Continue even if auth fails - user may be unauthenticated
     }
 
     return response;

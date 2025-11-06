@@ -1,4 +1,5 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import nextPlugin from "@next/eslint-plugin-next";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -25,6 +26,16 @@ const eslintConfig = [
       ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    name: "eslint-config-next",
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    rules: {
+      "@next/next/no-html-link-for-pages": "error",
     },
   },
 ];
