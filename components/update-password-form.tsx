@@ -2,19 +2,32 @@
 
 import { updatePasswordAction } from "@/app/actions";
 import { FormMessage, type Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { validatePasswordStrength } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useState } from "react";
+
+const MIN_TIME_BETWEEN_ATTEMPTS_MS = 1000;
+
+export interface UpdatePasswordFormProps {
+  readonly onSuccess?: () => void;
+}
 
 export function UpdatePasswordForm({
+  onSuccess,
   searchParams,
-}: {
+}: UpdatePasswordFormProps & {
   searchParams: Promise<Message>;
 }) {
   const [params, setParams] = useState<Message | null>(null);
-  const [password, setPassword] = useState("");
+  const [state, formAction] = useActionState(updatePasswordAction, {
+    error: "",
+    success: false,
+  });
+  const [isThrottled, setIsThrottled] = useState(false);
+  const [lastAttempt, setLastAttempt] = useState(0);
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<
@@ -30,7 +43,7 @@ export function UpdatePasswordForm({
   }, [searchParams]);
 
   const handlePasswordChange = (value: string) => {
-    setPassword(value);
+    setNewPassword(value);
 
     if (value.length > 0) {
       const validation = validatePasswordStrength(value);
@@ -69,8 +82,8 @@ export function UpdatePasswordForm({
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPassword(value);
 
-    if (value.length > 0 && password.length > 0) {
-      if (value !== password) {
+    if (value.length > 0 && newPassword.length > 0) {
+      if (value !== newPassword) {
         setConfirmPasswordError("Passwords do not match");
       } else {
         setConfirmPasswordError(null);
@@ -80,21 +93,44 @@ export function UpdatePasswordForm({
     }
   };
 
+  const handleSubmit = useCallback(
+    async (formData: FormData) => {
+      const now = Date.now();
+      if (now - lastAttempt < MIN_TIME_BETWEEN_ATTEMPTS_MS) {
+        setIsThrottled(true);
+        return;
+      }
+
+      setLastAttempt(now);
+      setIsThrottled(false);
+      await formAction(formData);
+
+      if (state.success) {
+        onSuccess?.();
+      }
+    },
+    [formAction, lastAttempt, state.success, onSuccess]
+  );
+
   return (
-    <form className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4">
+    <form
+      action={handleSubmit}
+      className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4"
+      noValidate
+    >
       <h1 className="text-2xl font-medium">Reset password</h1>
       <p className="text-sm text-foreground/60">
         Please enter your new password below.
       </p>
       <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-        <Label htmlFor="password">New password</Label>
+        <Label htmlFor="new-password">New password</Label>
         <Input
-          id="password"
+          id="new-password"
+          name="newPassword"
           type="password"
-          name="password"
           placeholder="New password"
           required
-          value={password}
+          value={newPassword}
           onChange={(e) => handlePasswordChange(e.target.value)}
           aria-invalid={!!passwordError}
           aria-describedby={passwordError ? "password-error" : undefined}
@@ -110,11 +146,11 @@ export function UpdatePasswordForm({
           </p>
         )}
 
-        <Label htmlFor="confirmPassword">Confirm password</Label>
+        <Label htmlFor="confirm-password">Confirm password</Label>
         <Input
-          id="confirmPassword"
-          type="password"
+          id="confirm-password"
           name="confirmPassword"
+          type="password"
           placeholder="Confirm password"
           required
           value={confirmPassword}
@@ -134,13 +170,34 @@ export function UpdatePasswordForm({
           </p>
         )}
 
-        <SubmitButton
-          formAction={updatePasswordAction}
-          pendingText="Updating password..."
+        <FormMessage
+          message={
+            state.error ||
+            (state.success ? "Password updated successfully" : "")
+          }
+          type={state.success ? "success" : "error"}
+        />
+
+        {params && <FormMessage message={params} />}
+
+        <Button
+          type="submit"
+          disabled={
+            isThrottled ||
+            !newPassword ||
+            !confirmPassword ||
+            newPassword !== confirmPassword
+          }
+          className="w-full"
         >
           Reset password
-        </SubmitButton>
-        {params && <FormMessage message={params} />}
+        </Button>
+
+        {isThrottled && (
+          <p className="text-xs text-muted-foreground" role="status">
+            Please wait before trying again
+          </p>
+        )}
       </div>
     </form>
   );

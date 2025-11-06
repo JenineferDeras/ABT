@@ -11,26 +11,24 @@ type CookieOptions = {
   path?: string;
 };
 
-// Cookie helpers that properly await cookies()
+// Cookie helpers that properly handle getAll/setAll for @supabase/ssr
 export const cookieClient = {
   cookies: {
-    async get(name: string) {
+    async getAll() {
       const cookieStore = await cookies();
-      return cookieStore.get(name)?.value;
+      return cookieStore.getAll();
     },
-    async set(name: string, value: string, options?: CookieOptions) {
+    async setAll(
+      cookiesToSet: Array<{
+        name: string;
+        value: string;
+        options?: CookieOptions;
+      }>
+    ) {
       const cookieStore = await cookies();
-      cookieStore.set({ name, value, ...options });
-    },
-    async delete(name: string, options?: CookieOptions) {
-      const cookieStore = await cookies();
-      if (options && Object.keys(options).length > 0) {
-        // delete expects a single object with cookie attributes when using options
-        cookieStore.delete({ name, ...options });
-      } else {
-        // simple delete by name
-        cookieStore.delete(name);
-      }
+      cookiesToSet.forEach(({ name, value, options }) => {
+        cookieStore.set(name, value, options);
+      });
     },
   },
 };
@@ -38,18 +36,15 @@ export const cookieClient = {
 /**
  * Creates a Supabase server client for use in Server Components and Server Actions.
  * This function should only be called on the server side.
- * 
- * @example
- * // In a Server Component
- * const supabase = await createClient();
- * const { data } = await supabase.from('table').select('*');
+ *
+ * @throws {Error} If required environment variables are missing
  */
 export async function createClient() {
-  await cookies(); // Ensure cookies are awaited
+  const { env } = await import("./env");
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.public.SUPABASE_URL,
+    env.public.SUPABASE_ANON_KEY,
     {
       cookies: cookieClient.cookies as CookieMethods,
     }
