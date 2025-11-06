@@ -19,22 +19,18 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
   disconnect: jest.fn(),
 }));
 
-if (typeof window !== "undefined") {
-  // Mock window.matchMedia when running in a browser-like environment
-  Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
-  });
-}
+globalThis.matchMedia = globalThis.matchMedia || function () {
+  return {
+    matches: false,
+    addListener: () => {},
+    removeListener: () => {},
+  };
+};
+
+Object.defineProperty(globalThis, "window", {
+  value: globalThis,
+  writable: false,
+});
 
 // Suppress act() warnings from React Testing Library
 // These are expected for controlled inputs and don't indicate actual failures
