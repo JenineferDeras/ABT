@@ -1,41 +1,71 @@
-import "server-only";
-
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 /**
  * Creates a Supabase server client for use in Server Components and Server Actions.
+ * Uses cookie-based authentication following Supabase SSR patterns.
  */
 export async function createClient() {
-  try {
-    const cookieStore = await cookies();
+  const cookieStore = await cookies();
 
-    return createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(
-            cookiesToSet: Array<{
-              name: string;
-              value: string;
-              options?: unknown;
-            }>
-          ) {
-            cookiesToSet.forEach(({ name, value }) => {
-              cookieStore.set(name, value);
-            });
-          },
-        },
-      }
-    );
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to create Supabase client: ${error.message}`);
+  const formatOptions = (options?: CookieOptions) => {
+    if (!options) {
+      return undefined;
     }
-    throw error;
-  }
+
+    if (typeof options.sameSite === "string") {
+      return {
+        ...options,
+        sameSite: options.sameSite.toLowerCase() as "lax" | "strict" | "none",
+      };
+    }
+
+    return options;
+  };
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options?: CookieOptions) {
+          const formattedOptions = formatOptions(options);
+          try {
+            if (formattedOptions) {
+              cookieStore.set({
+                name,
+                value,
+                ...formattedOptions,
+              });
+            } else {
+              cookieStore.set({
+                name,
+                value,
+              });
+            }
+          } catch {
+            // Silently handle cookie setting errors in server context
+          }
+        },
+        remove(name: string, options?: CookieOptions) {
+          const formattedOptions = formatOptions(options);
+          try {
+            if (formattedOptions) {
+              cookieStore.delete({
+                name,
+                ...formattedOptions,
+              });
+            } else {
+              cookieStore.delete(name);
+            }
+          } catch {
+            // Silently handle cookie removal errors in server context
+          }
+        },
+      },
+    }
+  );
 }

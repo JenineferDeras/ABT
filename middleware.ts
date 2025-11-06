@@ -1,52 +1,73 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  try {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-    if (!url || !anonKey) {
-      console.error("Missing Supabase environment variables");
-      return NextResponse.next();
+  const formatOptions = (options?: CookieOptions) => {
+    if (!options) {
+      return undefined;
     }
 
-    let response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+    if (typeof options.sameSite === "string") {
+      return {
+        ...options,
+        sameSite: options.sameSite.toLowerCase() as "lax" | "strict" | "none",
+      };
+    }
 
-    const supabase = createServerClient(url, anonKey, {
+    return options;
+  };
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
       cookies: {
-        getAll() {
-          return request.cookies.getAll();
+        get(name: string) {
+          return request.cookies.get(name)?.value;
         },
-        setAll(
-          cookiesToSet: Array<{
-            name: string;
-            value: string;
-            options?: unknown;
-          }>
-        ) {
-          for (const { name, value } of cookiesToSet) {
-            response.cookies.set(name, value);
+        set(name: string, value: string, options?: CookieOptions) {
+          const formattedOptions = formatOptions(options);
+          if (formattedOptions) {
+            response.cookies.set({
+              name,
+              value,
+              ...formattedOptions,
+            });
+          } else {
+            response.cookies.set({
+              name,
+              value,
+            });
+          }
+        },
+        remove(name: string, options?: CookieOptions) {
+          const formattedOptions = formatOptions(options);
+          if (formattedOptions) {
+            response.cookies.delete({
+              name,
+              ...formattedOptions,
+            });
+          } else {
+            response.cookies.delete(name);
           }
         },
       },
-    });
-
-    try {
-      await supabase.auth.getUser();
-    } catch (authError) {
-      console.error("Auth error in middleware:", authError);
     }
+  );
 
-    return response;
-  } catch (error) {
-    console.error("Middleware error:", error);
-    return NextResponse.next();
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // Silently handle auth errors in middleware
   }
+
+  return response;
 }
 
 export const config = {

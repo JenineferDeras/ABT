@@ -122,7 +122,7 @@ export class ContinueLearning {
       modelId: data.model_id,
       totalPredictions: data.total_predictions,
       correctPredictions: data.correct_predictions,
-      accuracy: data.accuracy,
+      accuracy: Math.max(0, Math.min(1, data.accuracy)),
       lastUpdated: data.last_updated,
     };
   }
@@ -130,7 +130,7 @@ export class ContinueLearning {
 
 /**
  * Update model metrics with proper bounds
- * Confidence and accuracy are clamped to [0, 1] to prevent visual glitches
+ * Accuracy is clamped to [0, 1] to prevent visual glitches
  */
 export async function updateModelMetrics(
   modelId: string,
@@ -139,7 +139,6 @@ export async function updateModelMetrics(
   const clampedMetrics = {
     ...metrics,
     accuracy: Math.max(0, Math.min(1, metrics.accuracy)),
-    confidence: Math.max(0, Math.min(1, metrics.confidence)),
   };
 
   const supabase = await createClient();

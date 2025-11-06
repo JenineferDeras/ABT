@@ -22,7 +22,7 @@
     }
   },
   "redhat.telemetry.enabled": false,
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.suggest.autoImports": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.formatOnSave": true,
@@ -87,6 +87,9 @@
     "**/notebooks/__pycache__",
     "**/notebooks/abaco_venv"
   ],
+  // Disable Pylance for Python files since dependencies are managed separately
+  "python.analysis.typeCheckingMode": "off",
+  "pylance.typeCheckingMode": "off",
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
@@ -166,5 +169,25 @@
   },
   "github.copilot.chat.localeOverride": "en",
   "http.proxyStrictSSL": false,
-  "http.systemCertificates": false
+  "http.systemCertificates": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[python]": {
+    "editor.defaultFormatter": "black",
+    "editor.formatOnSave": true
+  }
 }

@@ -485,3 +485,20 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+@layer base {
+  :root {
+    --brand-primary-light: #e9d5ff;
+    --brand-primary-medium: #c084fc;
+    --brand-primary-dark: #7c3aed;
+    --brand-primary-darker: #5b21b6;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Custom component styles here */
+}

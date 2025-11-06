@@ -18,9 +18,10 @@ import streamlit as st
 warnings.filterwarnings("ignore")
 
 # ============================================================================
-# Theme & Configuration
+# Constants
 # ============================================================================
 
+# Theme Configuration
 ABACO_THEME = {
     "colors": {
         "primary": "#C1A6FF",
@@ -33,17 +34,81 @@ ABACO_THEME = {
     }
 }
 
+# Page Configuration
+PAGE_TITLE = "ABACO Financial Intelligence Platform"
+PAGE_LAYOUT = "wide"
+INITIAL_SIDEBAR_STATE = "expanded"
+
+# Plot Configuration
+PLOT_BG_COLOR = "rgba(0,0,0,0)"
+FONT_COLOR = "white"
+HOVERMODE_UNIFIED = "x unified"
+HOVERMODE_CLOSEST = "closest"
+
+# Google Drive Configuration
+GDRIVE_SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
+GDRIVE_API_VERSION = "v3"
+
+# Table Mapping for Data Ingestion
+TABLE_MAP = {
+    "portfolio": "raw_portfolios",
+    "facility": "raw_facilities",
+    "customer": "raw_customers",
+    "payment": "raw_payments",
+    "risk": "raw_risk_events",
+}
+
+# Primary Keys for Conflict Resolution
+PRIMARY_KEYS = {
+    "raw_portfolios": ["workbook_name", "portfolio_name"],
+    "raw_facilities": ["facility_code"],
+    "raw_customers": ["customer_code"],
+    "raw_payments": ["payment_code"],
+    "raw_risk_events": ["customer_code", "event_date", "event_type"],
+}
+
+# Column Names
+COL_WORKBOOK_NAME = "workbook_name"
+COL_REFRESH_DATE = "refresh_date"
+COL_AVG_DPD = "avg_dpd"
+COL_LTV = "ltv"
+COL_COLLECTION_RATE = "collection_rate"
+COL_AVG_RISK_SEVERITY = "avg_risk_severity"
+COL_CUSTOMER_CODE = "customer_code"
+COL_NAME = "name"
+COL_HIGH_RISK = "high_risk"
+
+# Thresholds for High-Risk Detection
+HIGH_RISK_DPD_THRESHOLD = 90
+HIGH_RISK_DPD_MODERATE = 60
+HIGH_RISK_LTV_THRESHOLD = 80
+LOW_COLLECTION_RATE_THRESHOLD = 0.70
+HIGH_RISK_SEVERITY_THRESHOLD = 0.7
+
+# UI Labels
+LABEL_HIGH_RISK_CLIENTS = "High-Risk Clients"
+LABEL_AVG_DPD = "Average DPD (days)"
+LABEL_AVG_LTV = "Average LTV (%)"
+LABEL_COLLECTION_RATE = "Collection Rate (%)"
+LABEL_DPD_DISTRIBUTION = "Days Past Due Distribution"
+LABEL_LTV_DISTRIBUTION = "Loan-to-Value Distribution"
+LABEL_RISK_MATRIX = "Risk Matrix (DPD vs LTV)"
+
+# ============================================================================
+# Theme & Configuration
+# ============================================================================
+
 st.set_page_config(
-    page_title="ABACO Financial Intelligence Platform",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    page_title=PAGE_TITLE,
+    layout=PAGE_LAYOUT,
+    initial_sidebar_state=INITIAL_SIDEBAR_STATE,
 )
 
 st.markdown(
     f"""
     <style>
-        body {{ background: {ABACO_THEME['colors']['dark']}; color: white; }}
-        .stButton>button {{ background: {ABACO_THEME['colors']['primary']}; color: white; border: none; }}
+        body {{ background: {ABACO_THEME['colors']['dark']}; color: {FONT_COLOR}; }}
+        .stButton>button {{ background: {ABACO_THEME['colors']['primary']}; color: {FONT_COLOR}; border: none; }}
         .metric-number {{ font-size: 2rem; font-weight: 700; }}
         .stMetric {{ background: rgba({int('C1', 16)}, {int('A6', 16)}, {int('FF', 16)}, 0.1); padding: 1rem; border-radius: 0.5rem; }}
     </style>
@@ -75,9 +140,9 @@ def init_clients():
     )
     credentials = service_account.Credentials.from_service_account_info(
         configs["GDRIVE_SERVICE_ACCOUNT"],
-        scopes=["https://www.googleapis.com/auth/drive.readonly"],
+        scopes=GDRIVE_SCOPES,
     )
-    drive_client = build("drive", "v3", credentials=credentials)
+    drive_client = build("drive", GDRIVE_API_VERSION, credentials=credentials)
     return supabase_client, drive_client
 
 supabase, drive = init_clients()
@@ -104,18 +169,9 @@ def normalize_df(df: pd.DataFrame, source: str) -> pd.DataFrame:
             df[col] = pd.to_numeric(df[col], errors="coerce")
         if "date" in col:
             df[col] = pd.to_datetime(df[col], errors="coerce")
-    df["workbook_name"] = source
-    df["refresh_date"] = datetime.now(timezone.utc)
+    df[COL_WORKBOOK_NAME] = source
+    df[COL_REFRESH_DATE] = datetime.now(timezone.utc)
     return df.drop_duplicates()
-
-# Table mapping for different file types
-TABLE_MAP = {
-    "portfolio": "raw_portfolios",
-    "facility": "raw_facilities",
-    "customer": "raw_customers",
-    "payment": "raw_payments",
-    "risk": "raw_risk_events",
-}
 
 def ingest_from_drive():
     """Ingest files from Google Drive and upsert to Supabase."""
@@ -168,14 +224,7 @@ def ingest_from_drive():
                 continue
 
             # Upsert to Supabase with conflict resolution
-            primary_cols = {
-                "raw_portfolios": ["workbook_name", "portfolio_name"],
-                "raw_facilities": ["facility_code"],
-                "raw_customers": ["customer_code"],
-                "raw_payments": ["payment_code"],
-                "raw_risk_events": ["customer_code", "event_date", "event_type"],
-            }
-            key_cols = primary_cols.get(table, ["id"])
+            key_cols = PRIMARY_KEYS.get(table, ["id"])
             data = df.to_dict(orient="records")
             supabase.table(table).upsert(
                 data, returning="minimal", on_conflict=",".join(key_cols)
@@ -225,12 +274,12 @@ try:
         df = pd.DataFrame(records)
         
         # Define high-risk criteria
-        df["high_risk"] = (
-            (df["avg_dpd"] > 90)
-            | (df["ltv"] > 80)
-            | (df["avg_dpd"] > 60)
-            | (df["collection_rate"] < 0.70)
-            | (df["avg_risk_severity"] > 0.7)
+        df[COL_HIGH_RISK] = (
+            (df[COL_AVG_DPD] > HIGH_RISK_DPD_THRESHOLD)
+            | (df[COL_LTV] > HIGH_RISK_LTV_THRESHOLD)
+            | (df[COL_AVG_DPD] > HIGH_RISK_DPD_MODERATE)
+            | (df[COL_COLLECTION_RATE] < LOW_COLLECTION_RATE_THRESHOLD)
+            | (df[COL_AVG_RISK_SEVERITY] > HIGH_RISK_SEVERITY_THRESHOLD)
         )
 
         # KPI Metrics
@@ -238,38 +287,38 @@ try:
         
         with col1:
             st.metric(
-                "High-Risk Clients",
-                int(df["high_risk"].sum()),
+                LABEL_HIGH_RISK_CLIENTS,
+                int(df[COL_HIGH_RISK].sum()),
                 delta=None,
             )
         
         with col2:
             st.metric(
-                "Average DPD (days)",
-                f"{df['avg_dpd'].mean():.1f}",
+                LABEL_AVG_DPD,
+                f"{df[COL_AVG_DPD].mean():.1f}",
                 delta=None,
             )
         
         with col3:
             st.metric(
-                "Average LTV (%)",
-                f"{df['ltv'].mean():.1f}",
+                LABEL_AVG_LTV,
+                f"{df[COL_LTV].mean():.1f}",
                 delta=None,
             )
         
         with col4:
             st.metric(
-                "Collection Rate (%)",
-                f"{df['collection_rate'].mean() * 100:.1f}",
+                LABEL_COLLECTION_RATE,
+                f"{df[COL_COLLECTION_RATE].mean() * 100:.1f}",
                 delta=None,
             )
 
         # High-Risk Portfolio Table
         st.markdown("#### ⚠️ High-Risk Portfolio")
         high_risk_df = df.loc[
-            df["high_risk"],
-            ["customer_code", "name", "avg_dpd", "ltv", "collection_rate", "avg_risk_severity"]
-        ].sort_values("avg_risk_severity", ascending=False)
+            df[COL_HIGH_RISK],
+            [COL_CUSTOMER_CODE, COL_NAME, COL_AVG_DPD, COL_LTV, COL_COLLECTION_RATE, COL_AVG_RISK_SEVERITY]
+        ].sort_values(COL_AVG_RISK_SEVERITY, ascending=False)
         
         if len(high_risk_df) > 0:
             st.dataframe(
@@ -287,58 +336,58 @@ try:
         with col1:
             fig_dpd = px.histogram(
                 df,
-                x="avg_dpd",
+                x=COL_AVG_DPD,
                 nbins=25,
-                title="Days Past Due Distribution",
+                title=LABEL_DPD_DISTRIBUTION,
                 color_discrete_sequence=[ABACO_THEME["colors"]["primary"]],
-                labels={"avg_dpd": "Days Past Due", "count": "Count"},
+                labels={COL_AVG_DPD: "Days Past Due", "count": "Count"},
             )
             fig_dpd.update_layout(
-                hovermode="x unified",
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                font={"color": "white"},
+                hovermode=HOVERMODE_UNIFIED,
+                plot_bgcolor=PLOT_BG_COLOR,
+                paper_bgcolor=PLOT_BG_COLOR,
+                font={"color": FONT_COLOR},
             )
             st.plotly_chart(fig_dpd, use_container_width=True)
 
         with col2:
             fig_ltv = px.histogram(
                 df,
-                x="ltv",
+                x=COL_LTV,
                 nbins=25,
-                title="Loan-to-Value Distribution",
+                title=LABEL_LTV_DISTRIBUTION,
                 color_discrete_sequence=[ABACO_THEME["colors"]["warning"]],
-                labels={"ltv": "LTV (%)", "count": "Count"},
+                labels={COL_LTV: "LTV (%)", "count": "Count"},
             )
             fig_ltv.update_layout(
-                hovermode="x unified",
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                font={"color": "white"},
+                hovermode=HOVERMODE_UNIFIED,
+                plot_bgcolor=PLOT_BG_COLOR,
+                paper_bgcolor=PLOT_BG_COLOR,
+                font={"color": FONT_COLOR},
             )
             st.plotly_chart(fig_ltv, use_container_width=True)
 
         # Risk Scatter Plot
         fig_scatter = px.scatter(
             df,
-            x="avg_dpd",
-            y="ltv",
-            size="collection_rate",
-            color="avg_risk_severity",
-            hover_data=["customer_code", "name"],
-            title="Risk Matrix (DPD vs LTV)",
+            x=COL_AVG_DPD,
+            y=COL_LTV,
+            size=COL_COLLECTION_RATE,
+            color=COL_AVG_RISK_SEVERITY,
+            hover_data=[COL_CUSTOMER_CODE, COL_NAME],
+            title=LABEL_RISK_MATRIX,
             color_continuous_scale="RdYlGn_r",
             labels={
-                "avg_dpd": "Average DPD (days)",
-                "ltv": "LTV (%)",
-                "avg_risk_severity": "Risk Severity",
+                COL_AVG_DPD: "Average DPD (days)",
+                COL_LTV: "LTV (%)",
+                COL_AVG_RISK_SEVERITY: "Risk Severity",
             },
         )
         fig_scatter.update_layout(
-            hovermode="closest",
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font={"color": "white"},
+            hovermode=HOVERMODE_CLOSEST,
+            plot_bgcolor=PLOT_BG_COLOR,
+            paper_bgcolor=PLOT_BG_COLOR,
+            font={"color": FONT_COLOR},
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
 
