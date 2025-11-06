@@ -1,68 +1,87 @@
-/* Reusable integration base: retries, rate limit, error normalization */
-type Req = RequestInit & { timeoutMs?: number };
-
-export class IntegrationError extends Error {
-    constructor(message: string, public cause?: unknown, public status?: number) {
-        super(message);
-    }
+/**
+ * Configuration for external integrations
+ */
+export interface IntegrationConfig {
+  name: string;
+  enabled: boolean;
+  rateLimitPerMinute: number;
+  retryAttempts: number;
+  timeoutMs: number;
 }
 
-export abstract class BaseIntegration {
-    private limiter = new Map<string, { tokens: number; ts: number }>();
-    protected abstract serviceName(): string;
+/**
+ * Base integration class with rate limiting, retry, and timeout logic
+ */
+export class Integration {
+  private callCount = 0;
+  private lastReset = Date.now();
 
-    protected async fetchJson<T>(url: string, init: Req, rlKey?: string): Promise<T> {
-        await this.rateLimit(rlKey ?? this.serviceName(), 5, 1000); // 5 rps token bucket
-        const timeoutMs = init.timeoutMs ?? 30_000;
+  constructor(private cfg: IntegrationConfig) {}
 
-        const doFetch = async () => {
-            const ctrl = new AbortController();
-            const t = setTimeout(() => ctrl.abort(), timeoutMs);
-            try {
-                const res = await fetch(url, { ...init, signal: ctrl.signal });
-                if (!res.ok) {
-                    const txt = await res.text().catch(() => "");
-                    throw new IntegrationError(
-                        `${this.serviceName()} HTTP ${res.status}`,
-                        txt || undefined,
-                        res.status
-                    );
-                }
-                return (await res.json()) as T;
-            } finally {
-                clearTimeout(t);
-            }
-        };
+  /**
+   * Check and enforce rate limits
+   */
+  private checkRateLimit(): void {
+    const now = Date.now();
 
-        // retries with exponential backoff + jitter
-        let attempt = 0;
-        let lastErr: unknown;
-        while (attempt < 4) {
-            try {
-                return await doFetch();
-            } catch (e) {
-                lastErr = e;
-                attempt += 1;
-                const delay = Math.min(2000 * 2 ** attempt, 10_000) + Math.random() * 200;
-                await new Promise((r) => setTimeout(r, delay));
-            }
-        }
-        throw new IntegrationError(`${this.serviceName()} request failed`, lastErr);
+    // Reset counter every minute
+    if (now - this.lastReset > 60_000) {
+      this.callCount = 0;
+      this.lastReset = now;
     }
 
-    private async rateLimit(key: string, rate: number, perMs: number) {
-        const now = Date.now();
-        const b = this.limiter.get(key) ?? { tokens: rate, ts: now };
-        const elapsed = now - b.ts;
-        const refill = Math.floor((elapsed / perMs) * rate);
-        b.tokens = Math.min(rate, b.tokens + (refill > 0 ? refill : 0));
-        b.ts = refill > 0 ? now : b.ts;
-        if (b.tokens <= 0) {
-            const wait = perMs / rate;
-            await new Promise((r) => setTimeout(r, wait));
-        } else {
-            b.tokens -= 1;
-        }
-        this.limiter.set(key, b);
+    if (this.callCount >= this.cfg.rateLimitPerMinute) {
+      throw new Error(
+        `Rate limit exceeded for ${this.cfg.name}. Max ${this.cfg.rateLimitPerMinute} calls/minute.`
+      );
     }
+
+    this.callCount++;
+  }
+
+  /**
+   * Execute a function with retry logic and timeout
+   * @param fn - Async function to execute
+   * @returns Promise with the function result
+   */
+  async execute<T>(fn: () => Promise<T>): Promise<T> {
+    if (!this.cfg.enabled) {
+      throw new Error(`${this.cfg.name} integration is disabled`);
+    }
+
+    this.checkRateLimit();
+
+    let lastError: unknown;
+
+    for (let attempt = 0; attempt < this.cfg.retryAttempts; attempt++) {
+      try {
+        // Race between the function and timeout
+        const result = await Promise.race<T>([
+          fn(),
+          new Promise<T>((_, reject) =>
+            setTimeout(
+              () => reject(new Error(`Timeout after ${this.cfg.timeoutMs}ms`)),
+              this.cfg.timeoutMs
+            )
+          ),
+        ]);
+
+        return result;
+      } catch (error) {
+        lastError = error;
+        console.warn(
+          `${this.cfg.name} attempt ${attempt + 1}/${this.cfg.retryAttempts} failed:`,
+          error
+        );
+
+        // Exponential backoff: 500ms, 1s, 2s, 4s...
+        if (attempt < this.cfg.retryAttempts - 1) {
+          const delay = 2 ** attempt * 500;
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+      }
+    }
+
+    throw lastError;
+  }
 }
