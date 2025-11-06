@@ -54,6 +54,14 @@
     "typescriptreact": "html"
   },
   "tailwindCSS.experimental.classRegex": ["cn\\(([^)]*)\\)"],
+  "tailwindCSS.validate": true,
+  "tailwindCSS.lint.cssConflict": "warning",
+  "tailwindCSS.lint.invalidApply": "error",
+  "tailwindCSS.lint.invalidScreen": "error",
+  "tailwindCSS.lint.invalidVariant": "error",
+  "tailwindCSS.lint.invalidConfigPath": "error",
+  "tailwindCSS.lint.invalidTailwindDirective": "error",
+  "tailwindCSS.lint.recommendedVariantOrder": "warning",
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
@@ -67,9 +75,15 @@
     "**/home/node/.vscode-remote/**",
     "**/.next/**",
     "**/dist/**",
-    "**/*"
+    "**/__pycache__/**",
+    "**/notebooks/__pycache__/**",
+    "**/notebooks/abaco_venv/**"
   ],
-  "python.analysis.ignore": ["**"],
+  "python.analysis.ignore": [
+    "**/__pycache__",
+    "**/notebooks/__pycache__",
+    "**/notebooks/abaco_venv"
+  ],
   "python.languageServer": "Pylance",
   "files.exclude": {
     "**/.git": true,
@@ -78,20 +92,28 @@
     "**/.next": true,
     "**/dist": true,
     "**/__pycache__": true,
-    "**/*.pyc": true
+    "**/*.pyc": true,
+    "**/notebooks/__pycache__": true,
+    "**/notebooks/abaco_venv": true
   },
   "search.exclude": {
     "**/node_modules": true,
     "**/.git": true,
     "**/.next": true,
     "**/dist": true,
-    "**/__pycache__": true
+    "**/__pycache__": true,
+    "**/notebooks/__pycache__": true,
+    "**/notebooks/abaco_venv": true,
+    "**/package-lock.json": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/**": true,
-    "**/.vscode-remote/**": true
+    "**/.vscode-remote/**": true,
+    "**/notebooks/__pycache__/**": true,
+    "**/notebooks/abaco_venv/**": true,
+    "**/package-lock.json": true
   },
   "extensions.ignoreRecommendations": false,
   "workbench.startupEditor": "welcomePage",

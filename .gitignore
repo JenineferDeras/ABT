@@ -27,6 +27,7 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 
 # Local env files
 .env*.local
@@ -42,27 +43,34 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# NPM analysis and debug files (prevent Tailwind thrashing)
+# NPM analysis and debug files
 npm-list.txt
 licenses.json
 package-lock.json.bak
+yarn.lock
+pnpm-lock.yaml
 
 # Backup files
 backup_*/
 *.backup
 *.bak
+*.old
+*.orig
+*~
+*.swp
+*.swo
+.*.swp
 
 # IDE
 .idea/
 .vscode/settings.json.bak
 *.swp
 *.swo
-*~
 
 # OS
 Thumbs.db
 
-# Google Cloud credentials (never commit)
+# Google Cloud credentials
 **/service-account-key.json
 **/gcloud-credentials.json
 
@@ -71,8 +79,12 @@ Thumbs.db
 **/*.pyc
 **/notebooks/__pycache__/
 **/notebooks/abaco_venv/
+*.py[cod]
+*$py.class
+venv/
+ENV/
+env/
 
 # Temporary files
 *.tmp
 *.temp
-.cache/
