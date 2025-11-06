@@ -9,37 +9,45 @@ import { NextResponse, type NextRequest } from "next/server";
  * @returns A NextResponse for the request, potentially updated with authentication-related cookies.
  */
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next({ request: { headers: request.headers } });
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.");
-    return response;
-  }
-
-  try {
-    const supabase = createServerClient(supabaseUrl, supabaseKey, {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
       cookies: {
-        getAll: () => request.cookies.getAll().map((c) => ({ name: c.name, value: c.value })),
-        setAll: (cookies) => {
-          cookies.forEach((cookie) => {
-            response.cookies.set(cookie.name, cookie.value, cookie.options);
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: any) {
+          request.cookies.set({ name, value, ...options });
+          response = NextResponse.next({
+            request: { headers: request.headers },
           });
+          response.cookies.set({ name, value, ...options });
+        },
+        remove(name: string, options: any) {
+          request.cookies.set({ name, value: "", ...options });
+          response = NextResponse.next({
+            request: { headers: request.headers },
+          });
+          response.cookies.set({ name, value: "", ...options });
         },
       },
-    });
+    }
+  );
 
-    // Optionally, perform a lightweight auth check (e.g., getUser)
-    await supabase.auth.getUser();
-  } catch (err) {
-    console.error("Supabase middleware error:", err);
-  }
+  await supabase.auth.getUser();
 
   return response;
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

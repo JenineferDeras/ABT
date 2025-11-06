@@ -14,16 +14,16 @@ export async function createClient() {
         },
         set(name: string, value: string, options: any) {
           try {
-            cookieStore.set({ name, value, ...options });
-          } catch (error) {
-            // Handle cookies in Server Components
+            cookieStore.set(name, value, options);
+          } catch {
+            // Handle server component context
           }
         },
         remove(name: string, options: any) {
           try {
-            cookieStore.set({ name, value: "", ...options });
-          } catch (error) {
-            // Handle cookies in Server Components
+            cookieStore.set(name, "", { ...options, maxAge: 0 });
+          } catch {
+            // Handle server component context
           }
         },
       },
