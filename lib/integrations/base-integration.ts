@@ -52,12 +52,13 @@ export class Integration {
     let lastErr: unknown;
     for (let i = 0; i < this.cfg.retryAttempts; i++) {
       try {
-        return await Promise.race([
+        const result = await Promise.race([
           fn(),
-          new Promise((_, rej) =>
+          new Promise<T>((_, rej) =>
             setTimeout(() => rej(new Error("Timeout")), this.cfg.timeoutMs)
           ),
         ]);
+        return result;
       } catch (e) {
         lastErr = e;
         await new Promise((r) => setTimeout(r, Math.pow(2, i) * 500));

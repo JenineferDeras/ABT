@@ -79,17 +79,19 @@
     "**/.next/**",
     "**/dist/**",
     "**/__pycache__/**",
-    "**/notebooks/__pycache__/**",
-    "**/notebooks/abaco_venv/**"
+    "**/notebooks/**",
+    "**/*.py"
   ],
-  "python.analysis.ignore": [
-    "**/__pycache__",
-    "**/notebooks/__pycache__",
-    "**/notebooks/abaco_venv"
-  ],
-  // Disable Pylance for Python files since dependencies are managed separately
+  "python.analysis.ignore": ["**/__pycache__", "**/notebooks", "**/*.py"],
+  // Disable Pylance and Pylint for Python files since dependencies are managed separately
   "python.analysis.typeCheckingMode": "off",
   "pylance.typeCheckingMode": "off",
+  "pylint.enable": false,
+  "pylint.showCategories": false,
+  "[python]": {
+    "editor.defaultFormatter": null,
+    "editor.formatOnSave": false
+  },
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
@@ -149,8 +151,8 @@
   "jest.runMode": "on-demand",
   "nextjs.serverPort": 3000,
   "sonarlint.connectedMode.project": {
-    "connectionId": "jeninefer",
-    "projectKey": "Jeninefer_nextjs-with-supabase"
+    "connectionId": "jenineferderas",
+    "projectKey": "jenineferderas_abaco-sim-e"
   },
   "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
   "sonarlint.automaticAnalysis": true,
@@ -187,8 +189,8 @@
     }
   },
   "[python]": {
-    "editor.defaultFormatter": "black",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": null,
+    "editor.formatOnSave": false
   },
   // Disable direct file execution (use npm scripts instead)
   "code-runner.executorMap": {},

@@ -101,7 +101,7 @@ export function SignUpForm() {
           id="email"
           name="email"
           type="email"
-          placeholder="you@example.com"
+          placeholder="analyst@abaco.finance"
           required
           aria-required="true"
           aria-describedby={state.error ? "email-error" : undefined}

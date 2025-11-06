@@ -20,20 +20,7 @@ export async function middleware(request: NextRequest) {
       getAll() {
         return request.cookies.getAll();
       },
-      setAll(
-        cookiesToSet: Array<{
-          name: string;
-          value: string;
-          options?: {
-            maxAge?: number;
-            path?: string;
-            domain?: string;
-            sameSite?: "strict" | "lax" | "none";
-            secure?: boolean;
-            httpOnly?: boolean;
-          };
-        }>
-      ) {
+      setAll(cookiesToSet) {
         for (const { name, value, options } of cookiesToSet) {
           response.cookies.set(name, value, options);
         }
@@ -51,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [String.raw`/((?!_next/static|_next/image|favicon.ico|.*\.svg$).*)`],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
 };

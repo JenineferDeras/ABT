@@ -2,6 +2,13 @@ import { ContinueLearning } from "@/lib/ml/continue-learning";
 import type { Prediction } from "@/lib/ml/types";
 import { Integration } from "./base-integration";
 
+export interface RiskContext {
+  aum: number;
+  activeLoans: number;
+  avgDpd: number;
+  defaultRate: number;
+}
+
 const grok = new Integration({
   name: "Grok",
   enabled: !!process.env.GROK_API_KEY,
@@ -10,12 +17,7 @@ const grok = new Integration({
   timeoutMs: 8000,
 });
 
-export async function grokRiskSummary(context: {
-  aum: number;
-  activeLoans: number;
-  avgDpd: number;
-  defaultRate: number;
-}): Promise<string> {
+export async function grokRiskSummary(context: RiskContext): Promise<string> {
   const prompt = `You are a senior risk officer. Summarize the portfolio health in 2-3 sentences.
 AUM: $${context.aum.toLocaleString()}, Active loans: ${
     context.activeLoans
