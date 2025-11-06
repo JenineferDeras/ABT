@@ -1,5 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 /**
  * Initializes a Supabase server client that bridges cookies between the incoming request and outgoing response, then performs a lightweight auth check.
