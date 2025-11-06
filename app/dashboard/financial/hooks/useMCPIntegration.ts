@@ -7,6 +7,9 @@ import type {
     FinancialMetric,
     GrowthPoint,
     Insight,
+    PredictiveSignal,
+    ProductOpportunity,
+    AIRunbook,
     ProviderStatus,
     RiskOverview,
 } from "@/lib/data/financial-intelligence";
@@ -158,6 +161,12 @@ export function useMCPIntegration() {
 
     const insights = useMemo<Insight[]>(() => state.dataset?.insights ?? [], [state.dataset]);
 
+    const predictiveSignals = useMemo<PredictiveSignal[]>(() => state.dataset?.predictiveSignals ?? [], [state.dataset]);
+
+    const productOpportunities = useMemo<ProductOpportunity[]>(() => state.dataset?.productOpportunities ?? [], [state.dataset]);
+
+    const aiRunbooks = useMemo<AIRunbook[]>(() => state.dataset?.aiRunbooks ?? [], [state.dataset]);
+
     const summary = useMemo<DashboardSummary>((): DashboardSummary => ({
         updatedAt: state.dataset?.generatedAt ?? null,
         refreshIntervalMinutes: state.dataset?.refreshIntervalMinutes ?? null,
@@ -173,6 +182,9 @@ export function useMCPIntegration() {
         riskProfile,
         providers,
         insights,
+        predictiveSignals,
+        productOpportunities,
+        aiRunbooks,
         refresh,
         summary,
     };

@@ -37,22 +37,22 @@ describe('Supabase Browser Client', () => {
 
         expect(createBrowserClient).toHaveBeenCalledWith(
             process.env.NEXT_PUBLIC_SUPABASE_URL,
-            process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
         )
     })
 
     test('createClient handles missing environment variables', () => {
         const originalUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const originalKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+        const originalKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
         delete process.env.NEXT_PUBLIC_SUPABASE_URL
-        delete process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+        delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
         expect(() => createClient()).toThrow()
 
         // Restore environment variables
         process.env.NEXT_PUBLIC_SUPABASE_URL = originalUrl
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY = originalKey
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = originalKey
     })
 
     test('client has expected auth methods', () => {

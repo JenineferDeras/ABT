@@ -1,7 +1,30 @@
 {
+<<<<<<< HEAD
   "git.autofetch": true,
   "json.schemaDownload.enable": true,
   "typescript.disableAutomaticTypeAcquisition": true,
+=======
+  "git.autofetch": false,
+  "git.autoRefresh": false,
+  "git.path": "/opt/homebrew/bin/git",
+  "git.enabled": true,
+  "git.autoRepositoryDetection": true,
+  "git.detectSubmodules": false,
+  "json.schemaDownload.enable": true,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.preferences.npmLocation": "/usr/local/bin/npm",
+  "typescript.npm": "/usr/local/bin/npm",
+  "typescript.tsc.autoDetect": "on",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "npm.packageManager": "npm",
+  "npm.executable": "/usr/local/bin/npm",
+  "terminal.integrated.env.osx": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/usr/local/lib/node_modules",
+    "GIT_EXEC_PATH": "/opt/homebrew/Cellar/git/2.51.0/libexec/git-core"
+  },
+  "terminal.integrated.shell.osx": "/bin/zsh",
+>>>>>>> ec25b126d875bf481683eafbdf402559612c2c5e
   "redhat.telemetry.enabled": false,
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
@@ -31,6 +54,7 @@
     "**/.DS_Store": true,
     "**/node_modules": true,
     "**/.next": true,
+<<<<<<< HEAD
     "**/__pycache__": true,
     "**/*.pyc": true
   },
@@ -80,6 +104,43 @@
     "te",
     "ko"
   ],
+=======
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.next": true
+  },
+  "extensions.ignoreRecommendations": false,
+  "workbench.startupEditor": "welcomePage",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "eslint.workingDirectories": ["./"],
+  "eslint.format.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "debug.console.wordWrap": false,
+  "debug.terminal.clearBeforeReusing": true,
+  "spellright.language": ["en"],
+>>>>>>> ec25b126d875bf481683eafbdf402559612c2c5e
   "spellright.documentTypes": ["markdown", "latex", "plaintext", "shellscript"],
   "python.analysis.extraPaths": [
     "/Users/jenineferderas/.vscode/extensions/ms-security.ms-sentinel-1.0.0/python"
@@ -90,6 +151,7 @@
   },
   "editor.codeActions.triggerOnFocusChange": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+<<<<<<< HEAD
   // Exclude generated or library files from SonarLint analysis
   "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
   // Enable on-the-fly analysis (default: true)
@@ -106,6 +168,11 @@
   // Focus on new code issues (optional)
   "sonarlint.focusOnNewCode": false,
   // Disable telemetry (recommended for privacy)
+=======
+  "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
+  "sonarlint.automaticAnalysis": true,
+  "sonarlint.focusOnNewCode": false,
+>>>>>>> ec25b126d875bf481683eafbdf402559612c2c5e
   "sonarlint.disableTelemetry": true,
   "Lingma.aI Chat.mcpToolsInAgentMode": true,
   "chat.mcp.discovery.enabled": {
@@ -136,6 +203,7 @@
     "002adf66b921",
     "fe36f65c4305",
     "9a9e7912c6ca"
+<<<<<<< HEAD
   ]
   // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
   // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
@@ -144,4 +212,25 @@
   //   "javascript:S1481": { "level": "off" },
   //   "javascript:S103": { "level": "on", "parameters": { "maximumLineLength": "120" } }
   // }
+=======
+  ],
+  "git.ignoreLimitWarning": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true,
+    "jsonc": true,
+    "typescript": true,
+    "typescriptreact": true,
+    "javascript": true,
+    "javascriptreact": true
+  },
+  "github.copilot.advanced": {
+    "debug.overrideEngine": "claude-3.5-sonnet"
+  },
+  "github.copilot.chat.localeOverride": "en",
+  "http.proxyStrictSSL": false,
+  "http.systemCertificates": false
+>>>>>>> ec25b126d875bf481683eafbdf402559612c2c5e
 }

@@ -148,7 +148,7 @@ jest.mock('@/lib/supabase/client', () => ({
 Tests use mock environment variables defined in `jest.setup.js`:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Mocking Strategy
 

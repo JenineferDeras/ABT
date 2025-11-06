@@ -84,8 +84,51 @@ export interface FinancialDashboardDataset {
     risk: RiskOverview;
     providers: ProviderStatus[];
     insights: Insight[];
+    predictiveSignals: PredictiveSignal[];
+    productOpportunities: ProductOpportunity[];
+    aiRunbooks: AIRunbook[];
     generatedAt: string;
     refreshIntervalMinutes: number;
+}
+
+export interface PredictiveSignal {
+    id: string;
+    title: string;
+    metric: string;
+    unit: MetricUnit;
+    currentValue: number;
+    projectedValue: number;
+    forecastHorizon: string;
+    confidence: number;
+    drivers: string[];
+    recommendedAction: string;
+}
+
+export type ProductLifecycleStage = "incubate" | "pilot" | "scale";
+
+export interface ProductOpportunity {
+    id: string;
+    name: string;
+    segment: string;
+    summary: string;
+    expectedAnnualRevenue: number;
+    paybackPeriodMonths: number;
+    adoptionProbability: number;
+    lifecycleStage: ProductLifecycleStage;
+    strategicFit: "core" | "adjacent" | "transformational";
+}
+
+export type AutomationLevel = "assist" | "copilot" | "autonomous";
+
+export interface AIRunbook {
+    id: string;
+    role: string;
+    objective: string;
+    automationLevel: AutomationLevel;
+    playbooks: string[];
+    owner: string;
+    successMetrics: { label: string; target: string }[];
+    nextAction: string;
 }
 
 const now = new Date();
@@ -117,6 +160,123 @@ const growthSeries: GrowthPoint[] = Array.from({ length: 12 }).map((_, index) =>
         retentionRate: Number(retention.toFixed(3)),
     } satisfies GrowthPoint;
 });
+
+const predictiveSignals: PredictiveSignal[] = [
+    {
+        id: "aum-forecast",
+        title: "AUM trajectory",
+        metric: "Assets Under Management",
+        unit: "currency",
+        currentValue: 25_400_000,
+        projectedValue: 27_800_000,
+        forecastHorizon: "90 days",
+        confidence: 0.82,
+        drivers: ["Acceleration in fintech onboarding", "Stable churn below 1.5%", "Increased capital limits"],
+        recommendedAction: "Prioritize structured onboarding for APAC venture debt funds to capture projected inflows early.",
+    },
+    {
+        id: "default-ceiling",
+        title: "Default rate ceiling",
+        metric: "Portfolio Default Rate",
+        unit: "percentage",
+        currentValue: 3.2,
+        projectedValue: 2.7,
+        forecastHorizon: "2 quarters",
+        confidence: 0.76,
+        drivers: ["Collateral refresh cycle", "Migration of subprime borrowers", "Automated early warnings"],
+        recommendedAction: "Expand automated covenant testing to tier-two borrowers to lock in the projected improvement.",
+    },
+    {
+        id: "apr-compression",
+        title: "Yield compression risk",
+        metric: "Weighted APR",
+        unit: "percentage",
+        currentValue: 18.5,
+        projectedValue: 17.9,
+        forecastHorizon: "120 days",
+        confidence: 0.68,
+        drivers: ["Competitive pricing pressure", "Shift to secured lines", "Macro easing cycle"],
+        recommendedAction: "Pre-negotiate dynamic pricing floors for top quartile facilities to mitigate downside compression.",
+    },
+];
+
+const productOpportunities: ProductOpportunity[] = [
+    {
+        id: "dynamic-receivables",
+        name: "Dynamic Receivables Repricing",
+        segment: "Enterprise SaaS",
+        summary: "Usage-based credit extensions tied to invoice velocity with automated spread adjustments.",
+        expectedAnnualRevenue: 4_200_000,
+        paybackPeriodMonths: 11,
+        adoptionProbability: 0.64,
+        lifecycleStage: "pilot",
+        strategicFit: "core",
+    },
+    {
+        id: "green-facilities",
+        name: "Green CapEx Facilities",
+        segment: "Climate infrastructure",
+        summary: "Tax-advantaged lending combining carbon reporting APIs with automated collateral scoring.",
+        expectedAnnualRevenue: 5_500_000,
+        paybackPeriodMonths: 14,
+        adoptionProbability: 0.58,
+        lifecycleStage: "incubate",
+        strategicFit: "adjacent",
+    },
+    {
+        id: "embedded-credit",
+        name: "Embedded Credit SDK",
+        segment: "Fintech platforms",
+        summary: "White-label lending primitives with real-time risk gating and pre-built compliance workflows.",
+        expectedAnnualRevenue: 7_800_000,
+        paybackPeriodMonths: 9,
+        adoptionProbability: 0.71,
+        lifecycleStage: "scale",
+        strategicFit: "transformational",
+    },
+];
+
+const aiRunbooks: AIRunbook[] = [
+    {
+        id: "ai-risk-copilot",
+        role: "Risk Copilot",
+        objective: "Continuously scan exposures and triage early warning signals before human review.",
+        automationLevel: "copilot",
+        playbooks: ["Automated sector heatmaps", "Counterparty anomaly detection", "Real-time stress testing"],
+        owner: "Risk Intelligence Squad",
+        successMetrics: [
+            { label: "False positive reduction", target: "< 12%" },
+            { label: "Alert triage time", target: "< 5 min" },
+        ],
+        nextAction: "Deploy streaming anomaly scoring on the LATAM portfolio feeds.",
+    },
+    {
+        id: "ai-portfolio-strategist",
+        role: "Portfolio Strategist",
+        objective: "Recommend allocation shifts and capital raises aligned with growth mandates.",
+        automationLevel: "assist",
+        playbooks: ["Capital raise modelling", "Horizon scenario synthesis", "Risk-adjusted NPV scoring"],
+        owner: "Capital Markets Guild",
+        successMetrics: [
+            { label: "Capital efficiency uplift", target: "+ 240 bps" },
+            { label: "Win rate on proposals", target: "> 55%" },
+        ],
+        nextAction: "Blend macro easing assumptions into the FY25 capital plan draft.",
+    },
+    {
+        id: "ai-origination-autopilot",
+        role: "Origination Autopilot",
+        objective: "Run end-to-end underwriting for low-complexity tickets with human override hooks.",
+        automationLevel: "autonomous",
+        playbooks: ["KYB enrichment", "Dynamic pricing", "Covenant drafting"],
+        owner: "Growth Underwriting Pod",
+        successMetrics: [
+            { label: "Time to decision", target: "< 12 min" },
+            { label: "Manual intervention", target: "< 8%" },
+        ],
+        nextAction: "Roll out the autopilot workflow to the UK marketplace partners.",
+    },
+];
 
 export const financialDashboardDataset: FinancialDashboardDataset = {
     metrics: [
@@ -283,6 +443,9 @@ export const financialDashboardDataset: FinancialDashboardDataset = {
             tags: ["operations", "automation"],
         },
     ],
+    predictiveSignals,
+    productOpportunities,
+    aiRunbooks,
     generatedAt: toIsoString(now),
     refreshIntervalMinutes: 5,
 };
