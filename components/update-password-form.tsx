@@ -1,12 +1,12 @@
 "use client";
 
 import { updatePasswordAction } from "@/app/actions";
-import { FormMessage, type Message } from "@/components/form-message";
+import { FormMessage } from "@/components/form-message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { validatePasswordStrength } from "@/lib/utils";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 
 const MIN_TIME_BETWEEN_ATTEMPTS_MS = 1000;
 
@@ -14,13 +14,7 @@ export interface UpdatePasswordFormProps {
   readonly onSuccess?: () => void;
 }
 
-export function UpdatePasswordForm({
-  onSuccess,
-  searchParams,
-}: UpdatePasswordFormProps & {
-  searchParams: Promise<Message>;
-}) {
-  const [params, setParams] = useState<Message | null>(null);
+export function UpdatePasswordForm({ onSuccess }: UpdatePasswordFormProps) {
   const [state, formAction] = useActionState(updatePasswordAction, {
     error: "",
     success: false,
@@ -37,10 +31,6 @@ export function UpdatePasswordForm({
     strength: "weak" | "medium" | "strong";
     color: string;
   } | null>(null);
-
-  useEffect(() => {
-    searchParams.then(setParams);
-  }, [searchParams]);
 
   const handlePasswordChange = (value: string) => {
     setNewPassword(value);
@@ -93,15 +83,11 @@ export function UpdatePasswordForm({
     }
   };
 
-  const handleSubmit = async (formData: FormData) => {
-    formAction(formData);
-  };
-
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit(new FormData(e.currentTarget));
+        formAction(new FormData(e.currentTarget));
       }}
       className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4"
       noValidate
@@ -165,8 +151,6 @@ export function UpdatePasswordForm({
           }
           type={state.success ? "success" : "error"}
         />
-
-        {params && <FormMessage message={params} />}
 
         <Button
           type="submit"

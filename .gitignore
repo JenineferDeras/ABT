@@ -97,15 +97,21 @@ npm-list.txt
 # Environment files
 .env.local
 .env.*.local
-.env.production
+.env
 
-# Python virtual environments
-notebooks/abaco_venv/
-notebooks/__pycache__/
+# Secrets and credentials
+*.pem
+*.key
+secrets/
+.streamlit/secrets.toml
 
-# Build and cache
-.next/
-.turbo/
-dist/
-out/
-build/
+# Docker secrets (if using Docker secrets)
+.docker/secrets/
+
+# OAuth tokens and API keys
+.auth/
+auth-token
+
+# Database files
+*.db
+*.sqlite
