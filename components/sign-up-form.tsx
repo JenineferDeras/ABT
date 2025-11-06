@@ -1,7 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,10 +24,32 @@ export function SignUpForm({
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [passwordMatchError, setPasswordMatchError] = useState<string | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  // Client-side password matching validation
+  const handleRepeatPasswordChange = (value: string) => {
+    setRepeatPassword(value);
+    if (value && password && value !== password) {
+      setPasswordMatchError("Passwords do not match");
+    } else {
+      setPasswordMatchError(null);
+    }
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (repeatPassword && value && repeatPassword !== value) {
+      setPasswordMatchError("Passwords do not match");
+    } else {
+      setPasswordMatchError(null);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
     setIsLoading(true);
@@ -44,12 +66,17 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: `${location.origin}/protected`,
         },
       });
-      if (error) throw error;
+
+      if (error) {
+        setError(error.message);
+        return;
+      }
+
       router.push("/auth/sign-up-success");
-    } catch (error: unknown) {
+    } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setIsLoading(false);
@@ -64,7 +91,7 @@ export function SignUpForm({
           <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignUp}>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -86,7 +113,7 @@ export function SignUpForm({
                   type="password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -98,11 +125,40 @@ export function SignUpForm({
                   type="password"
                   required
                   value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
+                  onChange={(e) => handleRepeatPasswordChange(e.target.value)}
+                  aria-invalid={!!passwordMatchError}
+                  aria-describedby={
+                    passwordMatchError ? "password-match-error" : undefined
+                  }
                 />
+                {passwordMatchError && (
+                  <p
+                    id="password-match-error"
+                    className="text-sm text-yellow-600"
+                    role="alert"
+                  >
+                    {passwordMatchError}
+                  </p>
+                )}
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {/* Screen reader announcements for errors */}
+              <div aria-live="assertive" aria-atomic="true" className="sr-only">
+                {error && `Error: ${error}`}
+              </div>
+              {error && (
+                <p
+                  className="text-sm text-red-500"
+                  data-testid="error-message"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              )}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || !!passwordMatchError}
+              >
                 {isLoading ? "Creating an account..." : "Sign up"}
               </Button>
             </div>

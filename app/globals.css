@@ -1,49 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   /* ABACO Color Palette - Purple Gradient System */
-  --abaco-primary-light: #C1A6FF;
-  --abaco-primary-medium: #A855F7;
-  --abaco-primary-dark: #5F4896;
-  --abaco-primary-darker: #4C3B78;
-  
+  --abaco-primary-light: #c1a6ff;
+  --abaco-primary-medium: #a855f7;
+  --abaco-primary-dark: #5f4896;
+  --abaco-primary-darker: #4c3b78;
+
   /* Background Gradients - Deep Space Theme */
-  --abaco-bg-primary: #030E19;
-  --abaco-bg-secondary: #0F172A;
-  --abaco-bg-tertiary: #1E293B;
+  --abaco-bg-primary: #030e19;
+  --abaco-bg-secondary: #0f172a;
+  --abaco-bg-tertiary: #1e293b;
   --abaco-bg-glass: rgba(15, 23, 42, 0.6);
   --abaco-bg-overlay: rgba(168, 85, 247, 0.1);
-  
+
   /* Text Colors - High Contrast */
-  --abaco-text-primary: #FFFFFF;
-  --abaco-text-secondary: #C1A6FF;
-  --abaco-text-muted: #94A3B8;
-  --abaco-text-accent: #A855F7;
-  
+  --abaco-text-primary: #ffffff;
+  --abaco-text-secondary: #c1a6ff;
+  --abaco-text-muted: #94a3b8;
+  --abaco-text-accent: #a855f7;
+
   /* Border Colors */
   --abaco-border-primary: rgba(168, 85, 247, 0.2);
   --abaco-border-secondary: rgba(193, 166, 255, 0.1);
   --abaco-border-accent: rgba(168, 85, 247, 0.4);
-  
+
   /* Status Colors */
-  --abaco-success: #10B981;
-  --abaco-warning: #F59E0B;
-  --abaco-error: #EF4444;
-  --abaco-info: #3B82F6;
-  
+  --abaco-success: #10b981;
+  --abaco-warning: #f59e0b;
+  --abaco-error: #ef4444;
+  --abaco-info: #3b82f6;
+
   /* Financial KPI Colors */
-  --abaco-growth: #10B981;
-  --abaco-risk: #EF4444;
-  --abaco-neutral: #6B7280;
-  --abaco-premium: #F59E0B;
-  
+  --abaco-growth: #10b981;
+  --abaco-risk: #ef4444;
+  --abaco-neutral: #6b7280;
+  --abaco-premium: #f59e0b;
+
   /* Typography */
-  --abaco-font-primary: 'Lato', sans-serif;
-  --abaco-font-secondary: 'Poppins', sans-serif;
-  
+  --abaco-font-primary: "Lato", sans-serif;
+  --abaco-font-secondary: "Poppins", sans-serif;
+
   /* Spacing System - 4K Optimized */
   --abaco-spacing-xs: 0.25rem;
   --abaco-spacing-sm: 0.5rem;
@@ -52,14 +52,14 @@
   --abaco-spacing-xl: 2rem;
   --abaco-spacing-2xl: 3rem;
   --abaco-spacing-3xl: 4rem;
-  
+
   /* Shadow System */
   --abaco-shadow-sm: 0 1px 2px 0 rgba(168, 85, 247, 0.05);
   --abaco-shadow-md: 0 4px 6px -1px rgba(168, 85, 247, 0.1);
   --abaco-shadow-lg: 0 10px 15px -3px rgba(168, 85, 247, 0.1);
   --abaco-shadow-xl: 0 20px 25px -5px rgba(168, 85, 247, 0.15);
   --abaco-shadow-glow: 0 0 20px rgba(168, 85, 247, 0.3);
-  
+
   /* Border Radius */
   --abaco-radius-sm: 0.25rem;
   --abaco-radius-md: 0.5rem;
@@ -69,7 +69,8 @@
 }
 
 /* Dark mode override (default for ABACO) */
-[data-theme="dark"], :root {
+[data-theme="dark"],
+:root {
   background: var(--abaco-bg-primary);
   color: var(--abaco-text-primary);
 }
@@ -78,26 +79,50 @@
 @layer base {
   body {
     font-family: var(--abaco-font-primary);
-    background: linear-gradient(135deg, var(--abaco-bg-primary) 0%, #1E293B 50%, var(--abaco-bg-primary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--abaco-bg-primary) 0%,
+      #1e293b 50%,
+      var(--abaco-bg-primary) 100%
+    );
     min-height: 100vh;
     line-height: 1.6;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--abaco-font-primary);
     font-weight: 700;
     color: var(--abaco-text-primary);
     line-height: 1.2;
   }
-  
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.75rem; }
-  h4 { font-size: 1.5rem; }
-  h5 { font-size: 1.25rem; }
-  h6 { font-size: 1.125rem; }
-  
-  p, span, div {
+
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.75rem;
+  }
+  h4 {
+    font-size: 1.5rem;
+  }
+  h5 {
+    font-size: 1.25rem;
+  }
+  h6 {
+    font-size: 1.125rem;
+  }
+
+  p,
+  span,
+  div {
     font-family: var(--abaco-font-secondary);
   }
 }
@@ -112,16 +137,20 @@
     border: 1px solid var(--abaco-border-primary);
     box-shadow: var(--abaco-shadow-lg);
   }
-  
+
   /* Enhanced Glass with Glow */
   .abaco-glass-glow {
     @apply abaco-glass;
     box-shadow: var(--abaco-shadow-glow), var(--abaco-shadow-lg);
   }
-  
+
   /* Primary Button */
   .abaco-btn-primary {
-    background: linear-gradient(135deg, var(--abaco-primary-medium) 0%, var(--abaco-primary-dark) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--abaco-primary-medium) 0%,
+      var(--abaco-primary-dark) 100%
+    );
     color: var(--abaco-text-primary);
     font-family: var(--abaco-font-secondary);
     font-weight: 600;
@@ -131,13 +160,17 @@
     box-shadow: var(--abaco-shadow-md);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   .abaco-btn-primary:hover {
-    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--abaco-primary-light) 0%,
+      var(--abaco-primary-medium) 100%
+    );
     box-shadow: var(--abaco-shadow-glow);
     transform: translateY(-1px);
   }
-  
+
   /* KPI Card */
   .abaco-kpi-card {
     @apply abaco-glass;
@@ -145,23 +178,27 @@
     border-radius: var(--abaco-radius-xl);
     transition: all 0.3s ease;
   }
-  
+
   .abaco-kpi-card:hover {
     @apply abaco-glass-glow;
     transform: translateY(-2px);
   }
-  
+
   /* Financial Metric Display */
   .abaco-metric-value {
     font-family: var(--abaco-font-primary);
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--abaco-primary-light) 0%,
+      var(--abaco-primary-medium) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   .abaco-metric-label {
     font-family: var(--abaco-font-secondary);
     font-size: 0.9rem;
@@ -169,65 +206,71 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  
+
   /* Status Indicators */
   .abaco-status-good {
     color: var(--abaco-success);
     background: rgba(16, 185, 129, 0.1);
   }
-  
+
   .abaco-status-warning {
     color: var(--abaco-warning);
     background: rgba(245, 158, 11, 0.1);
   }
-  
+
   .abaco-status-critical {
     color: var(--abaco-error);
     background: rgba(239, 68, 68, 0.1);
   }
-  
+
   /* Custom Scrollbar */
   .abaco-scrollbar::-webkit-scrollbar {
     width: 4px;
     height: 4px;
   }
-  
+
   .abaco-scrollbar::-webkit-scrollbar-track {
     background: rgba(100, 116, 139, 0.1);
     border-radius: 2px;
   }
-  
+
   .abaco-scrollbar::-webkit-scrollbar-thumb {
     background: rgba(168, 85, 247, 0.4);
     border-radius: 2px;
   }
-  
+
   .abaco-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(168, 85, 247, 0.6);
   }
-  
+
   /* Loading Animation */
   .abaco-pulse {
     animation: abaco-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  
+
   @keyframes abaco-pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
     }
     50% {
       opacity: 0.5;
     }
   }
-  
+
   /* Gradient Text */
   .abaco-gradient-text {
-    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 50%, var(--abaco-primary-dark) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--abaco-primary-light) 0%,
+      var(--abaco-primary-medium) 50%,
+      var(--abaco-primary-dark) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   /* Chart Container */
   .abaco-chart-container {
     @apply abaco-glass;
@@ -235,14 +278,14 @@
     border-radius: var(--abaco-radius-2xl);
     min-height: 300px;
   }
-  
+
   /* Dashboard Grid */
   .abaco-dashboard-grid {
     display: grid;
     gap: var(--abaco-spacing-lg);
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
-  
+
   /* Responsive Grid for 4K */
   @media (min-width: 2560px) {
     .abaco-dashboard-grid {
@@ -255,29 +298,63 @@
 /* Utility Classes */
 @layer utilities {
   /* Typography Utilities */
-  .font-lato { font-family: var(--abaco-font-primary); }
-  .font-poppins { font-family: var(--abaco-font-secondary); }
-  
+  .font-lato {
+    font-family: var(--abaco-font-primary);
+  }
+  .font-poppins {
+    font-family: var(--abaco-font-secondary);
+  }
+
   /* Color Utilities */
-  .text-abaco-primary { color: var(--abaco-text-primary); }
-  .text-abaco-secondary { color: var(--abaco-text-secondary); }
-  .text-abaco-muted { color: var(--abaco-text-muted); }
-  .text-abaco-accent { color: var(--abaco-text-accent); }
-  
-  .bg-abaco-primary { background-color: var(--abaco-bg-primary); }
-  .bg-abaco-secondary { background-color: var(--abaco-bg-secondary); }
-  .bg-abaco-glass { background-color: var(--abaco-bg-glass); }
-  
-  .border-abaco-primary { border-color: var(--abaco-border-primary); }
-  .border-abaco-secondary { border-color: var(--abaco-border-secondary); }
-  .border-abaco-accent { border-color: var(--abaco-border-accent); }
-  
+  .text-abaco-primary {
+    color: var(--abaco-text-primary);
+  }
+  .text-abaco-secondary {
+    color: var(--abaco-text-secondary);
+  }
+  .text-abaco-muted {
+    color: var(--abaco-text-muted);
+  }
+  .text-abaco-accent {
+    color: var(--abaco-text-accent);
+  }
+
+  .bg-abaco-primary {
+    background-color: var(--abaco-bg-primary);
+  }
+  .bg-abaco-secondary {
+    background-color: var(--abaco-bg-secondary);
+  }
+  .bg-abaco-glass {
+    background-color: var(--abaco-bg-glass);
+  }
+
+  .border-abaco-primary {
+    border-color: var(--abaco-border-primary);
+  }
+  .border-abaco-secondary {
+    border-color: var(--abaco-border-secondary);
+  }
+  .border-abaco-accent {
+    border-color: var(--abaco-border-accent);
+  }
+
   /* Shadow Utilities */
-  .shadow-abaco-sm { box-shadow: var(--abaco-shadow-sm); }
-  .shadow-abaco-md { box-shadow: var(--abaco-shadow-md); }
-  .shadow-abaco-lg { box-shadow: var(--abaco-shadow-lg); }
-  .shadow-abaco-xl { box-shadow: var(--abaco-shadow-xl); }
-  .shadow-abaco-glow { box-shadow: var(--abaco-shadow-glow); }
+  .shadow-abaco-sm {
+    box-shadow: var(--abaco-shadow-sm);
+  }
+  .shadow-abaco-md {
+    box-shadow: var(--abaco-shadow-md);
+  }
+  .shadow-abaco-lg {
+    box-shadow: var(--abaco-shadow-lg);
+  }
+  .shadow-abaco-xl {
+    box-shadow: var(--abaco-shadow-xl);
+  }
+  .shadow-abaco-glow {
+    box-shadow: var(--abaco-shadow-glow);
+  }
 }
 
 /* Responsive Design - 4K Optimization */
@@ -291,14 +368,28 @@
     --abaco-spacing-2xl: 4.5rem;
     --abaco-spacing-3xl: 6rem;
   }
-  
-  body { font-size: 18px; }
-  h1 { font-size: 3.5rem; }
-  h2 { font-size: 3rem; }
-  h3 { font-size: 2.5rem; }
-  h4 { font-size: 2rem; }
-  h5 { font-size: 1.75rem; }
-  h6 { font-size: 1.5rem; }
+
+  body {
+    font-size: 18px;
+  }
+  h1 {
+    font-size: 3.5rem;
+  }
+  h2 {
+    font-size: 3rem;
+  }
+  h3 {
+    font-size: 2.5rem;
+  }
+  h4 {
+    font-size: 2rem;
+  }
+  h5 {
+    font-size: 1.75rem;
+  }
+  h6 {
+    font-size: 1.5rem;
+  }
 }
 
 /* Print Styles for Reports */
@@ -307,14 +398,14 @@
     background: white;
     color: black;
   }
-  
+
   .abaco-glass,
   .abaco-glass-glow {
     background: white;
     border: 1px solid #ccc;
     box-shadow: none;
   }
-  
+
   .abaco-gradient-text {
     -webkit-text-fill-color: black;
     background: none;
@@ -357,4 +448,17 @@
 ::-moz-selection {
   background: var(--abaco-primary-medium);
   color: var(--abaco-text-primary);
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
