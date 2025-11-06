@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+<<<<<<< Updated upstream
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
@@ -20,24 +21,46 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "5.0",
+=======
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+>>>>>>> Stashed changes
     "paths": {
       "@/*": [
         "./*"
       ]
     },
-    "allowJs": true,
-    "incremental": true,
-    "esModuleInterop": true,
     "types": [
       "node"
-    ],
-    "plugins": [
-      {
-        "name": "next"
-      }
     ]
   },
   "include": [
+<<<<<<< Updated upstream
     "app",
     "components",
     "lib",
@@ -47,6 +70,16 @@
     "__tests__/**/*",
     "__tests__/jest.d.ts",
     ".next/dev/types/**/*.ts"
+=======
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "middleware.ts",
+    "__tests__/**/*",
+    "__tests__/jest.d.ts"
+>>>>>>> Stashed changes
   ],
   "exclude": [
     "node_modules"
