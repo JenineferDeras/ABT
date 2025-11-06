@@ -1,21 +1,10 @@
 import { createClient } from '@/lib/supabase/client'
+import { describe, it, expect, vi } from "vitest";
 
-// Mock the @supabase/ssr module
-jest.mock('@supabase/ssr', () => ({
-    createBrowserClient: jest.fn(() => ({
-        auth: {
-            signOut: jest.fn(),
-            getUser: jest.fn(),
-            getClaims: jest.fn(),
-        },
-        from: jest.fn(() => ({
-            select: jest.fn(),
-            insert: jest.fn(),
-            update: jest.fn(),
-            delete: jest.fn(),
-        })),
-    })),
-}))
+// Mock @supabase/ssr
+vi.mock("@supabase/ssr", () => ({
+  createBrowserClient: vi.fn(),
+}));
 
 describe('Supabase Browser Client', () => {
     beforeEach(() => {
@@ -31,8 +20,6 @@ describe('Supabase Browser Client', () => {
     })
 
     test('createClient uses correct environment variables', () => {
-        const { createBrowserClient } = require('@supabase/ssr')
-
         createClient()
 
         expect(createBrowserClient).toHaveBeenCalledWith(

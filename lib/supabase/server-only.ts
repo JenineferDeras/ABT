@@ -45,7 +45,7 @@ export const cookieClient = {
  * const { data } = await supabase.from('table').select('*');
  */
 export async function createClient() {
-  const cookieStore = await cookies();
+  await cookies(); // Ensure cookies are awaited
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

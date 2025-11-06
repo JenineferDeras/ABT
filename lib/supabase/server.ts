@@ -33,14 +33,4 @@ export const cookieClient = {
   },
 };
 
-export async function createClient() {
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: cookieClient.cookies as CookieMethods,
-    }
-  );
-}
-
 export { createClient, cookieClient } from "./server-only";

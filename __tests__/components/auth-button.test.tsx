@@ -1,6 +1,7 @@
 import { AuthButton } from '@/components/auth-button'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom' // Add this import at the top of your test file to enable jest-dom matchers
+import { describe, it, expect, vi } from "vitest";
 
 // Mock the Supabase server client
 jest.mock('@/lib/supabase/server', () => ({
@@ -28,6 +29,11 @@ jest.mock('@/components/ui/button', () => ({
         return <button data-variant={variant} {...props}>{children}</button>
     },
 }))
+
+// Mock next/navigation
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(),
+}));
 
 describe('AuthButton Component', () => {
     const mockCreateClient = require('@/lib/supabase/server').createClient
