@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createServerClient, type CookieMethods } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -9,7 +11,7 @@ type CookieOptions = {
   path?: string;
 };
 
-// cookies() returns a Promise<ReadonlyRequestCookies>, so await it before using.
+// Cookie helpers that properly await cookies()
 export const cookieClient = {
   cookies: {
     async get(name: string) {
@@ -23,7 +25,7 @@ export const cookieClient = {
     async delete(name: string, options?: CookieOptions) {
       const cookieStore = await cookies();
       if (options && Object.keys(options).length > 0) {
-        // delete expects a single object with cookie attributes
+        // delete expects a single object with cookie attributes when using options
         cookieStore.delete({ name, ...options });
       } else {
         // simple delete by name
@@ -33,7 +35,18 @@ export const cookieClient = {
   },
 };
 
+/**
+ * Creates a Supabase server client for use in Server Components and Server Actions.
+ * This function should only be called on the server side.
+ * 
+ * @example
+ * // In a Server Component
+ * const supabase = await createClient();
+ * const { data } = await supabase.from('table').select('*');
+ */
 export async function createClient() {
+  const cookieStore = await cookies();
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -42,5 +55,3 @@ export async function createClient() {
     }
   );
 }
-
-export { createClient, cookieClient } from "./server-only";
