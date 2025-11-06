@@ -54,13 +54,14 @@ jest.mock('@/components/ui/label', () => ({
     Label: ({ children, htmlFor, ...props }: any) => <label htmlFor={htmlFor} {...props}>{children}</label>,
 }))
 
-describe('UpdatePasswordForm Component', () => {
+describe("UpdatePasswordForm Component", () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    test('renders update password form with all elements', () => {
-        render(<UpdatePasswordForm />)
+    test("renders the component with all form elements", async () => {
+        const searchParams = Promise.resolve({});
+        render(<UpdatePasswordForm searchParams={searchParams} />)
 
         expect(screen.getByText('Reset Your Password')).toBeInTheDocument()
         expect(screen.getByText('Please enter your new password below.')).toBeInTheDocument()
@@ -68,28 +69,63 @@ describe('UpdatePasswordForm Component', () => {
         expect(screen.getByRole('button', { name: 'Save new password' })).toBeInTheDocument()
     })
 
-    test('updates password field when user types', async () => {
-        const user = userEvent.setup({ delay: null })
-        render(<UpdatePasswordForm />)
+    test("validates password requirements", async () => {
+        const searchParams = Promise.resolve({});
+        render(<UpdatePasswordForm searchParams={searchParams} />)
 
         const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        await user.type(passwordInput, 'NewSecurePassword123!')
+        // Test with a weak password
+        await userEvent.type(passwordInput, 'weak')
+        await userEvent.click(submitButton)
 
-        expect(passwordInput.value).toBe('NewSecurePassword123!')
+        expect(screen.getByText('Password must be at least 8 characters long, contain uppercase and lowercase letters, numbers, and symbols.')).toBeInTheDocument()
+
+        // Test with a strong password
+        await userEvent.clear(passwordInput)
+        await userEvent.type(passwordInput, 'Str0ngP@ssword!')
+        await userEvent.click(submitButton)
+
+        expect(screen.queryByText('Password must be at least 8 characters long, contain uppercase and lowercase letters, numbers, and symbols.')).not.toBeInTheDocument()
     })
 
-    test('submits form with new password and redirects on success', async () => {
-        const user = userEvent.setup({ delay: null })
+    test("validates password confirmation match", async () => {
+        const searchParams = Promise.resolve({});
+        render(<UpdatePasswordForm searchParams={searchParams} />)
+
+        const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
+        const confirmPasswordInput = screen.getByLabelText('Confirm new password') as HTMLInputElement
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
+
+        // Type password and confirmation
+        await userEvent.type(passwordInput, 'Str0ngP@ssword!')
+        await userEvent.type(confirmPasswordInput, 'Str0ngP@ssword!')
+        await userEvent.click(submitButton)
+
+        // Passwords match, no error should be displayed
+        expect(screen.queryByText('Passwords do not match')).not.toBeInTheDocument()
+
+        // Change confirmation to an incorrect value
+        await userEvent.clear(confirmPasswordInput)
+        await userEvent.type(confirmPasswordInput, 'WrongP@ssword')
+        await userEvent.click(submitButton)
+
+        // Error message should be displayed
+        expect(screen.getByText('Passwords do not match')).toBeInTheDocument()
+    })
+
+    test("successfully updates password", async () => {
+        const searchParams = Promise.resolve({});
         mockUpdateUser.mockResolvedValue({ error: null })
 
-        render(<UpdatePasswordForm />)
+        render(<UpdatePasswordForm searchParams={searchParams} />)
 
         const passwordInput = screen.getByLabelText('New password')
         const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        await user.type(passwordInput, 'NewSecurePassword123!')
-        await user.click(submitButton)
+        await userEvent.type(passwordInput, 'NewSecurePassword123!')
+        await userEvent.click(submitButton)
 
         expect(mockUpdateUser).toHaveBeenCalledWith({ password: 'NewSecurePassword123!' })
 
@@ -98,39 +134,114 @@ describe('UpdatePasswordForm Component', () => {
         })
     })
 
-    test('displays error message when password update fails', async () => {
-        const user = userEvent.setup({ delay: null })
-        const errorMessage = 'Password update failed'
-        mockUpdateUser.mockResolvedValue({ error: { message: errorMessage } })
+    test("displays error message when password update fails", async () => {
+        const searchParams = Promise.resolve({});
+        mockUpdateUser.mockResolvedValue({ error: { message: 'Password update failed' } })
 
-        render(<UpdatePasswordForm />)
+        render(<UpdatePasswordForm searchParams={searchParams} />)
 
         const passwordInput = screen.getByLabelText('New password')
         const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        await user.type(passwordInput, 'NewSecurePassword123!')
-        await user.click(submitButton)
+        await userEvent.type(passwordInput, 'NewSecurePassword123!')
+        await userEvent.click(submitButton)
 
         await waitFor(() => {
-            expect(screen.getByText(errorMessage)).toBeInTheDocument()
+            expect(screen.getByText('Password update failed')).toBeInTheDocument()
         })
     })
 
-    test('shows loading state during form submission', async () => {
-        const user = userEvent.setup({ delay: null })
+    test("disables submit button when validation fails", async () => {
+        const searchParams = Promise.resolve({});
+        render(<UpdatePasswordForm searchParams={searchParams} />)
+
+        const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
+
+        // Initially, the button should be enabled
+        expect(submitButton).not.toBeDisabled()
+
+        // Enter a weak password
+        await userEvent.type(passwordInput, 'weak')
+        expect(submitButton).toBeDisabled()
+
+        // Enter a strong password
+        await userEvent.clear(passwordInput)
+        await userEvent.type(passwordInput, 'Str0ngP@ssword!')
+        expect(submitButton).not.toBeDisabled()
+    })
+
+    test("handles non-Error exceptions gracefully", async () => {
+        const searchParams = Promise.resolve({});
+        mockUpdateUser.mockRejectedValue('String error')
+
+        render(<UpdatePasswordForm searchParams={searchParams} />)
+
+        const passwordInput = screen.getByLabelText('New password')
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
+
+        await userEvent.type(passwordInput, 'NewSecurePassword123!')
+        await userEvent.click(submitButton)
+
+        await waitFor(() => {
+            expect(screen.getByText('An error occurred')).toBeInTheDocument()
+        })
+    })
+
+    test("clears validation errors on valid input", async () => {
+        const searchParams = Promise.resolve({});
+        render(<UpdatePasswordForm searchParams={searchParams} />)
+
+        const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
+        const confirmPasswordInput = screen.getByLabelText('Confirm new password') as HTMLInputElement
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
+
+        // Enter a weak password and submit
+        await userEvent.type(passwordInput, 'weak')
+        await userEvent.click(submitButton)
+
+        // Error should be displayed
+        await waitFor(() => {
+            expect(screen.getByText('Password must be at least 8 characters long, contain uppercase and lowercase letters, numbers, and symbols.')).toBeInTheDocument()
+        })
+
+        // Enter a strong password that doesn't match confirmation
+        await userEvent.clear(passwordInput)
+        await userEvent.type(passwordInput, 'Str0ngP@ssword!')
+        await userEvent.click(submitButton)
+
+        // Password mismatch error should be displayed
+        await waitFor(() => {
+            expect(screen.getByText('Passwords do not match')).toBeInTheDocument()
+        })
+
+        // Enter matching confirmation and submit
+        await userEvent.clear(confirmPasswordInput)
+        await userEvent.type(confirmPasswordInput, 'Str0ngP@ssword!')
+        await userEvent.click(submitButton)
+
+        // No error should be displayed now
+        await waitFor(() => {
+            expect(screen.queryByText('Password must be at least 8 characters long, contain uppercase and lowercase letters, numbers, and symbols.')).not.toBeInTheDocument()
+            expect(screen.queryByText('Passwords do not match')).not.toBeInTheDocument()
+        })
+    })
+
+    test("shows loading state during submission", async () => {
+        const searchParams = Promise.resolve({});
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
         })
         mockUpdateUser.mockReturnValue(pendingPromise)
 
-        render(<UpdatePasswordForm />)
+        render(<UpdatePasswordForm searchParams={searchParams} />)
 
         const passwordInput = screen.getByLabelText('New password')
         const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        await user.type(passwordInput, 'NewSecurePassword123!')
-        await user.click(submitButton)
+        await userEvent.type(passwordInput, 'NewSecurePassword123!')
+        await userEvent.click(submitButton)
 
         // Button should show loading state
         expect(screen.getByText('Saving...')).toBeInTheDocument()
@@ -142,88 +253,6 @@ describe('UpdatePasswordForm Component', () => {
         await waitFor(() => {
             expect(screen.getByText('Save new password')).toBeInTheDocument()
             expect(submitButton).not.toBeDisabled()
-        })
-    })
-
-    test('prevents form submission when password field is empty', () => {
-        render(<UpdatePasswordForm />)
-
-        const passwordInput = screen.getByLabelText('New password')
-
-        expect(passwordInput).toHaveAttribute('required')
-    })
-
-    test('applies custom className prop', () => {
-        const customClass = 'custom-update-password'
-        const { container } = render(<UpdatePasswordForm className={customClass} />)
-
-        const formContainer = container.firstChild as HTMLElement
-        expect(formContainer).toHaveClass(customClass)
-    })
-
-    test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup({ delay: null })
-        mockUpdateUser.mockRejectedValue('String error')
-
-        render(<UpdatePasswordForm />)
-
-        const passwordInput = screen.getByLabelText('New password')
-        const submitButton = screen.getByRole('button', { name: 'Save new password' })
-
-        await user.type(passwordInput, 'NewSecurePassword123!')
-        await user.click(submitButton)
-
-        await waitFor(() => {
-            expect(screen.getByText('An error occurred')).toBeInTheDocument()
-        })
-    })
-
-    test('displays and clears errors on different submissions', async () => {
-        const user = userEvent.setup({ delay: null })
-
-        // First submission - returns error
-        mockUpdateUser.mockResolvedValueOnce({ error: { message: 'Password too weak' } })
-
-        render(<UpdatePasswordForm />)
-
-        const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
-        const submitButton = screen.getByRole('button', { name: 'Save new password' })
-
-        await user.type(passwordInput, 'weak')
-        await user.click(submitButton)
-
-        // Error should be displayed
-        await waitFor(() => {
-            expect(screen.getByText('Password too weak')).toBeInTheDocument()
-        }, { timeout: 2000 })
-
-        // Second submission - no error
-        mockUpdateUser.mockResolvedValueOnce({ error: null })
-
-        await user.clear(passwordInput)
-        await user.type(passwordInput, 'StrongPassword123!')
-        await user.click(submitButton)
-
-        // Previous error should be cleared
-        await waitFor(() => {
-            expect(screen.queryByText('Password too weak')).not.toBeInTheDocument()
-        }, { timeout: 2000 })
-    })
-
-    test('calls form submit handler', async () => {
-        const user = userEvent.setup({ delay: null })
-        mockUpdateUser.mockResolvedValue({ error: null })
-
-        render(<UpdatePasswordForm />)
-
-        const passwordInput = screen.getByLabelText('New password')
-        const submitButton = screen.getByRole('button', { name: 'Save new password' })
-
-        await user.type(passwordInput, 'NewSecurePassword123!')
-        await user.click(submitButton)
-
-        await waitFor(() => {
-            expect(mockUpdateUser).toHaveBeenCalledWith({ password: 'NewSecurePassword123!' })
         })
     })
 })

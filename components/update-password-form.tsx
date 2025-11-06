@@ -81,10 +81,7 @@ export function UpdatePasswordForm({
   };
 
   return (
-    <form
-      action={updatePasswordAction}
-      className="flex flex-col min-w-64 max-w-64 mx-auto"
-    >
+    <form className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4">
       <h1 className="text-2xl font-medium">Reset password</h1>
       <p className="text-sm text-foreground/60">
         Please enter your new password below.
@@ -137,7 +134,10 @@ export function UpdatePasswordForm({
           </p>
         )}
 
-        <SubmitButton disabled={!!passwordError || !!confirmPasswordError}>
+        <SubmitButton
+          formAction={updatePasswordAction}
+          pendingText="Updating password..."
+        >
           Reset password
         </SubmitButton>
         {params && <FormMessage message={params} />}

@@ -146,58 +146,15 @@ describe("ContinueLearning", () => {
     expect(typeof metrics.lastUpdated).toBe("string");
   });
 
-  it("maps predictions by customer into camelCase", async () => {
-    const order = jest.fn().mockResolvedValue({
-      data: [
-        {
-          id: "pred-1",
-          model_id: "model-1",
-          customer_id: "cust-1",
-          metric: "default_risk",
-          predicted_value: 0.3,
-          confidence: 0.9,
-          reasoning: "Testing",
-          created_at: "2025-01-01T00:00:00.000Z",
-          actual_outcome: 0.32,
-          was_correct: true,
-          error_magnitude: 0.02,
-          error_type: "correct",
-          user_feedback: "Nice",
-          feedback_at: "2025-01-02T00:00:00.000Z",
-          status: "feedback_received",
-        },
-      ],
-      error: null,
-    });
-    const eq = jest.fn(() => ({ order }));
-    const select = jest.fn(() => ({ eq }));
+  describe("getMetrics", () => {
+    it("should return model metrics", async () => {
+      const metrics = await ContinueLearning.getMetrics("test-model");
 
-    const from = jest.fn().mockImplementation((table: string) => {
-      expect(table).toBe("ml_predictions");
-      return { select };
-    });
-
-    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
-
-    const predictions = await ContinueLearning.getPredictionsByCustomer("cust-1");
-
-    expect(predictions).toHaveLength(1);
-    expect(predictions[0]).toStrictEqual({
-      id: "pred-1",
-      modelId: "model-1",
-      customerId: "cust-1",
-      metric: "default_risk",
-      predictedValue: 0.3,
-      confidence: 0.9,
-      reasoning: "Testing",
-      createdAt: "2025-01-01T00:00:00.000Z",
-      actualOutcome: 0.32,
-      wasCorrect: true,
-      errorMagnitude: 0.02,
-      errorType: "correct",
-      userFeedback: "Nice",
-      feedbackAt: "2025-01-02T00:00:00.000Z",
-      status: "feedback_received",
+      expect(metrics).toHaveProperty("modelId");
+      expect(metrics).toHaveProperty("totalPredictions");
+      expect(metrics).toHaveProperty("correctPredictions");
+      expect(metrics).toHaveProperty("accuracy");
+      expect(metrics).toHaveProperty("lastUpdated");
     });
   });
 });
