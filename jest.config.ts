@@ -15,20 +15,8 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
   },
-  // Modern transform configuration (replaces globals)
-  transform: {
-    "^.+\\.(ts|tsx)$": [
-      "ts-jest",
-      {
-        tsconfig: {
-          jsx: "react-jsx",
-          esModuleInterop: true,
-          allowSyntheticDefaultImports: true,
-        },
-        isolatedModules: true,
-      },
-    ],
-  },
+  // next/jest automatically handles TypeScript transformation
+  // No need for explicit ts-jest transform configuration
   testMatch: [
     "**/__tests__/**/*.(test|spec).[jt]s?(x)",
     "**/?(*.)+(spec|test).[jt]s?(x)",

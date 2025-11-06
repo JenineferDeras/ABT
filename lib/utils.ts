@@ -1,19 +1,20 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
+import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-
-/**
- * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
- *
- * @param inputs - One or more class value inputs (strings, arrays, objects, etc.) to be combined
- * @returns A single class name string with conflicting Tailwind classes merged
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
 
 const defaultNumberFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
 });
+
+/**
+ * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
+ *
+ * @param inputs - Any number of class values (strings, arrays, objects, etc.)
+ * @returns A single class name string with conflicting Tailwind classes merged
+ */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 /**
  * Format a number using the en-US locale, defaulting to at most one fractional digit.
@@ -22,7 +23,10 @@ const defaultNumberFormat = new Intl.NumberFormat("en-US", {
  * @param options - Intl.NumberFormatOptions to override defaults; by default `maximumFractionDigits` is 1
  * @returns The formatted number string according to the en-US locale and provided options
  */
-export function formatNumber(value: number, options?: Intl.NumberFormatOptions) {
+export function formatNumber(
+  value: number,
+  options?: Intl.NumberFormatOptions
+) {
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 1,
     ...options,
@@ -31,36 +35,37 @@ export function formatNumber(value: number, options?: Intl.NumberFormatOptions) 
 }
 
 /**
- * Format a numeric amount as a compact en-US currency string with one decimal digit.
+ * Format a value as currency using the en-US locale.
  *
- * @param value - The numeric amount to format
- * @param currency - The ISO 4217 currency code to use (defaults to "USD")
+ * @param value - The number to format as currency
+ * @param currency - The currency code (default: "USD")
  * @param options - Additional Intl.NumberFormatOptions to override defaults
- * @returns The formatted currency string (for example, "$1.2K")
+ * @returns The formatted currency string
  */
 export function formatCurrency(
   value: number,
-  currency = "USD",
+  currency: string = "USD",
   options?: Intl.NumberFormatOptions
 ) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,
-    notation: "compact",
-    maximumFractionDigits: 1,
     ...options,
   });
   return formatter.format(value);
 }
 
 /**
- * Format a numeric value as a percentage string using en-US locale.
+ * Format a value as a percentage using the en-US locale.
  *
- * @param value - The numeric value to format (e.g., `0.5` → "50%").
+ * @param value - The number to format as a percentage (e.g., 0.5 for 50%)
  * @param options - Optional Intl.NumberFormatOptions to override defaults (default: `style: "percent"`, `maximumFractionDigits: 1`, `signDisplay: "auto"`).
  * @returns The formatted percentage string.
  */
-export function formatPercent(value: number, options?: Intl.NumberFormatOptions) {
+export function formatPercent(
+  value: number,
+  options?: Intl.NumberFormatOptions
+) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "percent",
     maximumFractionDigits: 1,
@@ -71,31 +76,111 @@ export function formatPercent(value: number, options?: Intl.NumberFormatOptions)
 }
 
 /**
- * Formats a numeric delta using the shared default number formatter.
- *
- * @param value - The numeric delta to format
- * @returns The formatted number string (en-US locale, up to one decimal place)
+ * Check if Supabase environment variables are present
+ * Used to determine if Supabase features should be enabled
  */
-export function formatDelta(value: number) {
-  return defaultNumberFormat.format(value);
-}
-
-/**
- * Formats a parseable date-time string into a localized en-US date and time.
- *
- * @param value - A parseable date-time string (for example, an ISO 8601 string)
- * @returns The formatted date and time using en-US medium date style and short time style
- */
-export function formatDateTime(value: string) {
-  const date = new Date(value);
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
 export const hasEnvVars = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
     (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 );
+
+/**
+ * Password strength validation result
+ */
+export interface PasswordValidationResult {
+  isValid: boolean;
+  errors: string[];
+  strength: "weak" | "medium" | "strong";
+  score: number;
+}
+
+/**
+ * Validates password strength and returns detailed feedback.
+ *
+ * Requirements:
+ * - Minimum 8 characters
+ * - At least one uppercase letter
+ * - At least one lowercase letter
+ * - At least one number
+ * - At least one special character
+ *
+ * @param password - The password to validate
+ * @returns PasswordValidationResult with validation details
+ */
+export function validatePasswordStrength(
+  password: string
+): PasswordValidationResult {
+  const errors: string[] = [];
+  let score = 0;
+
+  // Check minimum length
+  if (password.length < 8) {
+    errors.push("Password must be at least 8 characters long");
+  } else {
+    score += 1;
+    if (password.length >= 12) score += 1;
+    if (password.length >= 16) score += 1;
+  }
+
+  // Check for uppercase letters
+  if (!/[A-Z]/.test(password)) {
+    errors.push("Password must contain at least one uppercase letter");
+  } else {
+    score += 1;
+  }
+
+  // Check for lowercase letters
+  if (!/[a-z]/.test(password)) {
+    errors.push("Password must contain at least one lowercase letter");
+  } else {
+    score += 1;
+  }
+
+  // Check for numbers
+  if (!/\d/.test(password)) {
+    errors.push("Password must contain at least one number");
+  } else {
+    score += 1;
+  }
+
+  // Check for special characters
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    errors.push("Password must contain at least one special character");
+  } else {
+    score += 1;
+  }
+
+  // Determine strength
+  let strength: "weak" | "medium" | "strong" = "weak";
+  if (score >= 6) {
+    strength = "strong";
+  } else if (score >= 4) {
+    strength = "medium";
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+    strength,
+    score,
+  };
+}
+
+/**
+ * Redirects to a given path with an encoded message and type as query parameters.
+ * Handles paths that already contain query parameters.
+ *
+ * @param type - The type of the message (e.g., "error" or "success")
+ * @param path - The path to redirect to (may include existing query parameters)
+ * @param message - The message to encode and include in the query parameters
+ * @returns A redirect to the specified path with the encoded message
+ */
+export function encodedRedirect(
+  type: "error" | "success",
+  path: string,
+  message: string
+): never {
+  const separator = path.includes("?") ? "&" : "?";
+  return redirect(`${path}${separator}${type}=${encodeURIComponent(message)}`);
+}

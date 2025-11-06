@@ -68,11 +68,17 @@
   --abaco-radius-2xl: 1.5rem;
 }
 
-/* Dark mode override (default for ABACO) */
-[data-theme="dark"],
-:root {
+/* Dark mode styles - supports both class-based and system preferences */
+.dark :root {
   background: var(--abaco-bg-primary);
   color: var(--abaco-text-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background: var(--abaco-bg-primary);
+    color: var(--abaco-text-primary);
+  }
 }
 
 /* Base Typography Styles */
@@ -439,7 +445,7 @@
   outline-offset: 2px;
 }
 
-/* Selection Colors */
+/* Selection styles */
 ::selection {
   background: var(--abaco-primary-medium);
   color: var(--abaco-text-primary);
@@ -450,7 +456,7 @@
   color: var(--abaco-text-primary);
 }
 
-/* Screen reader only utility class */
+/* Screen reader only utility - uses modern clip-path */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -458,7 +464,7 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border-width: 0;
 }
