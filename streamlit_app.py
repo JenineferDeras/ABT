@@ -1,7 +1,9 @@
+"""ABACO Financial Intelligence Platform - Streamlit Dashboard"""
+
 import io
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 import warnings
 
 import pandas as pd
@@ -103,7 +105,7 @@ def normalize_df(df: pd.DataFrame, source: str) -> pd.DataFrame:
         if "date" in col:
             df[col] = pd.to_datetime(df[col], errors="coerce")
     df["workbook_name"] = source
-    df["refresh_date"] = datetime.utcnow()
+    df["refresh_date"] = datetime.now(timezone.utc)
     return df.drop_duplicates()
 
 # Table mapping for different file types

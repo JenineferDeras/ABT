@@ -32,4 +32,4 @@ export const cookieClient = {
   },
 };
 
-export { createClient, cookieClient } from "./server-only";
+export { createClient } from "./server-only";

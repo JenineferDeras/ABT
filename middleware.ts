@@ -1,4 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -7,48 +8,37 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  try {
-    // Dynamic import to avoid Edge runtime issues
-    const { createServerClient } = await import("@supabase/ssr");
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
-          },
-          set(name: string, value: string, options: Record<string, unknown>) {
-            request.cookies.set({ name, value, ...options });
-            response = NextResponse.next({
-              request: { headers: request.headers },
-            });
-            response.cookies.set({ name, value, ...options });
-          },
-          remove(name: string, options: Record<string, unknown>) {
-            request.cookies.set({ name, value: "", ...options });
-            response = NextResponse.next({
-              request: { headers: request.headers },
-            });
-            response.cookies.set({ name, value: "", ...options });
-          },
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
         },
-      }
-    );
+        setAll(
+          cookiesToSet: Array<{
+            name: string;
+            value: string;
+            options?: unknown;
+          }>
+        ) {
+          cookiesToSet.forEach(({ name, value }) => {
+            response.cookies.set(name, value);
+          });
+        },
+      },
+    }
+  );
 
-    // Check auth state
-    await supabase.auth.getUser();
-  } catch (error) {
-    // Log but don't fail on auth errors in middleware
-    console.error("[Middleware Auth Error]", error);
-  }
+  await supabase.auth.getUser();
 
   return response;
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Match all routes except static files and api/auth routes
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/auth).*)",
   ],
 };

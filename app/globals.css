@@ -299,6 +299,23 @@
       gap: var(--abaco-spacing-2xl);
     }
   }
+
+  .sr-only {
+    @apply absolute w-1 h-1 p-0 -m-1;
+    /* Modern clip-path replaces deprecated clip property */
+    clip-path: inset(50%);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* Dark mode selector with explicit intent */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html:not(.dark) {
+    color-scheme: light;
+  }
 }
 
 /* Utility Classes */

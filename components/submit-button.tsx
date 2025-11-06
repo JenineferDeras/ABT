@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
 export interface SubmitButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,11 +17,7 @@ export function SubmitButton({
   ...props
 }: SubmitButtonProps) {
   return (
-    <Button
-      {...props}
-      type={type}
-      disabled={isLoading || disabled}
-    >
+    <Button {...props} type={type} disabled={isLoading || disabled}>
       {isLoading ? "Loading..." : children}
     </Button>
   );

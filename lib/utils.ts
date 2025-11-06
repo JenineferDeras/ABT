@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
@@ -173,3 +173,18 @@ export function encodedRedirect(
   const separator = path.includes("?") ? "&" : "?";
   return redirect(`${path}${separator}${type}=${encodeURIComponent(message)}`);
 }
+
+/**
+ * Global utility styles for screen-reader-only content
+ * Uses modern clip-path instead of deprecated clip property
+ * Add to your globals.css:
+ *
+ * @layer components {
+ *   .sr-only {
+ *     @apply absolute w-1 h-1 p-0 -m-1;
+ *     clip-path: inset(50%);
+ *     white-space: nowrap;
+ *     overflow: hidden;
+ *   }
+ * }
+ */

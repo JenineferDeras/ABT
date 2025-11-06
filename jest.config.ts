@@ -15,8 +15,6 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
   },
-  // next/jest automatically handles TypeScript transformation
-  // No need for explicit ts-jest transform configuration
   testMatch: [
     "**/__tests__/**/*.(test|spec).[jt]s?(x)",
     "**/?(*.)+(spec|test).[jt]s?(x)",
@@ -42,3 +40,10 @@ const config: Config = {
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
 export default createJestConfig(config);
+
+// jest.config.ts is deprecated in Next.js 15+
+// Use vitest.config.ts instead for better Next.js integration
+// See vitest.setup.ts for Vitest configuration
+
+// This file is maintained for backwards compatibility only
+// New tests should use Vitest instead
