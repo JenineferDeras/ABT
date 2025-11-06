@@ -90,3 +90,22 @@ env/
 *.temp
 # Local Netlify folder
 .netlify
+
+# Dependency outputs
+npm-list.txt
+
+# Environment files
+.env.local
+.env.*.local
+.env.production
+
+# Python virtual environments
+notebooks/abaco_venv/
+notebooks/__pycache__/
+
+# Build and cache
+.next/
+.turbo/
+dist/
+out/
+build/
