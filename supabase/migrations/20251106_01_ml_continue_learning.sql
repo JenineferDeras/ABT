@@ -4,7 +4,7 @@
 create table if not exists ml_predictions (
   id uuid primary key default gen_random_uuid(),
   model_id text not null,
-  customer_id uuid not null,
+  customer_id text not null,
   metric text not null,
   predicted_value numeric not null,
   confidence numeric check (confidence between 0 and 1),
@@ -16,7 +16,7 @@ create table if not exists ml_predictions (
   error_type text check (error_type in ('underestimate','overestimate','correct')),
   user_feedback text,
   feedback_at timestamptz,
-  status text default 'awaiting_feedback'
+  status text check (status in ('awaiting_feedback','feedback_received','archived')) default 'awaiting_feedback'
 );
 
 -- Model performance metrics aggregation table

@@ -68,9 +68,13 @@ export class ContinueLearning {
 
     // Calculate error metrics
     const errorMag = Math.abs(actual - pred.predicted_value);
-    const wasCorrect = errorMag < 0.1 * Math.abs(pred.predicted_value); // 10% tolerance
-    const errorType =
-      actual > pred.predicted_value ? "underestimate" : "overestimate";
+    const tolerance = Math.abs(pred.predicted_value) * 0.1;
+    const wasCorrect = errorMag <= tolerance;
+    const errorType = wasCorrect
+      ? "correct"
+      : actual > pred.predicted_value
+      ? "underestimate"
+      : "overestimate";
 
     // Update prediction with feedback
     const { error: updateErr } = await supabase
@@ -162,10 +166,13 @@ export class ContinueLearning {
 
     return {
       modelId: data.model_id,
-      totalPredictions: data.total_predictions,
-      correctPredictions: data.correct_predictions,
-      accuracy: data.accuracy,
-      lastUpdated: data.last_updated,
+      totalPredictions: data.total_predictions ?? 0,
+      correctPredictions: data.correct_predictions ?? 0,
+      accuracy:
+        typeof data.accuracy === "number"
+          ? data.accuracy
+          : Number(data.accuracy ?? 0),
+      lastUpdated: data.last_updated ?? new Date().toISOString(),
     };
   }
 
@@ -205,7 +212,8 @@ export class ContinueLearning {
       errorType: p.error_type,
       userFeedback: p.user_feedback,
       feedbackAt: p.feedback_at,
-      status: p.status,
+      status: (p.status ??
+        "awaiting_feedback") as Prediction["status"] | undefined,
     }));
   }
 }
