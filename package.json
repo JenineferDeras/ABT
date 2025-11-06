@@ -14,12 +14,18 @@
     "test": "jest",
     "test:watch": "jest --watch",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "test:coverage": "jest --coverage"
 =======
+=======
+>>>>>>> Stashed changes
     "test:coverage": "jest --coverage",
     "dashboard": "source abaco_venv/bin/activate && streamlit run notebooks/ml_dashboard.py",
     "dashboard:prod": "source abaco_venv/bin/activate && streamlit run notebooks/ml_dashboard.py --server.port 8501 --server.address 0.0.0.0",
     "ports:clean": "bash scripts/cleanup-ports.sh"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   },
   "dependencies": {
@@ -49,7 +55,11 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "@types/node": "^20.19.22",
+=======
+    "@types/node": "^20.19.24",
+>>>>>>> Stashed changes
 =======
     "@types/node": "^20.19.24",
 >>>>>>> Stashed changes

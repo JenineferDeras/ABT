@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
@@ -22,6 +23,8 @@
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "5.0",
 =======
+=======
+>>>>>>> Stashed changes
     "target": "ES2017",
     "lib": [
       "dom",
@@ -49,6 +52,9 @@
       }
     ],
     "baseUrl": ".",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     "paths": {
       "@/*": [
@@ -61,6 +67,7 @@
   },
   "include": [
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "app",
     "components",
     "lib",
@@ -71,6 +78,8 @@
     "__tests__/jest.d.ts",
     ".next/dev/types/**/*.ts"
 =======
+=======
+>>>>>>> Stashed changes
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
@@ -79,6 +88,9 @@
     "middleware.ts",
     "__tests__/**/*",
     "__tests__/jest.d.ts"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   ],
   "exclude": [
