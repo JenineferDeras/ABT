@@ -1,33 +1,31 @@
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieMethods } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
+  const cookieMethods: CookieMethods = {
+    getAll() {
+      return request.cookies.getAll();
+    },
+    setAll(
+      cookiesToSet: Array<{ name: string; value: string; options?: unknown }>
+    ) {
+      cookiesToSet.forEach(({ name, value }) => {
+        response.cookies.set(name, value);
+      });
+    },
+  };
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(
-          cookiesToSet: Array<{
-            name: string;
-            value: string;
-            options?: unknown;
-          }>
-        ) {
-          cookiesToSet.forEach(({ name, value }) => {
-            response.cookies.set(name, value);
-          });
-        },
-      },
+      cookies: cookieMethods,
     }
   );
 
@@ -37,8 +35,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Match all routes except static files and api/auth routes
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/auth).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
 };

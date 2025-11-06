@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { validatePasswordStrength } from "@/lib/utils";
-import { useActionState, useCallback, useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 const MIN_TIME_BETWEEN_ATTEMPTS_MS = 1000;
 
@@ -93,28 +93,16 @@ export function UpdatePasswordForm({
     }
   };
 
-  const handleSubmit = useCallback(
-    async (formData: FormData) => {
-      const now = Date.now();
-      if (now - lastAttempt < MIN_TIME_BETWEEN_ATTEMPTS_MS) {
-        setIsThrottled(true);
-        return;
-      }
-
-      setLastAttempt(now);
-      setIsThrottled(false);
-      await formAction(formData);
-
-      if (state.success) {
-        onSuccess?.();
-      }
-    },
-    [formAction, lastAttempt, state.success, onSuccess]
-  );
+  const handleSubmit = async (formData: FormData) => {
+    formAction(formData);
+  };
 
   return (
     <form
-      action={handleSubmit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(new FormData(e.currentTarget));
+      }}
       className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4"
       noValidate
     >
