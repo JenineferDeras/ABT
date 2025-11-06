@@ -1,177 +1,196 @@
 "use client";
 
+import Link from "next/link";
+import { useActionState, useState, useCallback } from "react";
+import { signUpAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createClient } from "@/lib/supabase/client";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormMessage } from "@/components/form-message";
 
-export function SignUpForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-  const [email, setEmail] = useState("");
+/**
+ * Password strength levels with visual feedback
+ */
+interface PasswordStrength {
+  level: "weak" | "fair" | "good" | "strong";
+  score: number;
+  feedback: string;
+}
+
+/**
+ * Calculate password strength based on criteria
+ * @param password - Password to evaluate
+ * @returns Strength assessment with feedback
+ */
+function getPasswordStrength(password: string): PasswordStrength {
+  if (!password) return { level: "weak", score: 0, feedback: "Enter a password" };
+
+  let score = 0;
+  const feedback: string[] = [];
+
+  // Length check
+  if (password.length >= 8) score += 1;
+  if (password.length >= 12) score += 1;
+
+  // Character variety
+  if (/[A-Z]/.test(password)) {
+    score += 1;
+    feedback.push("✓ Uppercase letter");
+  } else {
+    feedback.push("• Add uppercase letter");
+  }
+
+  if (/[0-9]/.test(password)) {
+    score += 1;
+    feedback.push("✓ Number");
+  } else {
+    feedback.push("• Add number");
+  }
+
+  if (/[!@#$%^&*]/.test(password)) {
+    score += 1;
+    feedback.push("✓ Special character");
+  } else {
+    feedback.push("• Add special character (!@#$%^&*)");
+  }
+
+  const levelMap: Record<number, PasswordStrength["level"]> = {
+    0: "weak",
+    1: "weak",
+    2: "fair",
+    3: "good",
+    4: "strong",
+  };
+
+  return {
+    level: levelMap[score] || "strong",
+    score,
+    feedback: feedback.join("\n"),
+  };
+}
+
+/**
+ * Sign-up form component
+ * Note: This is a client component and cannot directly accept Promise props
+ * Any async operations should be handled via useActionState or useEffect
+ */
+export function SignUpForm() {
+  const [state, formAction] = useActionState(signUpAction, {
+    error: "",
+    success: false,
+  });
+
   const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [passwordMatchError, setPasswordMatchError] = useState<string | null>(
-    null
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const strength = getPasswordStrength(password);
+  const passwordsMatch = password === confirmPassword && password.length > 0;
+
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    []
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  // Client-side password matching validation
-  const handleRepeatPasswordChange = (value: string) => {
-    setRepeatPassword(value);
-    if (value && password && value !== password) {
-      setPasswordMatchError("Passwords do not match");
-    } else {
-      setPasswordMatchError(null);
-    }
-  };
-
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-    if (repeatPassword && value && repeatPassword !== value) {
-      setPasswordMatchError("Passwords do not match");
-    } else {
-      setPasswordMatchError(null);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
-
-    if (password !== repeatPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${location.origin}/protected`,
-        },
-      });
-
-      if (error) {
-        setError(error.message);
-        return;
-      }
-
-      router.push("/auth/sign-up-success");
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="analyst@abaco.finance"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => handlePasswordChange(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="repeat-password">Repeat Password</Label>
-                </div>
-                <Input
-                  id="repeat-password"
-                  type="password"
-                  required
-                  value={repeatPassword}
-                  onChange={(e) => handleRepeatPasswordChange(e.target.value)}
-                  aria-invalid={!!passwordMatchError}
-                  aria-describedby={
-                    passwordMatchError ? "password-match-error" : undefined
-                  }
-                />
-                {passwordMatchError && (
-                  <p
-                    id="password-match-error"
-                    className="text-sm text-yellow-600"
-                    role="alert"
-                  >
-                    {passwordMatchError}
-                  </p>
-                )}
-              </div>
-              {/* Screen reader announcements for errors */}
-              <div aria-live="assertive" aria-atomic="true" className="sr-only">
-                {error && `Error: ${error}`}
-              </div>
-              {error && (
-                <p
-                  className="text-sm text-red-500"
-                  data-testid="error-message"
-                  role="alert"
-                >
-                  {error}
-                </p>
-              )}
-              <Button
-                type="submit"
-                className="w-full"
-                aria-busy={isLoading}
-                disabled={isLoading || !!passwordMatchError}
-              >
-                {isLoading ? "Creating an account..." : "Sign up"}
-              </Button>
+    <form action={formAction} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          required
+          aria-required="true"
+          aria-describedby={state.error ? "email-error" : undefined}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={handlePasswordChange}
+          required
+          minLength={8}
+          aria-required="true"
+          aria-describedby="password-strength"
+        />
+        <div
+          id="password-strength"
+          className="text-xs space-y-1 mt-2 p-2 bg-muted rounded"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1 bg-gray-300 rounded overflow-hidden">
+              <div
+                className={`h-full transition-all ${
+                  strength.level === "weak"
+                    ? "w-1/4 bg-destructive"
+                    : strength.level === "fair"
+                      ? "w-1/2 bg-yellow-500"
+                      : strength.level === "good"
+                        ? "w-3/4 bg-blue-500"
+                        : "w-full bg-success"
+                }`}
+              />
             </div>
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="underline underline-offset-4">
-                Login
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+            <span className="text-xs font-medium capitalize">{strength.level}</span>
+          </div>
+          <p className="text-xs text-muted-foreground whitespace-pre-line">
+            {strength.feedback}
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="••••••••"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          aria-required="true"
+          aria-describedby={!passwordsMatch ? "password-mismatch" : undefined}
+        />
+        {confirmPassword && !passwordsMatch && (
+          <p
+            id="password-mismatch"
+            className="text-xs text-destructive"
+            role="alert"
+          >
+            Passwords do not match
+          </p>
+        )}
+        {passwordsMatch && (
+          <p className="text-xs text-success">✓ Passwords match</p>
+        )}
+      </div>
+
+      <FormMessage
+        message={state.error}
+        type="error"
+      />
+
+      <Button type="submit" className="w-full">
+        Sign Up
+      </Button>
+
+      <p className="text-center text-sm text-muted-foreground">
+        Already have an account?{" "}
+        <Link href="/auth/login" className="text-primary hover:underline">
+          Log in
+        </Link>
+      </p>
+    </form>
   );
 }

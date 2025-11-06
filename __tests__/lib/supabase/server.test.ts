@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createClient } from "@/lib/supabase/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock modules at top level
 vi.mock("next/headers", () => ({
@@ -10,96 +10,116 @@ vi.mock("@supabase/ssr", () => ({
   createServerClient: vi.fn(),
 }));
 
-describe('Supabase Server Client', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    })
+describe("Supabase Server Client", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    const createMockCookieStore = () => ({
-        get: vi.fn(),
+  it("should create a client with proper cookies adapter", async () => {
+    const { createClient } = await import("@/lib/supabase/server");
+
+    // Mock the cookies() function
+    vi.mock("next/headers", () => ({
+      cookies: vi.fn().mockResolvedValue({
+        getAll: vi.fn().mockReturnValue([]),
         set: vi.fn(),
+        get: vi.fn().mockReturnValue(undefined),
         delete: vi.fn(),
-    })
+      }),
+    }));
 
-    it('server client handles cookies', async () => {
-        const mockCookies = createMockCookieStore()
-        const { cookies } = require('next/headers')
-        cookies.mockReturnValue(mockCookies)
+    // Test implementation
+    const client = await createClient();
+    expect(client).toBeDefined();
+  });
 
-        const client = await createClient()
+  const createMockCookieStore = () => ({
+    get: vi.fn(),
+    set: vi.fn(),
+    delete: vi.fn(),
+  });
 
-        expect(client).toBeDefined()
-        expect(cookies).toHaveBeenCalled()
-    })
+  it("server client handles cookies", async () => {
+    const mockCookies = createMockCookieStore();
+    const { cookies } = require("next/headers");
+    cookies.mockReturnValue(mockCookies);
 
-    it('createClient creates server client with correct parameters', async () => {
-        const mockCookies = createMockCookieStore()
-        const { cookies } = require('next/headers')
-        const { createServerClient } = require('@supabase/ssr')
+    const client = await createClient();
 
-        cookies.mockReturnValue(mockCookies)
+    expect(client).toBeDefined();
+    expect(cookies).toHaveBeenCalled();
+  });
 
-        await createClient()
+  it("createClient creates server client with correct parameters", async () => {
+    const mockCookies = createMockCookieStore();
+    const { cookies } = require("next/headers");
+    const { createServerClient } = require("@supabase/ssr");
 
-        expect(createServerClient).toHaveBeenCalledWith(
-            process.env.NEXT_PUBLIC_SUPABASE_URL,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-            expect.objectContaining({
-                cookies: expect.objectContaining({
-                    get: expect.any(Function),
-                    set: expect.any(Function),
-                    remove: expect.any(Function),
-                }),
-            })
-        )
-    })
+    cookies.mockReturnValue(mockCookies);
 
-    it('cookies adapter proxies get/set/remove correctly', async () => {
-        const mockCookies = createMockCookieStore()
-        mockCookies.get.mockReturnValue({ value: 'v1' })
-        const { cookies } = require('next/headers')
-        const { createServerClient } = require('@supabase/ssr')
+    await createClient();
 
-        cookies.mockReturnValue(mockCookies)
+    expect(createServerClient).toHaveBeenCalledWith(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      expect.objectContaining({
+        cookies: expect.objectContaining({
+          get: expect.any(Function),
+          set: expect.any(Function),
+          remove: expect.any(Function),
+        }),
+      })
+    );
+  });
 
-        await createClient()
+  it("cookies adapter proxies get/set/remove correctly", async () => {
+    const mockCookies = createMockCookieStore();
+    mockCookies.get.mockReturnValue({ value: "v1" });
+    const { cookies } = require("next/headers");
+    const { createServerClient } = require("@supabase/ssr");
 
-        const adapter = createServerClient.mock.calls[0][2].cookies
-        expect(adapter.get('session')).toBe('v1')
-        expect(mockCookies.get).toHaveBeenCalledWith('session')
+    cookies.mockReturnValue(mockCookies);
 
-        adapter.set('session', 'value', { path: '/' })
-        expect(mockCookies.set).toHaveBeenCalledWith('session', 'value', { path: '/' })
+    await createClient();
 
-        adapter.remove('session', { path: '/' })
-        expect(mockCookies.delete).toHaveBeenCalledWith('session', { path: '/' })
-    })
+    const adapter = createServerClient.mock.calls[0][2].cookies;
+    expect(adapter.get("session")).toBe("v1");
+    expect(mockCookies.get).toHaveBeenCalledWith("session");
 
-    it('resolveCookieStore handles promise-like objects', async () => {
-        const mockPromiseCookies = Promise.resolve({
-            get: vi.fn(),
-            set: vi.fn(),
-            delete: vi.fn(),
-        })
+    adapter.set("session", "value", { path: "/" });
+    expect(mockCookies.set).toHaveBeenCalledWith("session", "value", {
+      path: "/",
+    });
 
-        const { cookies } = require('next/headers')
-        cookies.mockReturnValue(mockPromiseCookies)
+    adapter.remove("session", { path: "/" });
+    expect(mockCookies.delete).toHaveBeenCalledWith("session", { path: "/" });
+  });
 
-        const client = await createClient()
+  it("resolveCookieStore handles promise-like objects", async () => {
+    const mockPromiseCookies = Promise.resolve({
+      get: vi.fn(),
+      set: vi.fn(),
+      delete: vi.fn(),
+    });
 
-        expect(client).toBeDefined()
-    })
+    const { cookies } = require("next/headers");
+    cookies.mockReturnValue(mockPromiseCookies);
 
-    it('server client has expected auth methods', async () => {
-        const mockCookies = createMockCookieStore()
+    const client = await createClient();
 
-        const { cookies } = require('next/headers')
-        cookies.mockReturnValue(mockCookies)
+    expect(client).toBeDefined();
+  });
 
-        const client = await createClient()
+  it("server client has expected auth methods", async () => {
+    const mockCookies = createMockCookieStore();
 
-        expect(typeof client.auth.signOut).toBe('function')
-        expect(typeof client.auth.getUser).toBe('function')
-        expect(typeof client.auth.getClaims).toBe('function')
-    })
-})
+    const { cookies } = require("next/headers");
+    cookies.mockReturnValue(mockCookies);
+
+    const client = await createClient();
+
+    expect(typeof client.auth.signOut).toBe("function");
+    expect(typeof client.auth.getUser).toBe("function");
+    expect(typeof client.auth.getClaims).toBe("function");
+  });
+});
