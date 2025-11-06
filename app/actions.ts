@@ -101,3 +101,41 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
     "Password updated successfully"
   );
 }
+
+/**
+ * Server action to handle user sign up
+ * @param _prevState - The previous state, containing error and success flags
+ * @param formData - FormData containing email and password fields
+ * @returns An object containing error message and success flag
+ */
+export async function signUpAction(
+  _prevState: { error: string; success: boolean },
+  formData: FormData
+) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    return { error: "Email and password are required", success: false };
+  }
+
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      return { error: error.message, success: false };
+    }
+
+    return { error: "", success: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "An error occurred";
+    return { error: message, success: false };
+  }
+}

@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom/vitest";
+import { expect, afterEach, beforeAll, afterAll, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 // Cleanup after each test
 afterEach(() => {
@@ -24,76 +24,37 @@ Object.defineProperty(globalThis, "matchMedia", {
 
 // Mock window.location
 beforeAll(() => {
-  delete (globalThis.window as Partial<typeof globalThis.window>).location;
-  globalThis.window.location = {
-    href: "",
-    origin: "http://localhost:3000",
-    protocol: "http:",
-    host: "localhost:3000",
-    hostname: "localhost",
-    port: "3000",
-    pathname: "/",
-    search: "",
-    hash: "",
-  } as Location;
+  Object.defineProperty(globalThis.window, "location", {
+    value: {
+      href: "",
+      origin: "http://localhost:3000",
+      protocol: "http:",
+      host: "localhost:3000",
+      hostname: "localhost",
+      port: "3000",
+      pathname: "/",
+      search: "",
+      hash: "",
+    },
+    writable: true,
+  });
 });
 
 afterAll(() => {
   vi.restoreAllMocks();
 });
 
-// Mock Office context for Office Add-in tests
-if (globalThis.Office === undefined) {
-  (globalThis as Record<string, unknown>).Office = {
-    context: {
-      document: {
-        getFileProperties: vi.fn().mockResolvedValue({
-          url: "http://localhost/test.xlsx",
-        }),
-      },
-      requirements: {
-        isSetSupported: vi.fn().mockReturnValue(true),
-      },
-    },
-    onReady: vi.fn((callback: Function) => callback()),
-  };
-}
-
-// Ensure critical environment variables exist for tests
-process.env.NEXT_PUBLIC_SUPABASE_URL ??= "https://example.supabase.co";
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??= "test-anon-key";
-
-// Mock Next.js router
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
-  usePathname: jest.fn(),
-  useSearchParams: jest.fn(),
-  redirect: jest.fn(),
+// Mock next/navigation
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(),
+  usePathname: vi.fn(),
+  useSearchParams: vi.fn(),
+  redirect: vi.fn(),
 }));
 
-// Global test utilities
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
+// Mock ResizeObserver
+(globalThis as Record<string, unknown>).ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
 }));
-
-// Suppress act() warnings from React Testing Library
-// These are expected for controlled inputs and don't indicate actual failures
-const originalError = console.error;
-beforeAll(() => {
-  console.error = (...args: any[]) => {
-    if (
-      typeof args[0] === "string" &&
-      args[0].includes("Warning: An update to") &&
-      args[0].includes("was not wrapped in act")
-    ) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-
-afterAll(() => {
-  console.error = originalError;
-});

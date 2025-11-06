@@ -1,4 +1,3 @@
-import { createServerClient, type CookieMethods } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 type CookieOptions = {
