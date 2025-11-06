@@ -1,6 +1,4 @@
--- Continue Learning ML Framework Tables
-
--- Predictions table for tracking all ML model outputs
+-- ML Predictions table for Continue Learning framework
 create table if not exists ml_predictions (
   id uuid primary key default gen_random_uuid(),
   model_id text not null,
@@ -13,13 +11,13 @@ create table if not exists ml_predictions (
   actual_outcome numeric,
   was_correct boolean,
   error_magnitude numeric,
-  error_type text check (error_type in ('underestimate','overestimate','correct')),
+  error_type text check (error_type in ('underestimate', 'overestimate', 'correct')),
   user_feedback text,
   feedback_at timestamptz,
   status text default 'awaiting_feedback'
 );
 
--- Model performance metrics aggregation table
+-- Model metrics table
 create table if not exists ml_model_metrics (
   model_id text primary key,
   total_predictions int default 0,
@@ -32,7 +30,6 @@ create table if not exists ml_model_metrics (
 create index idx_ml_predictions_customer on ml_predictions(customer_id);
 create index idx_ml_predictions_status on ml_predictions(status);
 create index idx_ml_predictions_model on ml_predictions(model_id);
-create index idx_ml_predictions_created on ml_predictions(created_at desc);
 
 -- Row Level Security
 alter table ml_predictions enable row level security;

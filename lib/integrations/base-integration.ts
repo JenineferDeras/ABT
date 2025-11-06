@@ -21,7 +21,7 @@ export class Integration {
   /**
    * Check and enforce rate limits
    */
-  private checkRateLimit(): void {
+  private checkRateLimit() {
     const now = Date.now();
 
     // Reset counter every minute
@@ -44,7 +44,7 @@ export class Integration {
    */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (!this.cfg.enabled) {
-      throw new Error(`${this.cfg.name} integration is disabled`);
+      throw new Error(`${this.cfg.name} is disabled`);
     }
 
     this.checkRateLimit();
@@ -54,22 +54,13 @@ export class Integration {
       try {
         return await Promise.race([
           fn(),
-          new Promise<never>((_, rej) =>
-            setTimeout(
-              () => rej(new Error(`Timeout after ${this.cfg.timeoutMs}ms`)),
-              this.cfg.timeoutMs
-            )
+          new Promise((_, rej) =>
+            setTimeout(() => rej(new Error("Timeout")), this.cfg.timeoutMs)
           ),
         ]);
       } catch (e) {
         lastErr = e;
-        console.warn(
-          `${this.cfg.name} attempt ${i + 1}/${this.cfg.retryAttempts} failed:`,
-          e
-        );
-
-        // Exponential back-off
-        await new Promise((r) => setTimeout(r, 2 ** i * 500));
+        await new Promise((r) => setTimeout(r, Math.pow(2, i) * 500));
       }
     }
     throw lastErr;

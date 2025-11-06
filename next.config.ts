@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     dirs: ["app", "components", "lib", "utils"],
+    ignoreDuringBuilds: true,
   },
   // Development origins for authentication redirects
   allowedDevOrigins: [

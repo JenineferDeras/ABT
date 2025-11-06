@@ -50,9 +50,9 @@ export class ContinueLearning {
     if (fetchErr) throw new Error(`Prediction not found: ${fetchErr.message}`);
 
     const errorMag = Math.abs(actual - pred.predicted_value);
-    const wasCorrect = errorMag < 0.1 * pred.predicted_value; // 10% tolerance
+    const wasCorrect = errorMag < 0.1 * pred.predicted_value;
     const errorType =
-      actual > pred.predicted_value ? "underestimate" : "overestimate";
+      actual > pred.predicted_value ? "overestimate" : "underestimate";
 
     // Update prediction
     await supabase
@@ -106,7 +106,6 @@ export class ContinueLearning {
       .single();
 
     if (error && error.code === "PGRST116") {
-      // No row yet
       return {
         modelId,
         totalPredictions: 0,
@@ -122,7 +121,7 @@ export class ContinueLearning {
       modelId: data.model_id,
       totalPredictions: data.total_predictions,
       correctPredictions: data.correct_predictions,
-      accuracy: Math.max(0, Math.min(1, data.accuracy)),
+      accuracy: data.accuracy,
       lastUpdated: data.last_updated,
     };
   }

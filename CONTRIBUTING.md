@@ -310,7 +310,7 @@ export const getUserData = () => {}
 export const formatCurrency = (amount: number) => {}
 
 // Constants (UPPER_SNAKE_CASE)
-export const API_BASE_URL = 'https://api.example.com'
+export const API_BASE_URL = 'https://api.abaco.finance'
 export const MAX_RETRIES = 3
 
 // Interfaces/Types (PascalCase with I prefix optional)
@@ -395,7 +395,7 @@ describe('LoginForm Component', () => {
 
     render(<LoginForm onSuccess={mockOnSuccess} />)
 
-    await user.type(screen.getByLabelText('Email'), 'test@example.com')
+    await user.type(screen.getByLabelText('Email'), 'analyst@abaco.finance')
     await user.type(screen.getByLabelText('Password'), 'password')
     await user.click(screen.getByRole('button', { name: 'Login' }))
 

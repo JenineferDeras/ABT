@@ -102,7 +102,7 @@ const insights = await searchFinancialInsights(
 
 ```typescript
 const marketData = await fetchMarketData(
-  "https://api.example.com/financial-data"
+  "https://api.abaco.finance/financial-data"
 );
 ```
 

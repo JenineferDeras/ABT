@@ -16,7 +16,7 @@ export interface Prediction {
   errorType?: "underestimate" | "overestimate" | "correct";
   userFeedback?: string;
   feedbackAt?: string;
-  status?: "awaiting_feedback" | "feedback_received" | "archived";
+  status?: string;
 }
 
 /**

@@ -1,5 +1,4 @@
 import { ContinueLearning } from "@/lib/ml/continue-learning";
-import type { FeedbackSubmission } from "@/lib/ml/types";
 import { NextResponse } from "next/server";
 
 /**
@@ -8,7 +7,7 @@ import { NextResponse } from "next/server";
  */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as FeedbackSubmission;
+    const body = await request.json();
 
     const { predictionId, actualOutcome, userFeedback } = body;
 
