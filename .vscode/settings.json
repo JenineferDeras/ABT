@@ -1,7 +1,7 @@
 {
   "git.autofetch": false,
   "git.autoRefresh": false,
-  "git.path": "/opt/homebrew/bin/git",
+  "git.path": "/usr/bin/git",
   "git.enabled": true,
   "git.autoRepositoryDetection": true,
   "git.detectSubmodules": false,
@@ -15,6 +15,15 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "npm.packageManager": "npm",
   "npm.executable": "/usr/local/bin/npm",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "/bin/bash"
+    },
+    "sh": {
+      "path": "/bin/sh"
+    }
+  },
   "terminal.integrated.env.osx": {
     "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
     "NODE_PATH": "/usr/local/lib/node_modules",
