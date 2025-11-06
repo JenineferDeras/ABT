@@ -1,5 +1,5 @@
 import { ContinueLearning } from "@/lib/ml/continue-learning";
-import type { Prediction } from "@/lib/ml/types";
+import type { Prediction, PredictionContext } from "@/lib/ml/types";
 import { Integration } from "./base-integration";
 
 /**
@@ -36,7 +36,7 @@ export interface RiskContext {
  * @param context - Portfolio risk metrics
  * @returns Promise with AI-generated risk summary
  */
-export async function grokRiskSummary(context: RiskContext): Promise<string> {
+export async function grokRiskSummary(context: PredictionContext): Promise<string> {
   // Remove example/production language from prompt
   const prompt = `Analyze the following portfolio metrics and provide a risk assessment in 2-3 sentences.
 

@@ -1,6 +1,6 @@
-import { ContinueLearning } from "@/lib/ml/continue-learning";
-import type { FeedbackRequest } from "@/lib/ml/types";
 import { NextResponse } from "next/server";
+import { ContinueLearning } from "@/lib/ml/continue-learning";
+import type { FeedbackSubmission } from "@/lib/ml/types";
 
 /**
  * POST /api/ml/feedback
@@ -8,35 +8,33 @@ import { NextResponse } from "next/server";
  */
 export async function POST(request: Request) {
   try {
-    const body: FeedbackRequest = await request.json();
+    const body = (await request.json()) as FeedbackSubmission;
+
+    const { predictionId, actualOutcome, userFeedback } = body;
 
     // Validate required fields
-    if (!body.predictionId || typeof body.actualOutcome !== "number") {
+    if (!predictionId || typeof actualOutcome !== "number") {
       return NextResponse.json(
-        { error: "Missing required fields: predictionId and actualOutcome" },
+        { error: "predictionId and actualOutcome are required" },
         { status: 400 }
       );
     }
 
-    const result = await ContinueLearning.submitFeedback(
-      body.predictionId,
-      body.actualOutcome,
-      body.userFeedback
+    const { accuracy } = await ContinueLearning.submitFeedback(
+      predictionId,
+      actualOutcome,
+      userFeedback
     );
 
     return NextResponse.json({
-      learned: result.learned,
-      accuracy: result.accuracy,
-      wasCorrect: result.wasCorrect,
-      message: "Feedback recorded and model updated successfully",
+      learned: true,
+      accuracy: Number(accuracy.toFixed(2)),
+      message: "Feedback submitted and model updated",
     });
   } catch (error) {
     console.error("Error submitting feedback:", error);
     return NextResponse.json(
-      {
-        error: "Failed to submit feedback",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }

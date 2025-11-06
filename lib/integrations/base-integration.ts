@@ -31,9 +31,7 @@ export class Integration {
     }
 
     if (this.callCount >= this.cfg.rateLimitPerMinute) {
-      throw new Error(
-        `Rate limit exceeded for ${this.cfg.name}. Max ${this.cfg.rateLimitPerMinute} calls/minute.`
-      );
+      throw new Error(`Rate limit exceeded for ${this.cfg.name}`);
     }
 
     this.callCount++;
@@ -51,37 +49,29 @@ export class Integration {
 
     this.checkRateLimit();
 
-    let lastError: unknown;
-
-    for (let attempt = 0; attempt < this.cfg.retryAttempts; attempt++) {
+    let lastErr: unknown;
+    for (let i = 0; i < this.cfg.retryAttempts; i++) {
       try {
-        // Race between the function and timeout
-        const result = await Promise.race<T>([
+        return await Promise.race([
           fn(),
-          new Promise<T>((_, reject) =>
+          new Promise<never>((_, rej) =>
             setTimeout(
-              () => reject(new Error(`Timeout after ${this.cfg.timeoutMs}ms`)),
+              () => rej(new Error(`Timeout after ${this.cfg.timeoutMs}ms`)),
               this.cfg.timeoutMs
             )
           ),
         ]);
-
-        return result;
-      } catch (error) {
-        lastError = error;
+      } catch (e) {
+        lastErr = e;
         console.warn(
-          `${this.cfg.name} attempt ${attempt + 1}/${this.cfg.retryAttempts} failed:`,
-          error
+          `${this.cfg.name} attempt ${i + 1}/${this.cfg.retryAttempts} failed:`,
+          e
         );
 
-        // Exponential backoff: 500ms, 1s, 2s, 4s...
-        if (attempt < this.cfg.retryAttempts - 1) {
-          const delay = 2 ** attempt * 500;
-          await new Promise((resolve) => setTimeout(resolve, delay));
-        }
+        // Exponential back-off
+        await new Promise((r) => setTimeout(r, 2 ** i * 500));
       }
     }
-
-    throw lastError;
+    throw lastErr;
   }
 }

@@ -13,10 +13,10 @@ export interface Prediction {
   actualOutcome?: number;
   wasCorrect?: boolean;
   errorMagnitude?: number;
-  errorType?: "underestimate" | "overestimate" | "correct";
+  errorType?: 'underestimate' | 'overestimate' | 'correct';
   userFeedback?: string;
   feedbackAt?: string;
-  status?: "awaiting_feedback" | "feedback_received" | "archived";
+  status?: 'awaiting_feedback' | 'feedback_received' | 'archived';
 }
 
 /**
@@ -31,19 +31,20 @@ export interface ModelMetrics {
 }
 
 /**
- * Feedback submission request
+ * Prediction context for ML models
  */
-export interface FeedbackRequest {
-  predictionId: string;
-  actualOutcome: number;
-  userFeedback?: string;
+export interface PredictionContext {
+  aum: number;
+  activeLoans: number;
+  avgDpd: number;
+  defaultRate: number;
 }
 
 /**
- * Feedback submission response
+ * Feedback submission request
  */
-export interface FeedbackResponse {
-  learned: boolean;
-  accuracy: number;
-  wasCorrect: boolean;
+export interface FeedbackSubmission {
+  predictionId: string;
+  actualOutcome: number;
+  userFeedback?: string;
 }
