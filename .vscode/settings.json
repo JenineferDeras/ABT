@@ -70,7 +70,7 @@
     "**/*"
   ],
   "python.analysis.ignore": ["**"],
-  "python.languageServer": "None",
+  "python.languageServer": "Pylance",
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,

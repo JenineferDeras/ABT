@@ -58,3 +58,8 @@ __pycache__/
 *auth*
 *.token
 .git-credentials
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov

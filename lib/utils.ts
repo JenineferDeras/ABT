@@ -2,10 +2,6 @@ import { clsx, type ClassValue } from "clsx";
 import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
-const defaultNumberFormat = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 1,
-});
-
 /**
  * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
  *
@@ -88,99 +84,99 @@ export const hasEnvVars = Boolean(
 /**
  * Password strength validation result
  */
-export interface PasswordValidationResult {
-  isValid: boolean;
+export interface PasswordValidationResult {/**
+  isValid: boolean;Password strength validation result
   errors: string[];
-  strength: "weak" | "medium" | "strong";
+  strength: "weak" | "medium" | "strong";ort interface PasswordValidationResult {
   score: number;
 }
-
+| "medium" | "strong";
 /**
  * Validates password strength and returns detailed feedback.
  *
- * Requirements:
- * - Minimum 8 characters
+ * Requirements:/**
+ * - Minimum 8 charactersValidates password strength and returns detailed feedback.
  * - At least one uppercase letter
- * - At least one lowercase letter
- * - At least one number
- * - At least one special character
+ * - At least one lowercase letter Requirements:
+ * - At least one numberharacters
+ * - At least one special characterse letter
  *
  * @param password - The password to validate
- * @returns PasswordValidationResult with validation details
+ * @returns PasswordValidationResult with validation detailsl character
  */
-export function validatePasswordStrength(
-  password: string
+export function validatePasswordStrength( @param password - The password to validate
+  password: stringidation details
 ): PasswordValidationResult {
-  const errors: string[] = [];
+  const errors: string[] = [];ort function validatePasswordStrength(
   let score = 0;
-
-  // Check minimum length
+ionResult {
+  // Check minimum length;
   if (password.length < 8) {
     errors.push("Password must be at least 8 characters long");
-  } else {
-    score += 1;
-    if (password.length >= 12) score += 1;
+  } else {  // Check minimum length
+    score += 1;) {
+    if (password.length >= 12) score += 1;st be at least 8 characters long");
     if (password.length >= 16) score += 1;
-  }
-
+  }+= 1;
+d.length >= 12) score += 1;
   // Check for uppercase letters
   if (!/[A-Z]/.test(password)) {
     errors.push("Password must contain at least one uppercase letter");
-  } else {
+  } else {  // Check for uppercase letters
     score += 1;
-  }
+  }ontain at least one uppercase letter");
 
-  // Check for lowercase letters
+  // Check for lowercase letters+= 1;
   if (!/[a-z]/.test(password)) {
     errors.push("Password must contain at least one lowercase letter");
-  } else {
+  } else {  // Check for lowercase letters
     score += 1;
-  }
+  }ontain at least one lowercase letter");
 
-  // Check for numbers
+  // Check for numbers+= 1;
   if (!/\d/.test(password)) {
     errors.push("Password must contain at least one number");
-  } else {
-    score += 1;
-  }
+  } else {  // Check for numbers
+    score += 1;ord)) {
+  }t contain at least one number");
 
-  // Check for special characters
+  // Check for special characters+= 1;
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
-  } else {
-    score += 1;
-  }
+  } else {  // Check for special characters
+    score += 1;"\\|,.<>\/?]/.test(password)) {
+  }acter");
 
-  // Determine strength
+  // Determine strength+= 1;
   let strength: "weak" | "medium" | "strong" = "weak";
   if (score >= 6) {
-    strength = "strong";
-  } else if (score >= 4) {
+    strength = "strong";  // Determine strength
+  } else if (score >= 4) {| "medium" | "strong" = "weak";
     strength = "medium";
-  }
-
+  }ong";
+ {
   return {
     isValid: errors.length === 0,
     errors,
-    strength,
-    score,
+    strength,  return {
+    score,d: errors.length === 0,
   };
-}
+}h,
 
 /**
  * Redirects to a given path with an encoded message and type as query parameters.
  * Handles paths that already contain query parameters.
- *
- * @param type - The type of the message (e.g., "error" or "success")
+ */**
+ * @param type - The type of the message (e.g., "error" or "success")Redirects to a given path with an encoded message and type as query parameters.
  * @param path - The path to redirect to (may include existing query parameters)
  * @param message - The message to encode and include in the query parameters
- * @returns A redirect to the specified path with the encoded message
- */
+ * @returns A redirect to the specified path with the encoded message @param type - The type of the message (e.g., "error" or "success")
+ */parameters)
 export function encodedRedirect(
   type: "error" | "success",
   path: string,
-  message: string
+  message: stringort function encodedRedirect(
 ): never {
   const separator = path.includes("?") ? "&" : "?";
-  return redirect(`${path}${separator}${type}=${encodeURIComponent(message)}`);
+  return redirect(`${path}${separator}${type}=${encodeURIComponent(message)}`);ng
 }

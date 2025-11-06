@@ -17,6 +17,9 @@ export function UpdatePasswordForm({
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<
+    string | null
+  >(null);
   const [strengthIndicator, setStrengthIndicator] = useState<{
     strength: "weak" | "medium" | "strong";
     color: string;
@@ -38,7 +41,6 @@ export function UpdatePasswordForm({
         setPasswordError(null);
       }
 
-      // Set strength indicator color
       const colorMap = {
         weak: "text-red-600",
         medium: "text-yellow-600",
@@ -52,6 +54,29 @@ export function UpdatePasswordForm({
     } else {
       setPasswordError(null);
       setStrengthIndicator(null);
+    }
+
+    // Re-validate confirmation if it has a value
+    if (confirmPassword.length > 0) {
+      if (confirmPassword !== value) {
+        setConfirmPasswordError("Passwords do not match");
+      } else {
+        setConfirmPasswordError(null);
+      }
+    }
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+
+    if (value.length > 0 && password.length > 0) {
+      if (value !== password) {
+        setConfirmPasswordError("Passwords do not match");
+      } else {
+        setConfirmPasswordError(null);
+      }
+    } else {
+      setConfirmPasswordError(null);
     }
   };
 
@@ -96,10 +121,25 @@ export function UpdatePasswordForm({
           placeholder="Confirm password"
           required
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+          aria-invalid={!!confirmPasswordError}
+          aria-describedby={
+            confirmPasswordError ? "confirm-password-error" : undefined
+          }
         />
+        {confirmPasswordError && (
+          <p
+            id="confirm-password-error"
+            className="text-sm text-red-600"
+            role="alert"
+          >
+            {confirmPasswordError}
+          </p>
+        )}
 
-        <SubmitButton>Reset password</SubmitButton>
+        <SubmitButton disabled={!!passwordError || !!confirmPasswordError}>
+          Reset password
+        </SubmitButton>
         {params && <FormMessage message={params} />}
       </div>
     </form>

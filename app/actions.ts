@@ -4,6 +4,48 @@ import { createClient } from "@/lib/supabase/server";
 import { encodedRedirect, validatePasswordStrength } from "@/lib/utils";
 
 /**
+ * Sanitizes error messages to prevent information disclosure
+ * @param error - The error object from Supabase
+ * @returns A safe, user-friendly error message
+ */
+function sanitizeErrorMessage(error: any): string {
+  // Map of known error codes to safe messages
+  const errorMap: Record<string, string> = {
+    "auth/user-not-found": "Invalid credentials. Please try again.",
+    "auth/wrong-password": "Invalid credentials. Please try again.",
+    "auth/email-already-in-use": "This email is already registered.",
+    "auth/weak-password": "Password does not meet security requirements.",
+    "auth/invalid-email": "Please enter a valid email address.",
+    "auth/operation-not-allowed": "This operation is not allowed.",
+    "auth/too-many-requests": "Too many attempts. Please try again later.",
+  };
+
+  // Check for known error codes
+  if (error?.code && errorMap[error.code]) {
+    return errorMap[error.code];
+  }
+
+  // Check for specific error messages (without exposing internal details)
+  const message = error?.message?.toLowerCase() || "";
+
+  if (message.includes("password")) {
+    return "Password does not meet security requirements.";
+  }
+  if (message.includes("email")) {
+    return "Please check your email address and try again.";
+  }
+  if (message.includes("user") || message.includes("account")) {
+    return "Unable to complete the request. Please try again.";
+  }
+  if (message.includes("network") || message.includes("timeout")) {
+    return "Network error. Please check your connection and try again.";
+  }
+
+  // Generic fallback (never expose internal error details)
+  return "An error occurred. Please try again or contact support.";
+}
+
+/**
  * Server action to update user password with strength validation
  * @param formData - FormData containing password and confirmPassword fields
  * @returns Never returns - redirects based on success/failure
@@ -45,7 +87,12 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
   });
 
   if (error) {
-    return encodedRedirect("error", "/auth/reset-password", error.message);
+    // Use sanitized error message instead of raw error
+    return encodedRedirect(
+      "error",
+      "/auth/reset-password",
+      sanitizeErrorMessage(error)
+    );
   }
 
   return encodedRedirect(

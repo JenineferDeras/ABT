@@ -134,6 +134,7 @@ python3 abaco_dataset_generator.py
 ```
 
 **Features:**
+
 - 30 customer records with 53 analytical dimensions
 - Realistic financial metrics and patterns
 - Comprehensive analytics reporting
@@ -146,6 +147,7 @@ For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/
 ### Prerequisites
 
 Before deploying, ensure:
+
 - [ ] Supabase project is configured
 - [ ] Environment variables are set
 - [ ] Application builds successfully (`npm run build`)
@@ -165,6 +167,7 @@ vercel --prod
 ```
 
 **Environment Variables on Vercel**:
+
 1. Go to Project Settings → Environment Variables
 2. Add all variables from `.env.local`
 3. Redeploy after adding variables
@@ -202,6 +205,7 @@ gcloud run deploy abaco-platform --source .
 **Troubleshooting Deployment**:
 
 If you encounter permission errors:
+
 ```bash
 # Check your access
 gcloud projects list
@@ -214,6 +218,7 @@ gcloud services enable run.googleapis.com
 ```
 
 For complete Google Cloud setup instructions, see:
+
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
 - [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
 
@@ -274,8 +279,46 @@ python3 notebooks/abaco_financial_intelligence.py
 ```
 
 For comprehensive troubleshooting, see:
+
 - [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
 - [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
+
+## Testing
+
+This project uses Jest with React Testing Library for testing.
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run tests in CI mode
+npm run test:ci
+```
+
+### Coverage Thresholds
+
+The project maintains minimum coverage thresholds:
+
+- **Branches**: 70%
+- **Functions**: 70%
+- **Lines**: 70%
+- **Statements**: 70%
+
+Coverage reports are generated in the `coverage/` directory and uploaded to Codecov on every push to `main`.
+
+### Test File Locations
+
+- Unit tests: `__tests__/` directory
+- Component tests: Co-located with components or in `__tests__/components/`
+- Integration tests: `__tests__/integration/`
 
 ## 📄 License
 
