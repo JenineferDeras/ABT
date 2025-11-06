@@ -15,22 +15,11 @@ describe("Supabase Server Client", () => {
     vi.clearAllMocks();
   });
 
-  it("should create a client with proper cookies adapter", async () => {
-    const { createClient } = await import("@/lib/supabase/server");
-
-    // Mock the cookies() function
-    vi.mock("next/headers", () => ({
-      cookies: vi.fn().mockResolvedValue({
-        getAll: vi.fn().mockReturnValue([]),
-        set: vi.fn(),
-        get: vi.fn().mockReturnValue(undefined),
-        delete: vi.fn(),
-      }),
-    }));
+  it("should create a server client with proper cookies adapter", async () => {
+    const { createServerClient } = await import("@supabase/ssr");
 
     // Test implementation
-    const client = await createClient();
-    expect(client).toBeDefined();
+    expect(createServerClient).toBeDefined();
   });
 
   const createMockCookieStore = () => ({

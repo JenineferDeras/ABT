@@ -1,6 +1,6 @@
-import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react()],
@@ -19,7 +19,7 @@ export default defineConfig({
         "**/*.test.tsx",
       ],
     },
-    // Test isolation: each test file gets a fresh module cache
+    // Test isolation
     isolate: true,
     // Restore mocks between tests
     restoreMocks: true,

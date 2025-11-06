@@ -1,33 +1,34 @@
 import { ContinueLearning } from "@/lib/ml/continue-learning";
 import type { Prediction } from "@/lib/ml/types";
-import { createClient } from "@/lib/supabase/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-jest.mock("@/lib/supabase/server", () => ({
-  createClient: jest.fn(),
+vi.mock("@/lib/supabase/server", () => ({
+  createClient: vi.fn(),
 }));
 
-const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
+const mockCreateClient = vi.hoisted(() => vi.fn());
 
 describe("ContinueLearning", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockCreateClient.mockReset();
+    vi.clearAllMocks();
   });
 
   it("records a prediction and returns the generated id", async () => {
-    const single = jest.fn().mockResolvedValue({
+    const single = vi.fn().mockResolvedValue({
       data: { id: "mock-id" },
       error: null,
     });
-    const select = jest.fn(() => ({ single }));
-    const insert = jest.fn(() => ({ select }));
+    const select = vi.fn(() => ({ single }));
+    const insert = vi.fn(() => ({ select }));
 
-    const from = jest.fn().mockImplementation((table: string) => {
+    const from = vi.fn().mockImplementation((table: string) => {
       expect(table).toBe("ml_predictions");
       return { insert };
     });
 
-    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+    vi.mocked(mockCreateClient).mockResolvedValueOnce({
+      from,
+    } as unknown as Awaited<ReturnType<typeof mockCreateClient>>);
 
     const payload: Omit<Prediction, "id" | "createdAt" | "status"> = {
       modelId: "model-1",
@@ -66,29 +67,29 @@ describe("ContinueLearning", () => {
       status: "awaiting_feedback",
     };
 
-    const selectPredictionSingle = jest.fn().mockResolvedValue({
+    const selectPredictionSingle = vi.fn().mockResolvedValue({
       data: predictionRow,
       error: null,
     });
-    const selectPredictionEq = jest.fn((_column: string, value: unknown) => {
+    const selectPredictionEq = vi.fn((_column: string, value: unknown) => {
       expect(value).toBe("mock-id");
       return { single: selectPredictionSingle };
     });
 
-    const selectWasCorrectFinal = jest.fn().mockResolvedValue({
+    const selectWasCorrectFinal = vi.fn().mockResolvedValue({
       data: [{ was_correct: true }, { was_correct: false }],
       error: null,
     });
-    const selectWasCorrectStatus = jest.fn((_column: string, value: unknown) => {
+    const selectWasCorrectStatus = vi.fn((_column: string, value: unknown) => {
       expect(value).toBe("feedback_received");
       return selectWasCorrectFinal();
     });
-    const selectWasCorrectModel = jest.fn((_column: string, value: unknown) => {
+    const selectWasCorrectModel = vi.fn((_column: string, value: unknown) => {
       expect(value).toBe("model-1");
       return { eq: selectWasCorrectStatus };
     });
 
-    const select = jest.fn((columns: string) => {
+    const select = vi.fn((columns: string) => {
       if (columns === "*") {
         return { eq: selectPredictionEq };
       }
@@ -100,12 +101,12 @@ describe("ContinueLearning", () => {
       throw new Error(`Unexpected select columns: ${columns}`);
     });
 
-    const updateEq = jest.fn().mockResolvedValue({ error: null });
-    const update = jest.fn(() => ({ eq: updateEq }));
+    const updateEq = vi.fn().mockResolvedValue({ error: null });
+    const update = vi.fn(() => ({ eq: updateEq }));
 
-    const upsert = jest.fn().mockResolvedValue({ error: null });
+    const upsert = vi.fn().mockResolvedValue({ error: null });
 
-    const from = jest.fn().mockImplementation((table: string) => {
+    const from = vi.fn().mockImplementation((table: string) => {
       if (table === "ml_predictions") {
         return { select, update };
       }
@@ -117,9 +118,15 @@ describe("ContinueLearning", () => {
       throw new Error(`Unexpected table: ${table}`);
     });
 
-    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+    vi.mocked(mockCreateClient).mockResolvedValueOnce({
+      from,
+    } as unknown as Awaited<ReturnType<typeof mockCreateClient>>);
 
-    const result = await ContinueLearning.submitFeedback("mock-id", 0.21, "Looks good");
+    const result = await ContinueLearning.submitFeedback(
+      "mock-id",
+      0.21,
+      "Looks good"
+    );
 
     expect(result).toEqual({ accuracy: 50 });
     expect(updateEq).toHaveBeenCalledWith("id", "mock-id");
@@ -133,22 +140,24 @@ describe("ContinueLearning", () => {
   });
 
   it("returns default metrics when no record exists yet", async () => {
-    const single = jest.fn().mockResolvedValue({
+    const single = vi.fn().mockResolvedValue({
       data: null,
       error: { code: "PGRST116", message: "No rows" },
     });
-    const eq = jest.fn((_column: string, value: unknown) => {
+    const eq = vi.fn((_column: string, value: unknown) => {
       expect(value).toBe("model-1");
       return { single };
     });
-    const select = jest.fn(() => ({ eq }));
+    const select = vi.fn(() => ({ eq }));
 
-    const from = jest.fn().mockImplementation((table: string) => {
+    const from = vi.fn().mockImplementation((table: string) => {
       expect(table).toBe("ml_model_metrics");
       return { select };
     });
 
-    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+    vi.mocked(mockCreateClient).mockResolvedValueOnce({
+      from,
+    } as unknown as Awaited<ReturnType<typeof mockCreateClient>>);
 
     const metrics = await ContinueLearning.getMetrics("model-1");
 
@@ -162,7 +171,7 @@ describe("ContinueLearning", () => {
   });
 
   it("maps metric rows into the domain model when found", async () => {
-    const single = jest.fn().mockResolvedValue({
+    const single = vi.fn().mockResolvedValue({
       data: {
         model_id: "model-1",
         total_predictions: 10,
@@ -172,18 +181,20 @@ describe("ContinueLearning", () => {
       },
       error: null,
     });
-    const eq = jest.fn((_column: string, value: unknown) => {
+    const eq = vi.fn((_column: string, value: unknown) => {
       expect(value).toBe("model-1");
       return { single };
     });
-    const select = jest.fn(() => ({ eq }));
+    const select = vi.fn(() => ({ eq }));
 
-    const from = jest.fn().mockImplementation((table: string) => {
+    const from = vi.fn().mockImplementation((table: string) => {
       expect(table).toBe("ml_model_metrics");
       return { select };
     });
 
-    mockCreateClient.mockResolvedValueOnce({ from } as unknown as Awaited<ReturnType<typeof createClient>>);
+    vi.mocked(mockCreateClient).mockResolvedValueOnce({
+      from,
+    } as unknown as Awaited<ReturnType<typeof mockCreateClient>>);
 
     const metrics = await ContinueLearning.getMetrics("model-1");
 
