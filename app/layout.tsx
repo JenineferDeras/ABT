@@ -1,10 +1,27 @@
-import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+
+const geist = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "Next.js with Supabase",
-  description: "Next.js starter with Supabase integration",
+  title: "ABACO Financial Intelligence Platform",
+  description: "Financial intelligence and risk assessment platform",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -14,14 +31,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${geist.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          enableColorScheme
+          storageKey="theme-preference"
         >
-          <main className="min-h-screen bg-background">{children}</main>
+          {children}
         </ThemeProvider>
       </body>
     </html>

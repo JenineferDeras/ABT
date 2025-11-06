@@ -62,10 +62,13 @@
   "tailwindCSS.lint.invalidConfigPath": "error",
   "tailwindCSS.lint.invalidTailwindDirective": "error",
   "tailwindCSS.lint.recommendedVariantOrder": "warning",
+  // CSS validation disabled: Tailwind CSS handles all styling
+  // Using @apply and Tailwind directives; native CSS validation conflicts
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "python.defaultInterpreterPath": "/usr/local/bin/python3",
+  "python.languageServer": "Pylance",
+  "python.defaultInterpreterPath": "/usr/bin/python3",
   "python.terminal.activateEnvironment": false,
   "python.linting.enabled": false,
   "python.analysis.diagnosticMode": "openFilesOnly",
@@ -84,7 +87,6 @@
     "**/notebooks/__pycache__",
     "**/notebooks/abaco_venv"
   ],
-  "python.languageServer": "Pylance",
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,

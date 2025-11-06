@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { useActionState, useState, useCallback } from "react";
 import { signUpAction } from "@/app/actions";
+import { FormMessage } from "@/components/form-message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormMessage } from "@/components/form-message";
+import Link from "next/link";
+import { useActionState, useCallback, useState } from "react";
 
 /**
  * Password strength levels with visual feedback
@@ -23,7 +23,8 @@ interface PasswordStrength {
  * @returns Strength assessment with feedback
  */
 function getPasswordStrength(password: string): PasswordStrength {
-  if (!password) return { level: "weak", score: 0, feedback: "Enter a password" };
+  if (!password)
+    return { level: "weak", score: 0, feedback: "Enter a password" };
 
   let score = 0;
   const feedback: string[] = [];
@@ -134,14 +135,16 @@ export function SignUpForm() {
                   strength.level === "weak"
                     ? "w-1/4 bg-destructive"
                     : strength.level === "fair"
-                      ? "w-1/2 bg-yellow-500"
-                      : strength.level === "good"
-                        ? "w-3/4 bg-blue-500"
-                        : "w-full bg-success"
+                    ? "w-1/2 bg-yellow-500"
+                    : strength.level === "good"
+                    ? "w-3/4 bg-blue-500"
+                    : "w-full bg-success"
                 }`}
               />
             </div>
-            <span className="text-xs font-medium capitalize">{strength.level}</span>
+            <span className="text-xs font-medium capitalize">
+              {strength.level}
+            </span>
           </div>
           <p className="text-xs text-muted-foreground whitespace-pre-line">
             {strength.feedback}
@@ -176,10 +179,7 @@ export function SignUpForm() {
         )}
       </div>
 
-      <FormMessage
-        message={state.error}
-        type="error"
-      />
+      <FormMessage message={state.error} type="error" />
 
       <Button type="submit" className="w-full">
         Sign Up

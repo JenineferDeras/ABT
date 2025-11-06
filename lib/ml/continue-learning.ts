@@ -127,3 +127,25 @@ export class ContinueLearning {
     };
   }
 }
+
+/**
+ * Update model metrics with proper bounds
+ * Confidence and accuracy are clamped to [0, 1] to prevent visual glitches
+ */
+export async function updateModelMetrics(
+  modelId: string,
+  metrics: ModelMetrics
+): Promise<void> {
+  const clampedMetrics = {
+    ...metrics,
+    accuracy: Math.max(0, Math.min(1, metrics.accuracy)),
+    confidence: Math.max(0, Math.min(1, metrics.confidence)),
+  };
+
+  const supabase = await createClient();
+  await supabase.from("ml_model_metrics").upsert({
+    model_id: modelId,
+    ...clampedMetrics,
+    last_updated: new Date().toISOString(),
+  });
+}
