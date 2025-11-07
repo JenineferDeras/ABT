@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
+    // Allow VSCode dev origins for local development
+    allowedDevOrigins: ["127.0.0.1", "localhost"],
   },
 };
 

@@ -170,6 +170,11 @@
     "javascriptreact": true
   },
   "github.copilot.chat.localeOverride": "en",
+  // CodeRabbit configuration
+  "[coderabbit]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
   "http.proxyStrictSSL": false,
   "http.systemCertificates": false,
   "[typescript]": {
@@ -191,6 +196,10 @@
   "[python]": {
     "editor.defaultFormatter": null,
     "editor.formatOnSave": false
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
   // Disable direct file execution (use npm scripts instead)
   "code-runner.executorMap": {},
