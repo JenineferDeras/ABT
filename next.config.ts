@@ -2,16 +2,48 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  typescript: {
-    tsconfigPath: "./tsconfig.json",
+  swcMinify: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "**.githubusercontent.com",
+      },
+    ],
+    unoptimized: process.env.NODE_ENV === "development",
   },
-  eslint: {
-    dirs: ["app", "components", "lib", "utils"],
-    ignoreDuringBuilds: true,
+  headers: async () => {
+    return [
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/json",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+        ],
+      },
+    ];
+  },
+  redirects: async () => {
+    return [
+      {
+        source: "/auth/callback",
+        destination: "/dashboard",
+        permanent: false,
+      },
+    ];
   },
   experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
+    typedRoutes: true,
   },
 };
 
