@@ -20,6 +20,23 @@ export SONARQUBE_TOKEN="your-token-here"
 npm run sonar
 ```
 
+### Latest Analysis Results
+
+**Last Run**: Successfully completed
+
+- **Files Analyzed**: 86 (85 TypeScript/JavaScript + 1 CSS)
+- **Languages**: TypeScript 5.9.3, JavaScript, CSS
+- **Analysis Time**: ~33 seconds
+- **Result**: ✅ ANALYSIS SUCCESSFUL
+
+**Key Metrics**:
+
+- Architecture analysis: Enabled
+- Security analysis: Enabled
+- Text and secrets scanning: 86 files analyzed
+- Duplicate code detection: Calculated for 77 files
+- Cache efficiency: 0/85 hit (cache miss - fresh analysis)
+
 ### Coverage & Analysis
 
 - **Languages Analyzed**: TypeScript, JavaScript, CSS
@@ -47,7 +64,7 @@ Following the guidelines from `.github/copilot-instructions.md`:
 
 #### Security
 
-- ✅ No hardcoded secrets
+- ✅ No hardcoded secrets (text and secrets scanning enabled)
 - ✅ Environment variables for API keys
 - ✅ Supabase RLS policies
 - ✅ Cookie-based auth (SSR pattern)
@@ -84,18 +101,6 @@ npm run build
 npm run sonar
 ```
 
-### Current Results
-
-Last analysis: [View on SonarCloud](https://sonarcloud.io/dashboard?id=jenineferderas_abaco-sim-e)
-
-**Metrics:**
-
-- Files analyzed: 86
-- Languages: TypeScript, JavaScript, CSS
-- Architecture analysis: Enabled
-- Security analysis: Enabled
-- Dependency scanning: Available
-
 ### Addressing Issues
 
 Common SonarQube issues and fixes:
@@ -108,11 +113,29 @@ Common SonarQube issues and fixes:
 
 ### CI/CD Integration
 
-SonarQube analysis runs automatically:
+SonarQube analysis runs automatically via GitHub Actions:
 
 - On push to main branch
 - On pull requests
-- As part of GitHub Actions workflow
+- As part of the quality assurance workflow
+- Results available at: https://sonarcloud.io/dashboard?id=jenineferderas_abaco-sim-e
+
+### Interpreting Results
+
+**Green Dashboard**: No issues detected
+
+- **Code Quality**: Passing
+- **Security**: No vulnerabilities
+- **Reliability**: No bugs
+- **Maintainability**: Low technical debt
+
+**Active Plugins**:
+
+- JavaScript/TypeScript analysis
+- CSS analysis
+- Architecture analysis
+- Security analysis (Jasmin)
+- Text and secrets scanning
 
 ### References
 

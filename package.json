@@ -1,7 +1,7 @@
 {
   "name": "abaco-financial-intelligence",
   "version": "0.1.0",
-  "description": "ABACO Financial Intelligence Platform - Risk assessment and portfolio analytics",
+  "description": "ABACO Financial Intelligence Platform - Next.js with Supabase",
   "author": "ABACO Capital",
   "license": "MIT",
   "repository": {
@@ -32,9 +32,6 @@
     "start": "next start",
     "lint": "eslint --max-warnings=0 app components lib",
     "type-check": "tsc --noEmit",
-    "test": "jest --config jest.config.ts --runInBand",
-    "test:watch": "jest --config jest.config.ts --watch",
-    "test:coverage": "jest --config jest.config.ts --coverage",
     "sonar": "bash scripts/sonarqube-analysis.sh"
   },
   "resolutions": {
