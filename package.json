@@ -32,7 +32,11 @@
     "start": "next start",
     "lint": "eslint --max-warnings=0 app components lib",
     "type-check": "tsc --noEmit",
-    "sonar": "bash scripts/sonarqube-analysis.sh"
+    "sonar": "bash scripts/sonarqube-analysis.sh",
+    "quality-check": "npm run type-check && npm run lint && npm run build && echo '✅ All quality checks passed!'",
+    "fix-issues": "bash scripts/fix-sonarqube-issues.sh",
+    "fix-ci": "bash scripts/fix-ci-issues.sh",
+    "pre-deploy": "bash scripts/pre-deploy.sh"
   },
   "resolutions": {
     "react": "^18.3.1",
