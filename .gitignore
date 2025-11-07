@@ -20,9 +20,6 @@ __pycache__/
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
 
 # OS
 .DS_Store
@@ -43,6 +40,24 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# SonarQube
+.scannerwork/
+.sonar/
+
 # Temporary files
-tempCodeRunnerFile.*
-*.tmp
+next-env.d.ts
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# npm/Node artifacts
+npm
+bash
+
+# Build artifacts
+Build/
+
+# IDE temporary files
+*~
+*.swp
+*.swo
+*.map
