@@ -1,196 +1,28 @@
-# CodeRabbit Configuration for ABACO Financial Intelligence Platform
+# CodeRabbit Configuration
+# Reference: https://docs.coderabbit.ai/guides/configure
 
 language: en
 early_access: false
 
-review:
-  # Enable automatic review on PR
-  auto_review: true
-  
-  # Review settings
-  review_status: true
-  review_comment_sort_order: newest
-  
-  # High-level summary
-  high_level_summary: true
-  import_custom_rules: false
-  max_files_to_review: 150
-  max_lines_to_review: 5000
-  
-  # Automatic labeling based on review
-  auto_label_based_review: true
-  
-  # Approve small PRs automatically
-  auto_approve_small_prs: false
-
 chat:
   auto_reply: true
 
-# Rules configuration following Copilot instructions
-rules:
-  # TypeScript & JavaScript
-  - type: rule
-    regex: ':\s*any(?!\w)'
-    negate: false
-    message: "❌ Avoid using `any` type. Use `unknown` or proper types instead (Copilot guideline)"
-    languages:
-      - typescript
-      - javascript
+review:
+  auto_review: true
+  review_status: true
+  review_comment_sort_order: newest
+  high_level_summary: true
+  auto_label_based_review: true
 
-  - type: rule
-    regex: 'function\s+\w+\([^)]*\):[^{]*\{[\s\S]*?\}'
-    negate: false
-    message: "✅ Ensure all functions have proper return types"
-    languages:
-      - typescript
-
-  # Security checks
-  - type: rule
-    regex: '(password|secret|api[_-]?key|token)\s*=\s*["\']'
-    negate: false
-    message: "🔒 ⚠️ SECURITY: Hardcoded credentials detected. Use environment variables instead"
-    languages:
-      - typescript
-      - javascript
-      - python
-
-  # React/Next.js patterns
-  - type: rule
-    regex: 'export\s+(default\s+)?function\s+\w+\([^)]*\)\s*\{'
-    negate: false
-    message: "✅ Ensure React components use PascalCase naming"
-    languages:
-      - typescript
-      - javascript
-
-  - type: rule
-    regex: 'useState|useEffect|useContext'
-    negate: false
-    message: "⚠️ Client-side hook detected. Consider if 'use client' directive is needed"
-    languages:
-      - typescript
-      - javascript
-
-  # Error handling
-  - type: rule
-    regex: 'catch\s*\(\s*\w+\s*\)\s*\{'
-    negate: false
-    message: "✅ Ensure error is logged or handled (not silently ignored)"
-    languages:
-      - typescript
-      - javascript
-
-  # Imports
-  - type: rule
-    regex: '^import\s+.*from\s+["\'][^@]'
-    negate: false
-    message: "💡 Consider using path alias @/ for imports (configured in tsconfig.json)"
-    languages:
-      - typescript
-      - javascript
-
-# Praise for good practices
-praise:
-  - pattern: 'try\s*\{[\s\S]*?\}\s*catch\s*\([^)]*\)\s*\{[\s\S]*?console\.error'
-    message: "✅ Great error handling with logging"
-
-  - pattern: ':\s+(string|number|boolean|object|unknown|interface\s+\w+)'
-    message: "✅ Good type annotation"
-
-  - pattern: '@/lib|@/components|@/utils'
-    message: "✅ Using path aliases correctly"
-
-  - pattern: '"use client"'
-    message: "✅ Client component properly marked"
-
-  - pattern: 'export\s+async\s+function'
-    message: "✅ Server action or async handler"
-
-  - pattern: 'interface\s+\w+\s*\{|type\s+\w+\s*='
-    message: "✅ Strong typing with interfaces/types"
-
-# Files to review
-reviewers:
-  python:
-    - "**/*.py"
-  typescript:
-    - "**/*.ts"
-    - "**/*.tsx"
-  configs:
-    - "*.config.ts"
-    - "*.config.js"
-    - "tsconfig.json"
-    - "*.json"
-
-# Exclude patterns
 exclude:
-  - "node_modules/**"
-  - ".next/**"
-  - "dist/**"
-  - "build/**"
-  - "coverage/**"
-  - ".scannerwork/**"
+  - node_modules/**
+  - .next/**
+  - dist/**
+  - build/**
+  - coverage/**
+  - .scannerwork/**
   - "*.pyc"
-  - "__pycache__/**"
-  - ".env.local"
-  - ".env"
-
-# Review guidelines per Copilot instructions
-guidelines:
-  - section: "TypeScript Strict Mode"
-    rules:
-      - "All files must use TypeScript strict mode"
-      - "No `any` types - use `unknown` or proper types"
-      - "Define types for all function parameters and returns"
-      - "Use type inference where appropriate for public APIs"
-
-  - section: "React Components"
-    rules:
-      - "Prefer Server Components by default"
-      - "Add 'use client' only when client-side features needed"
-      - "Use functional components with hooks"
-      - "PascalCase for components, kebab-case for files"
-      - "Single-responsibility principle"
-
-  - section: "Security"
-    rules:
-      - "Never hardcode credentials, API keys, or secrets"
-      - "Use environment variables for all sensitive data"
-      - "Validate all user input on client and server"
-      - "Follow Supabase RLS best practices"
-
-  - section: "Performance"
-    rules:
-      - "Minimize client-side JavaScript"
-      - "Use Next.js Image component for images"
-      - "Implement proper loading states with Suspense"
-      - "Avoid unnecessary re-renders"
-
-  - section: "Code Style"
-    rules:
-      - "Follow ESLint configuration (eslint.config.mjs)"
-      - "Use Prettier for formatting (2-space indentation)"
-      - "Use Tailwind CSS utility classes"
-      - "Use cn() utility for conditional classes"
-
-  - section: "File Organization"
-    rules:
-      - "Components in /components directory"
-      - "Utilities in /lib or /utils"
-      - "Routes in /app following Next.js App Router"
-      - "Use @/ path aliases"
-
-  - section: "Package Management"
-    rules:
-      - "Use npm as canonical package manager"
-      - "Maintain package-lock.json"
-      - "Do not use yarn or pnpm without approval"
-      - "Document any new dependencies"
-
-# Severity levels for auto-approval
-severity:
-  critical: false
-  high: false
-  medium: false
-  low: false
-  info: false
+  - __pycache__/**
+  - .env.local
+  - .env
+  - package-lock.json
