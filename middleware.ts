@@ -40,3 +40,17 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
 };
+
+export function middleware(request: NextRequest) {
+  // Use String.raw for regex patterns
+  const publicRoutes = String.raw`^/(auth|login|signup|api/auth)(/.*)?$`;
+  const protectedRoutes = String.raw`^/(dashboard|profile|settings)(/.*)?$`;
+
+  const pathname = request.nextUrl.pathname;
+
+  if (new RegExp(publicRoutes).test(pathname)) {
+    return undefined;
+  }
+
+  // ...existing code...
+}

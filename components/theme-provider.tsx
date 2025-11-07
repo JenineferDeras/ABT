@@ -3,21 +3,27 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ReactNode } from "react";
 
+interface ThemeProviderProps {
+  readonly children: ReactNode;
+  readonly attribute?: string;
+  readonly defaultTheme?: string;
+  readonly enableSystem?: boolean;
+  readonly storageKey?: string;
+}
+
 export function ThemeProvider({
   children,
-  ...props
-}: {
-  children: ReactNode;
-  [key: string]: unknown;
-}) {
+  attribute = "class",
+  defaultTheme = "system",
+  enableSystem = true,
+  storageKey = "theme",
+}: Readonly<ThemeProviderProps>) {
   return (
     <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      enableColorScheme
-      storageKey="theme-preference"
-      {...props}
+      attribute={attribute}
+      defaultTheme={defaultTheme}
+      enableSystem={enableSystem}
+      storageKey={storageKey}
     >
       {children}
     </NextThemesProvider>

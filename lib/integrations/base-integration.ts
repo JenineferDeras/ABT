@@ -12,11 +12,15 @@ export interface IntegrationConfig {
 /**
  * Base integration class with rate limiting, retry, and timeout logic
  */
-export class Integration {
+export abstract class BaseIntegration {
+  readonly cfg: IntegrationConfig;
+
   private callCount = 0;
   private lastReset = Date.now();
 
-  constructor(private cfg: IntegrationConfig) {}
+  constructor(config: IntegrationConfig) {
+    this.cfg = config;
+  }
 
   /**
    * Check and enforce rate limits
@@ -65,5 +69,9 @@ export class Integration {
       }
     }
     throw lastErr;
+  }
+
+  getConfig(): IntegrationConfig {
+    return this.cfg;
   }
 }

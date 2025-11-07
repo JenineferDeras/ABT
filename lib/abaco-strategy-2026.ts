@@ -286,7 +286,9 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
       result.numericConversions![column] = successRate >= 0.9;
 
       if (successRate < 0.9) {
-        result.issues?.push(`Numeric conversion failures detected for ${column}`);
+        result.issues?.push(
+          `Numeric conversion failures detected for ${column}`
+        );
         result.passed = false;
       }
     }
@@ -298,7 +300,9 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
     return result;
   }
 
-  result.completeness = Number(((1 - totalNulls / totalCells) * 100).toFixed(2));
+  result.completeness = Number(
+    ((1 - totalNulls / totalCells) * 100).toFixed(2)
+  );
   result.qualityScore = Math.round(
     computeQualityScore({
       nulls: totalNulls,
@@ -349,8 +353,9 @@ export function validateKPICalculation(
     0
   );
 
-  const defaultCount = portfolio.filter((loan: PortfolioLoan) => loan.dpd >= 180)
-    .length;
+  const defaultCount = portfolio.filter(
+    (loan: PortfolioLoan) => loan.dpd >= 180
+  ).length;
 
   result.kpis = {
     total_aum: sum,
@@ -451,7 +456,9 @@ export function validateAI2026Strategy(data: ValidationData): {
   return {
     passed:
       agents.length >= 8 &&
-      validations.every((validation) => validation.hasPersona && validation.hasFallback),
+      validations.every(
+        (validation) => validation.hasPersona && validation.hasFallback
+      ),
     validations,
     timestamp: new Date().toISOString(),
   };
@@ -601,4 +608,25 @@ export function calculateMaturityRisk(yearsEstablished: number): number {
   if (yearsEstablished < 2) return 0.8;
   if (yearsEstablished < 5) return 0.5;
   return Math.max(0.2, 0.2 + (10 - yearsEstablished) * 0.02); // Gradual decrease
+}
+
+/**
+ * Replace .forEach calls with for...of loops
+ */
+function processData(items: any[]): void {
+  for (const item of items) {
+    // Process item
+    console.log(item);
+  }
+}
+
+/**
+ * Use replaceAll instead of replace with global flag
+ */
+function normalizeText(text: string): string {
+  let result = text;
+  result = result.replaceAll(/\s+/g, " ");
+  result = result.replaceAll("  ", " ");
+  result = result.replaceAll(/[^\w\s-]/g, "");
+  return result.trim();
 }

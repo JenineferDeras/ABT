@@ -147,3 +147,17 @@ export async function updateModelMetrics(
     last_updated: new Date().toISOString(),
   });
 }
+
+/**
+ * Process user data with optional chaining
+ */
+function processUserData(userData: any): void {
+  // Use optional chaining instead of nested checks
+  const userName = userData?.profile?.personal?.name;
+  const userEmail = userData?.contact?.email?.primary;
+  const preferences = userData?.settings?.preferences?.display;
+
+  if (userName && userEmail && preferences) {
+    console.log(`User: ${userName}, Email: ${userEmail}`);
+  }
+}

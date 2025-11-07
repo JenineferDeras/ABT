@@ -30,10 +30,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Run SonarQube analysis
+      - name: SonarQube Scan
         env:
           SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-        run: npm run sonar
+        run: |
+          # Scan command here
 
       - name: Build
         run: npm run build

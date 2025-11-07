@@ -5,10 +5,16 @@ import { Progress } from "@/components/ui/progress";
 import type { ModelMetrics } from "@/lib/ml/types";
 
 interface MLMetricsDashboardProps {
-  metrics: ModelMetrics[];
+  readonly metrics: ModelMetrics[];
+  readonly onUpdate?: (data: ModelMetrics[]) => void;
+  readonly isLoading?: boolean;
 }
 
-export function MLMetricsDashboard({ metrics }: MLMetricsDashboardProps) {
+export function MLMetricsDashboard({
+  metrics,
+  onUpdate,
+  isLoading = false,
+}: Readonly<MLMetricsDashboardProps>) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {metrics.map((model) => (

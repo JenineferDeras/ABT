@@ -51,6 +51,8 @@ npm run dev
 
 The application will be available at `http://localhost:3000`
 
+For more information, visit the [official documentation](https://docs.example.com/setup).
+
 ## Available Commands
 
 ### Development

@@ -12,6 +12,48 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Helper functions to reduce complexity
+function isValidEmailFormat(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPasswordLength(password: string): boolean {
+  return password.length >= 8;
+}
+
+function hasUppercaseChar(str: string): boolean {
+  return /[A-Z]/.test(str);
+}
+
+function hasLowercaseChar(str: string): boolean {
+  return /[a-z]/.test(str);
+}
+
+function hasNumberChar(str: string): boolean {
+  return /\d/.test(str);
+}
+
+function hasSpecialChar(str: string): boolean {
+  return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(str);
+}
+
+// Simplified validation function
+export function validateEmail(email: string): boolean {
+  return isValidEmailFormat(email);
+}
+
+export function validatePassword(password: string): boolean {
+  if (!isValidPasswordLength(password)) return false;
+  if (!hasUppercaseChar(password)) return false;
+  if (!hasLowercaseChar(password)) return false;
+  if (!hasNumberChar(password)) return false;
+  return hasSpecialChar(password);
+}
+
+export function validateUsername(username: string): boolean {
+  return username.length >= 3 && username.length <= 20;
+}
+
 /**
  * Format a number using the en-US locale, defaulting to at most one fractional digit.
  *

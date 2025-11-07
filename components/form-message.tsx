@@ -2,25 +2,16 @@
 
 export interface FormMessageProps {
   readonly message?: string;
-  readonly type?: "error" | "success";
+  readonly type?: "error" | "success" | "info";
 }
 
 export function FormMessage({ message, type = "error" }: FormMessageProps) {
-  if (!message) {
-    return null;
-  }
+  const colorClass =
+    type === "error"
+      ? "text-red-500"
+      : type === "success"
+      ? "text-green-500"
+      : "text-blue-500";
 
-  return (
-    <div
-      className={`p-3 rounded-md text-sm ${
-        type === "error"
-          ? "bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-200"
-          : "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200"
-      }`}
-      role="status"
-      aria-live="polite"
-    >
-      {message}
-    </div>
-  );
+  return <output className={`text-sm ${colorClass}`}>{message}</output>;
 }

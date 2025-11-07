@@ -55,7 +55,7 @@ function snakeCase(header: string): string {
   return header
     .trim()
     .toLowerCase()
-    .replace(/[\s\-]+/g, "_")
+    .replaceAll(/[\s\-]+/g, "_")
     .replace(/[^a-z0-9_]/g, "_")
     .replace(/_+/g, "_")
     .replace(/^_|_$/g, "");
@@ -117,82 +117,22 @@ async function _getSupabaseClient(
   return createSupabaseClient(config.supabaseUrl, config.supabaseKey);
 }
 
-// COMMENT OUT OR REMOVE - This requires googleapis which has version issues
-// We'll implement this later when needed
-/*
-async function getDriveClient(config: IngestionConfig) {
-  const auth = new google.auth.JWT({
-    email: config.serviceAccountEmail,
-    key: config.privateKey,
-    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-  });
-
-  return google.drive({ version: "v3", auth });
+function extractMetadata(filename: string): Record<string, string> {
+  let result = filename;
+  result = result.replaceAll(/\s+/g, "_");
+  result = result.replaceAll(/[^\w.-]/g, "");
+  result = result.replaceAll(/-+/g, "-");
+  result = result.replaceAll(/_+/g, "_");
+  return { processed: result };
 }
 
-async function downloadFile(drive: Awaited<ReturnType<typeof getDriveClient>>, fileId: string): Promise<Buffer> {
-  const { data } = await drive.files.get(
-    { fileId, alt: "media" },
-    { responseType: "arraybuffer" },
-  );
-  return Buffer.from(data as ArrayBuffer);
-}
-
-function parseWorkbook(buffer: Buffer, fileName: string): NormalizedRecord[] {
-  const workbook = XLSX.read(buffer, { type: "buffer" });
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  if (!worksheet) return [];
-  const json = XLSX.utils.sheet_to_json<NormalizedRecord>(worksheet, { defval: null });
-  return normaliseRecords(fileName, json);
-}
-
-async function purgeExisting(supabase: SupabaseClient, table: string, workbookName: string): Promise<void> {
-  await supabase.from(table).delete().eq("workbook_name", workbookName);
-}
-
-async function insertRecords(supabase: SupabaseClient, table: string, records: NormalizedRecord[]): Promise<void> {
-  if (!records.length) return;
-  const { error } = await supabase.from(table).insert(records);
-  if (error) throw new Error(`Supabase insert failed for ${table}: ${error.message}`);
-}
-
-function resolveTable(fileName: string): string | null {
-  const mapping = FILE_PATTERNS.find(({ pattern }) => pattern.test(fileName));
-  return mapping?.table ?? null;
-}
-
-export async function ingestFromDrive(): Promise<void> {
-  const config = loadConfig();
-  const supabase = await getSupabaseClient(config);
-  const drive = await getDriveClient(config);
-
-  const filesResponse = await drive.files.list({
-    q: `'${config.driveFolderId}' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false`,
-    fields: "files(id, name, mimeType)",
-  });
-
-  const files = filesResponse.data.files ?? [];
-
-  for (const file of files) {
-    if (!file.id || !file.name) continue;
-    const table = resolveTable(file.name);
-    if (!table) {
-      console.warn(`[drive-ingest] Skipping unsupported file "${file.name}"`);
-      continue;
-    }
-
-    const buffer = await downloadFile(drive, file.id);
-    const records = parseWorkbook(buffer, file.name);
-
-    await purgeExisting(supabase, table, file.name);
-    await insertRecords(supabase, table, records);
-    console.info(`[drive-ingest] Upserted ${records.length} rows into ${table} from ${file.name}`);
-  }
-
-  const { error } = await supabase.rpc("refresh_ml_features");
-  if (error) {
-    throw new Error(`Failed to refresh ml_feature_snapshots: ${error.message}`);
+export async function processDriveFile(fileId: string): Promise<void> {
+  try {
+    // TODO: Implement drive file processing
+    const metadata = extractMetadata(fileId);
+    console.log("Processing:", metadata);
+  } catch (error) {
+    console.error("Drive ingest error:", error);
+    throw error;
   }
 }
-*/

@@ -16,13 +16,14 @@ const optional = ["GDRIVE_FOLDER_ID", "GDRIVE_SERVICE_ACCOUNT", "GROK_API_KEY"];
 const missing = required.filter((key) => !process.env[key]);
 const configured = optional.filter((key) => process.env[key]);
 
-if (missing.length > 0) {
-  console.error("❌ Missing required environment variables:");
-  missing.forEach((key) => console.error(`   - ${key}`));
-  process.exit(1);
+for (const envVar of required) {
+  if (!process.env[envVar]) {
+    console.error(`Missing environment variable: ${envVar}`);
+    process.exit(1);
+  }
 }
 
-console.log("✅ All required environment variables are set");
+console.log("✓ All required environment variables are set");
 if (configured.length > 0) {
   console.log(`✅ Optional features configured: ${configured.join(", ")}`);
 }
