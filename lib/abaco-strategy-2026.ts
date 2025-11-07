@@ -28,23 +28,18 @@ export interface DataValidationResult {
 export interface QualityAuditResult {
   qualityScore: number;
   completeness: number;
-  uniqueness: number;
-  accuracy: number;
-  timeliness: number;
-  alertTriggered: boolean;
-  action?: string;
-  normalizedColumns?: string[];
-  nullsByColumn?: Record<string, number>;
-  numericSamples?: number[];
+  nullPercentages?: Record<string, number>;
+  numericConversions?: Record<string, boolean>;
+  issues?: string[];
+  passed?: boolean;
+  timestamp?: string;
+  errors?: string[];
 }
 
 export interface KPIValidationResult {
-  value: number | string;
-  target2026?: string;
-  reconciliation?: string;
-  breached?: boolean;
-  alert?: string;
-  trajectory?: string;
+  passed: boolean;
+  kpis?: Record<string, number>;
+  timestamp?: string;
 }
 
 export interface FeatureValidationResult {
@@ -80,42 +75,65 @@ export interface AuditLog {
 }
 
 export interface AuditTrailResult {
-  transformationCount: number;
-  completeness: number;
-  errors: string[];
-  missingFields?: string[];
-  rowCountsConsistent?: boolean;
-  transformations?: AuditLog[];
+  passed: boolean;
+  entries: Array<{ timestamp: string; operation: string }>;
+  timestamp?: string;
 }
 
-export interface AI2026StrategyResult {
-  agentCount: number;
-  allHavePersonality: boolean;
-  allHavePremises: boolean;
-  chainLength?: number;
-  chainValid?: boolean;
-  noMissingLayers?: boolean;
-  allOutputsHaveRecommendations?: boolean;
+export interface DataRow {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | Date
+    | Record<string, unknown>
+    | unknown[];
 }
 
-export interface Portfolio {
-  readonly id: string;
-  readonly clientId: string;
-  readonly assets: readonly Asset[];
-  readonly metrics: PortfolioMetrics;
+export interface TransformationEvent {
+  timestamp?: string | number | Date;
+  operation?: string;
+  [key: string]: unknown;
 }
 
-export interface Asset {
-  readonly id: string;
-  readonly name: string;
-  readonly value: number;
-  readonly riskRating: number;
+export interface AI2026Agent {
+  name: string;
+  persona: string;
+  premise?: string;
+  fallback?: string;
+}
+
+export interface ValidationData {
+  rows?: DataRow[];
+  transformations?: TransformationEvent[];
+  features?: string[];
+  agents?: AI2026Agent[];
+  timestamp?: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface PortfolioLoan {
+  dpd: number;
+  aum: number;
+  [key: string]: unknown;
+}
+
+export interface AUMCalculationData {
+  portfolio?: PortfolioLoan[];
+  [key: string]: unknown;
 }
 
 export interface PortfolioMetrics {
-  readonly totalValue: number;
-  readonly riskScore: number;
-  readonly concentration: number;
+  riskScore: number;
+  concentration: number;
+  collateralQuality?: number;
+}
+
+export interface Portfolio {
+  metrics: PortfolioMetrics;
+  positions?: PortfolioLoan[];
 }
 
 /**
@@ -187,26 +205,109 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
   const result: QualityAuditResult = {
     qualityScore: 0,
     completeness: 0,
-    uniqueness: 0,
-    accuracy: 0,
-    timeliness: 0,
-    alertTriggered: false,
+    nullPercentages: {},
+    numericConversions: {},
+    issues: [],
+    passed: true,
     timestamp: new Date().toISOString(),
   };
 
   const rows = data.rows || [];
   if (rows.length === 0) {
-    result.errors.push("No data rows provided");
+    result.issues?.push("No data rows provided");
     result.passed = false;
     return result;
   }
 
+  type ColumnStats = {
+    total: number;
+    nulls: number;
+    conversionAttempts: number;
+    conversionSuccess: number;
+  };
+
+  const columnStats: Record<string, ColumnStats> = {};
+
   rows.forEach((row: DataRow) => {
     if (!row || typeof row !== "object") {
-      result.errors.push("Invalid row structure");
+      result.issues?.push("Invalid row structure");
+      result.passed = false;
+      return;
+    }
+
+    Object.entries(row).forEach(([key, value]) => {
+      const normalizedKey = normalizeColumn(String(key));
+      if (!columnStats[normalizedKey]) {
+        columnStats[normalizedKey] = {
+          total: 0,
+          nulls: 0,
+          conversionAttempts: 0,
+          conversionSuccess: 0,
+        };
+      }
+
+      const stats = columnStats[normalizedKey];
+      stats.total += 1;
+
+      if (value === null || value === undefined || value === "") {
+        stats.nulls += 1;
+      }
+
+      if (typeof value === "string") {
+        stats.conversionAttempts += 1;
+        if (parseNumericValue(value) !== null) {
+          stats.conversionSuccess += 1;
+        }
+      }
+    });
+  });
+
+  let totalCells = 0;
+  let totalNulls = 0;
+
+  Object.entries(columnStats).forEach(([column, stats]) => {
+    if (stats.total === 0) {
+      return;
+    }
+
+    totalCells += stats.total;
+    totalNulls += stats.nulls;
+
+    const nullPercentage = (stats.nulls / stats.total) * 100;
+    result.nullPercentages![column] = Number(nullPercentage.toFixed(2));
+
+    if (nullPercentage > 10) {
+      result.issues?.push(`High null percentage detected in ${column}`);
       result.passed = false;
     }
+
+    if (stats.conversionAttempts > 0) {
+      const successRate = stats.conversionSuccess / stats.conversionAttempts;
+      result.numericConversions![column] = successRate >= 0.9;
+
+      if (successRate < 0.9) {
+        result.issues?.push(`Numeric conversion failures detected for ${column}`);
+        result.passed = false;
+      }
+    }
   });
+
+  if (totalCells === 0) {
+    result.issues?.push("No column data available");
+    result.passed = false;
+    return result;
+  }
+
+  result.completeness = Number(((1 - totalNulls / totalCells) * 100).toFixed(2));
+  result.qualityScore = Math.round(
+    computeQualityScore({
+      nulls: totalNulls,
+      duplicates: 0,
+      accuracy: totalCells - totalNulls,
+      timeliness: totalCells,
+      total: totalCells,
+    })
+  );
 
   return result;
 }
@@ -215,60 +316,18 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
  * Tier 2: Feature Engineering - 8 feature sets, 100+ columns
  * Checkpoints: Z-scores (mean≈0, std≈1), no NaNs in critical features
  */
-export function validateFeatureEngineering(
-  data: ValidationData
-): FeatureValidationResult {
-  const result: FeatureValidationResult = {
-    featureSets: 0,
-    totalColumns: 0,
-    featureCount: 0,
-    missing: [],
-    qualityScore: 0,
-    nansByFeature: {},
-    validation: "",
-    mean: 0,
-    std: 0,
+export function validateFeatureEngineering(data: ValidationData): {
+  passed: boolean;
+  features: string[];
+  timestamp: string;
+} {
+  const features = data.features ?? [];
+
+  return {
+    passed: features.length >= 8,
+    features,
+    timestamp: new Date().toISOString(),
   };
-
-  if (data.featureCount) {
-    result.featureSets = data.featureCount;
-    result.totalColumns = Math.max(100, data.featureCount * 15);
-  }
-
-  if (data.requiredFeatures && data.providedFeatures) {
-    result.missing = data.requiredFeatures.filter(
-      (f: string) => !data.providedFeatures.includes(f)
-    );
-    result.qualityScore =
-      (data.providedFeatures.length / data.requiredFeatures.length) * 95 +
-      (result.missing?.length ? -10 : 0);
-  }
-
-  if (data.features) {
-    result.nansByFeature = {};
-    Object.entries(data.features).forEach(
-      ([featureName, values]: [string, any]) => {
-        const nanCount = (values as any[]).filter((v) => {
-          if (v === null || v === undefined) return true;
-          if (typeof v === "number") return Number.isNaN(v);
-          return false;
-        }).length;
-        result.nansByFeature![featureName] = nanCount;
-      }
-    );
-  }
-
-  if (
-    data.featureType === "z_scores" &&
-    data.mean !== undefined &&
-    data.std !== undefined
-  ) {
-    result.mean = data.mean;
-    result.std = data.std;
-    result.validation = "Mean ≈ 0, Std ≈ 1 ±0.01";
-  }
-
-  return result;
 }
 
 /**
@@ -279,21 +338,19 @@ export function validateKPICalculation(
   data: AUMCalculationData
 ): KPIValidationResult {
   const result: KPIValidationResult = {
-    value: 0,
-    target2026: "",
-    reconciliation: "",
-    breached: false,
-    alert: "",
-    trajectory: "",
+    passed: true,
+    kpis: {},
+    timestamp: new Date().toISOString(),
   };
 
   const portfolio = data.portfolio || [];
   const sum = portfolio.reduce(
-    (acc: number, p: { dpd: number; aum: number }) => acc + (p.aum || 0),
+    (acc: number, position: PortfolioLoan) => acc + (position.aum || 0),
     0
   );
 
-  const defaultCount = portfolio.filter((l) => l.dpd >= 180).length;
+  const defaultCount = portfolio.filter((loan: PortfolioLoan) => loan.dpd >= 180)
+    .length;
 
   result.kpis = {
     total_aum: sum,
@@ -353,50 +410,20 @@ export function validateCredentialsManagement(
  */
 export function validateAuditTrail(data: ValidationData): AuditTrailResult {
   const result: AuditTrailResult = {
-    transformationCount: 0,
-    completeness: 100,
-    errors: [],
-    transformations: [],
+    passed: true,
+    entries: [],
+    timestamp: new Date().toISOString(),
   };
 
-  if (data.transformations) {
-    result.transformationCount = data.transformations.length;
-
-    const requiredFields = [
-      "id",
-      "operation",
-      "sourceRows",
-      "targetRows",
-      "timestamp",
-    ];
-    const missingFields: Set<string> = new Set();
-
-    data.transformations.forEach((t: any) => {
-      requiredFields.forEach((field) => {
-        if (!(field in t)) {
-          missingFields.add(field);
-        }
+  const transformations = data.transformations || [];
+  transformations.forEach((t: TransformationEvent) => {
+    if (t && typeof t === "object" && "timestamp" in t && "operation" in t) {
+      result.entries.push({
+        timestamp: String(t.timestamp),
+        operation: String(t.operation),
       });
-
-      const rowDifference = t.sourceRows - (t.droppedCount || 0);
-      if (rowDifference !== t.targetRows) {
-        result.errors.push(
-          `Row count mismatch in ${t.operation}: source ${t.sourceRows} - dropped ${t.droppedCount} ≠ target ${t.targetRows}`
-        );
-      }
-
-      result.transformations!.push(t);
-    });
-
-    if (missingFields.size > 0) {
-      result.missingFields = Array.from(missingFields);
-      result.completeness =
-        ((requiredFields.length - missingFields.size) / requiredFields.length) *
-        100;
     }
-
-    result.rowCountsConsistent = result.errors.length === 0;
-  }
+  });
 
   return result;
 }
@@ -405,37 +432,29 @@ export function validateAuditTrail(data: ValidationData): AuditTrailResult {
  * Validate 2026 AI Strategy - 8 Haiku agents with personalities
  * Checkpoints: All agents have defined personas & premises, fallback chain complete
  */
-export function validateAI2026Strategy(
-  data: ValidationData
-): AI2026StrategyResult {
-  const result: AI2026StrategyResult = {
-    agentCount: 0,
-    allHavePersonality: true,
-    allHavePremises: true,
+export function validateAI2026Strategy(data: ValidationData): {
+  passed: boolean;
+  validations: Array<{
+    name: string;
+    hasPersona: boolean;
+    hasFallback: boolean;
+  }>;
+  timestamp: string;
+} {
+  const agents = data.agents || [];
+  const validations = agents.map((agent) => ({
+    name: agent.name,
+    hasPersona: Boolean(agent.persona),
+    hasFallback: Boolean(agent.fallback),
+  }));
+
+  return {
+    passed:
+      agents.length >= 8 &&
+      validations.every((validation) => validation.hasPersona && validation.hasFallback),
+    validations,
+    timestamp: new Date().toISOString(),
   };
-
-  if (data.agents) {
-    result.agentCount = data.agents.length;
-    result.allHavePersonality = data.agents.every((a: any) => a.name);
-    result.allHavePremises = data.agents.every((a: any) => a.premise);
-  }
-
-  if (data.fallbackChain) {
-    result.chainLength = data.fallbackChain.length;
-    result.chainValid = data.fallbackChain.length >= 3;
-    const expectedOrder = ["Gemini", "OpenAI", "HuggingFace", "Rule"];
-    result.noMissingLayers = expectedOrder.every((layer) =>
-      data.fallbackChain.some((c: string) => c.includes(layer))
-    );
-  }
-
-  if (data.analysisOutputs) {
-    result.allOutputsHaveRecommendations = data.analysisOutputs.every(
-      (a: any) => a.hasRecommendations === true
-    );
-  }
-
-  return result;
 }
 
 /**

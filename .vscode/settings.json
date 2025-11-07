@@ -62,8 +62,6 @@
   "tailwindCSS.lint.invalidConfigPath": "error",
   "tailwindCSS.lint.invalidTailwindDirective": "error",
   "tailwindCSS.lint.recommendedVariantOrder": "warning",
-  // CSS validation disabled: Tailwind CSS handles all styling
-  // Using @apply and Tailwind directives; native CSS validation conflicts
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
@@ -83,15 +81,13 @@
     "**/*.py"
   ],
   "python.analysis.ignore": ["**/__pycache__", "**/notebooks", "**/*.py"],
-  // Disable all Python linting tools
   "python.analysis.typeCheckingMode": "off",
   "pylance.typeCheckingMode": "off",
   "pylint.enable": false,
   "pylint.showCategories": false,
-  // CRITICAL FIX: Prevent Flake8 from auto-starting with missing venv
-  "flake8.enabled": false,r": "/usr/bin/python3",
+  "flake8.enabled": false,
   "flake8.interpreter": "/usr/bin/python3",
-  "flake8.args": [],ePatterns": [],
+  "flake8.args": [],
   "flake8.ignorePatterns": [],
   "flake8.serverSettings": {},
   "[flake8]": {
@@ -111,7 +107,8 @@
     "**/__pycache__": true,
     "**/*.pyc": true,
     "**/notebooks/__pycache__": true,
-    "**/notebooks/abaco_venv": true
+    "**/notebooks/abaco_venv": true,
+    "**/.vscode": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -155,7 +152,6 @@
     "typescript",
     "typescriptreact"
   ],
-  // Jest/Testing Library configuration
   "jest.showCoverageOnLoad": false,
   "jest.autoRun": "off",
   "jest.runMode": "on-demand",
@@ -180,7 +176,6 @@
     "javascriptreact": true
   },
   "github.copilot.chat.localeOverride": "en",
-  // CodeRabbit configuration
   "[coderabbit]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
@@ -203,15 +198,10 @@
       "source.organizeImports": "explicit"
     }
   },
-  "[python]": {
-    "editor.defaultFormatter": null,
-    "editor.formatOnSave": false
-  },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  // Disable direct file execution (use npm scripts instead)
   "code-runner.executorMap": {},
   "code-runner.runInTerminal": false
 }
