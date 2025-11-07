@@ -154,9 +154,9 @@
     "connectionId": "jenineferderas",
     "projectKey": "jenineferderas_abaco-sim-e"
   },
-  "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
+  "sonarlint.analysisExcludesStandalone": "**/node_modules/**,**/.next/**,**/dist/**,**/coverage/**,**/*.test.ts,**/*.test.tsx",
   "sonarlint.automaticAnalysis": true,
-  "sonarlint.focusOnNewCode": false,
+  "sonarlint.focusOnNewCode": true,
   "sonarlint.disableTelemetry": true,
   "github.copilot.enable": {
     "*": true,
