@@ -83,14 +83,24 @@
     "**/*.py"
   ],
   "python.analysis.ignore": ["**/__pycache__", "**/notebooks", "**/*.py"],
-  // Disable Pylance and Pylint for Python files since dependencies are managed separately
+  // Disable all Python linting tools
   "python.analysis.typeCheckingMode": "off",
   "pylance.typeCheckingMode": "off",
   "pylint.enable": false,
   "pylint.showCategories": false,
+  // CRITICAL FIX: Prevent Flake8 from auto-starting with missing venv
+  "flake8.enabled": false,r": "/usr/bin/python3",
+  "flake8.interpreter": "/usr/bin/python3",
+  "flake8.args": [],ePatterns": [],
+  "flake8.ignorePatterns": [],
+  "flake8.serverSettings": {},
+  "[flake8]": {
+    "enable": false
+  },
   "[python]": {
     "editor.defaultFormatter": null,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {}
   },
   "files.exclude": {
     "**/.git": true,
