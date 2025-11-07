@@ -62,6 +62,12 @@ export interface CredentialsValidationResult {
   allPresent?: boolean;
 }
 
+export interface CredentialsValidationInput {
+  codeSnippets?: string[];
+  environment?: string;
+  requiredSecrets?: string[];
+}
+
 export interface AuditLog {
   id: string;
   timestamp: string;
@@ -370,7 +376,7 @@ export function validateKPICalculation(
  * Checkpoints: Only environment variables used, GitHub secrets configured
  */
 export function validateCredentialsManagement(
-  data: any
+  data: CredentialsValidationInput = {}
 ): CredentialsValidationResult {
   const result: CredentialsValidationResult = {
     secretsFound: 0,
@@ -378,33 +384,32 @@ export function validateCredentialsManagement(
     violations: [],
   };
 
-  if (data.codeSnippets) {
-    const secretPatterns = [
-      /['"](sk-|pk-|ghp_|figd_)/i,
-      /password\s*=\s*['"]/i,
-      /api[_-]?key\s*=\s*['"]/i,
-      /secret\s*=\s*['"]/i,
-    ];
+  const codeSnippets = data.codeSnippets ?? [];
+  const secretPatterns = [
+    /['"](sk-|pk-|ghp_|figd_)/i,
+    /password\s*=\s*['"]/i,
+    /api[_-]?key\s*=\s*['"]/i,
+    /secret\s*=\s*['"]/i,
+  ];
 
-    data.codeSnippets.forEach((snippet: string) => {
-      secretPatterns.forEach((pattern) => {
-        if (pattern.test(snippet)) {
-          result.secretsFound++;
-          result.isCompliant = false;
-          result.violations.push("Hardcoded API key detected");
-        }
-      });
-    });
+  for (const snippet of codeSnippets) {
+    for (const pattern of secretPatterns) {
+      if (pattern.test(snippet)) {
+        result.secretsFound += 1;
+        result.isCompliant = false;
+        result.violations.push("Hardcoded secret detected");
+        break;
+      }
+    }
   }
 
   if (data.environment === "production" && result.secretsFound > 0) {
     result.isCompliant = false;
   }
 
-  if (data.requiredSecrets) {
-    result.requiredSecretsCount = data.requiredSecrets.length;
-    result.allPresent = true;
-  }
+  const requiredSecrets = data.requiredSecrets ?? [];
+  result.requiredSecretsCount = requiredSecrets.length;
+  result.allPresent = requiredSecrets.every(Boolean);
 
   return result;
 }
@@ -608,25 +613,4 @@ export function calculateMaturityRisk(yearsEstablished: number): number {
   if (yearsEstablished < 2) return 0.8;
   if (yearsEstablished < 5) return 0.5;
   return Math.max(0.2, 0.2 + (10 - yearsEstablished) * 0.02); // Gradual decrease
-}
-
-/**
- * Replace .forEach calls with for...of loops
- */
-function processData(items: any[]): void {
-  for (const item of items) {
-    // Process item
-    console.log(item);
-  }
-}
-
-/**
- * Use replaceAll instead of replace with global flag
- */
-function normalizeText(text: string): string {
-  let result = text;
-  result = result.replaceAll(/\s+/g, " ");
-  result = result.replaceAll("  ", " ");
-  result = result.replaceAll(/[^\w\s-]/g, "");
-  return result.trim();
 }

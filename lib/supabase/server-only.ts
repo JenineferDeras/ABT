@@ -13,17 +13,14 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll();
+        get(name: string) {
+          return cookieStore.get(name)?.value;
         },
-        setAll(cookiesToSet) {
-          try {
-            for (const { name, value, options } of cookiesToSet) {
-              cookieStore.set(name, value, options);
-            }
-          } catch {
-            // Silently handle cookie setting errors in server context
-          }
+        set(name: string, value: string, options?: Parameters<typeof cookieStore.set>[2]) {
+          cookieStore.set(name, value, options);
+        },
+        remove(name: string) {
+          cookieStore.delete(name);
         },
       },
     }

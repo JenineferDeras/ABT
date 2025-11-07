@@ -1,43 +1,29 @@
-import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import type { Metadata } from "next";
+import type React from "react";
+import "./globals.css";
 
-const geist = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const APP_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://abaco.finance";
 
 export const metadata: Metadata = {
   title: "ABACO Financial Intelligence Platform",
   description: "Financial intelligence and risk assessment platform",
-};
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
+  metadataBase: new URL(APP_URL),
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geist.variable} ${geistMono.variable} antialiased`}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          enableColorScheme
-          storageKey="theme-preference"
+          disableTransitionOnChange
         >
           {children}
         </ThemeProvider>

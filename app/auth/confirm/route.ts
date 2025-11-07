@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { type EmailOtpType } from "@supabase/supabase-js";
+import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { type NextRequest } from "next/server";
 
@@ -9,6 +10,20 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/";
 
+  const buildUrl = (target: string) => {
+    try {
+      return new URL(target).toString();
+    } catch {
+      return new URL(target, request.url).toString();
+    }
+  };
+
+  const redirectToError = (message: string) => {
+    const errorUrl = new URL("/auth/error", request.url);
+    errorUrl.searchParams.set("error", message);
+    redirect(errorUrl.toString() as Route);
+  };
+
   if (token_hash && type) {
     const supabase = await createClient();
 
@@ -17,14 +32,11 @@ export async function GET(request: NextRequest) {
       token_hash,
     });
     if (!error) {
-      // redirect user to specified redirect URL or root of app
-      redirect(next);
+      redirect(buildUrl(next) as Route);
     } else {
-      // redirect the user to an error page with some instructions
-      redirect(`/auth/error?error=${error?.message}`);
+      redirectToError(error?.message ?? "Verification failed");
     }
   }
 
-  // redirect the user to an error page with some instructions
-  redirect(`/auth/error?error=No token hash or type`);
+  redirectToError("No token hash or type provided");
 }

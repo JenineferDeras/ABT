@@ -1,8 +1,8 @@
-// Jest setup file
-import '@testing-library/jest-dom'
+/* eslint-env node, jest */
+import { jest } from "@jest/globals";
+import "@testing-library/jest-dom";
 
-// Mock next/navigation
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       push: jest.fn(),
@@ -11,36 +11,29 @@ jest.mock('next/navigation', () => ({
       back: jest.fn(),
       forward: jest.fn(),
       refresh: jest.fn(),
-    }
+    };
   },
   usePathname() {
-    return ''
+    return "";
   },
   useSearchParams() {
-    return new URLSearchParams()
+    return new URLSearchParams();
   },
-}))
+}));
 
-// Mock next/headers
-jest.mock('next/headers', () => ({
-  cookies: jest.fn(() => Promise.resolve({
-    getAll: () => [],
-    set: jest.fn(),
-    get: jest.fn(),
-  })),
-}))
+jest.mock("next/headers", () => ({
+  cookies: jest.fn(() =>
+    Promise.resolve({
+      getAll: () => [],
+      set: jest.fn(),
+      get: jest.fn(),
+    }),
+  ),
+}));
 
-// Mock environment variables
-process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
+process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "test-anon-key";
 
-// Global test setup
 global.console = {
   ...console,
-  // Uncomment to ignore a specific log level
-  // log: jest.fn(),
-  // debug: jest.fn(),
-  // info: jest.fn(),
-  // warn: jest.fn(),
-  // error: jest.fn(),
-}
+};

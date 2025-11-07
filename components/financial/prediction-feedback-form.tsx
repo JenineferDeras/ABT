@@ -47,7 +47,7 @@ export function PredictionFeedbackForm({
         throw new Error(errorData.error || "Failed to submit feedback");
       }
 
-      const result = await response.json();
+      await response.json();
       setSuccess(true);
       setActualOutcome("");
       setFeedback("");
@@ -55,8 +55,6 @@ export function PredictionFeedbackForm({
       if (onSuccess) {
         onSuccess();
       }
-
-      console.log("Feedback submitted. Model accuracy:", result.accuracy);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error occurred");
     } finally {

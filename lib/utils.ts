@@ -1,6 +1,10 @@
 import { type ClassValue, clsx } from "clsx";
+import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+
+const SPECIAL_CHAR_PATTERN =
+  /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
 
 /**
  * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
@@ -12,46 +16,36 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Helper functions to reduce complexity
-function isValidEmailFormat(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
-function isValidPasswordLength(password: string): boolean {
-  return password.length >= 8;
+export function isValidPassword(password: string): boolean {
+  return (
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /\d/.test(password)
+  );
 }
 
-function hasUppercaseChar(str: string): boolean {
-  return /[A-Z]/.test(str);
+export function formatDate(date: Date | string): string {
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
-function hasLowercaseChar(str: string): boolean {
-  return /[a-z]/.test(str);
-}
-
-function hasNumberChar(str: string): boolean {
-  return /\d/.test(str);
-}
-
-function hasSpecialChar(str: string): boolean {
-  return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(str);
-}
-
-// Simplified validation function
-export function validateEmail(email: string): boolean {
-  return isValidEmailFormat(email);
-}
-
-export function validatePassword(password: string): boolean {
-  if (!isValidPasswordLength(password)) return false;
-  if (!hasUppercaseChar(password)) return false;
-  if (!hasLowercaseChar(password)) return false;
-  if (!hasNumberChar(password)) return false;
-  return hasSpecialChar(password);
-}
-
-export function validateUsername(username: string): boolean {
-  return username.length >= 3 && username.length <= 20;
+export function formatDateTime(date: Date | string): string {
+  return new Date(date).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 /**
@@ -182,7 +176,7 @@ export function validatePasswordStrength(
   }
 
   // Check for special characters
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  if (!SPECIAL_CHAR_PATTERN.test(password)) {
     errors.push("Password must contain at least one special character");
   } else {
     score += 1;
@@ -212,8 +206,11 @@ export function encodedRedirect(
   path: string,
   message: string
 ): never {
-  const separator = path.includes("?") ? "&" : "?";
-  return redirect(`${path}${separator}${type}=${encodeURIComponent(message)}`);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const url = new URL(path, baseUrl);
+  url.searchParams.set(type, message);
+  return redirect(url.toString() as Route);
 }
 
 /**

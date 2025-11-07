@@ -4,6 +4,80 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.6%;
+  --brand-primary-light: 147 51% 65%;
+  --brand-primary-medium: 142 72% 29%;
+  --brand-primary-dark: 142 76% 36%;
+  --brand-primary-darker: 142 69% 15%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.6%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.6%;
+
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+
+  --accent: 0 0% 9.0%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 142 72% 29%;
+
+  --radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: 0 0% 3.6%;
+    --foreground: 0 0% 98.2%;
+    --brand-primary-light: 147 51% 65%;
+    --brand-primary-medium: 142 72% 29%;
+    --brand-primary-dark: 142 76% 36%;
+    --brand-primary-darker: 142 69% 15%;
+
+    --card: 0 0% 3.6%;
+    --card-foreground: 0 0% 98.2%;
+
+    --popover: 0 0% 3.6%;
+    --popover-foreground: 0 0% 98.2%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 98.2%;
+    --accent-foreground: 0 0% 9.0%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98.2%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 147 51% 65%;
+  }
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
   /* ABACO Color Palette - Purple Gradient System */
   --abaco-primary-light: #c1a6ff;
   --abaco-primary-medium: #a855f7;

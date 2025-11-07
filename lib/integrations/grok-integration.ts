@@ -1,6 +1,8 @@
 import { ContinueLearning } from "@/lib/ml/continue-learning";
 import type { Prediction } from "@/lib/ml/types";
-import { Integration } from "./base-integration";
+import { BaseIntegration } from "./base-integration";
+
+class GrokIntegration extends BaseIntegration {}
 
 export interface RiskContext {
   aum: number;
@@ -9,7 +11,7 @@ export interface RiskContext {
   defaultRate: number;
 }
 
-const grok = new Integration({
+const grok = new GrokIntegration({
   name: "Grok",
   enabled: !!process.env.GROK_API_KEY,
   rateLimitPerMinute: 60,

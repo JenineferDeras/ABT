@@ -1,6 +1,6 @@
 import {
-  createClient as createSupabaseClient,
-  type SupabaseClient,
+    createClient as createSupabaseClient,
+    type SupabaseClient,
 } from "@supabase/supabase-js";
 
 type NormalizedRecord = Record<string, unknown>;
@@ -13,7 +13,7 @@ interface IngestionConfig {
   privateKey: string;
 }
 
-const _FILE_PATTERNS = [
+export const FILE_PATTERNS = [
   { pattern: /portfolio/i, table: "raw_portfolios" },
   { pattern: /facility/i, table: "raw_facilities" },
   { pattern: /customer/i, table: "raw_customers" },
@@ -21,14 +21,14 @@ const _FILE_PATTERNS = [
   { pattern: /risk/i, table: "raw_risk_events" },
 ];
 
-const NUMERIC_CLEANER = /[\$€₡,%\s]/g;
+const NUMERIC_CLEANER = /[$€₡,%\s]/g;
 
 function required(name: string, value: string | undefined): string {
   if (!value) throw new Error(`Missing required environment variable: ${name}`);
   return value;
 }
 
-function _loadConfig(): IngestionConfig {
+export function loadIngestionConfig(): IngestionConfig {
   return {
     supabaseUrl: required(
       "SUPABASE_SERVICE_ROLE_URL",
@@ -55,7 +55,7 @@ function snakeCase(header: string): string {
   return header
     .trim()
     .toLowerCase()
-    .replaceAll(/[\s\-]+/g, "_")
+    .replaceAll(/[-\s]+/g, "_")
     .replace(/[^a-z0-9_]/g, "_")
     .replace(/_+/g, "_")
     .replace(/^_|_$/g, "");
@@ -89,7 +89,7 @@ function normaliseValue(key: string, value: unknown): unknown {
   return value;
 }
 
-function _normaliseRecords(
+export function normaliseRecords(
   workbookName: string,
   rows: NormalizedRecord[]
 ): NormalizedRecord[] {
@@ -111,7 +111,7 @@ function _normaliseRecords(
   });
 }
 
-async function _getSupabaseClient(
+export async function getSupabaseClient(
   config: IngestionConfig
 ): Promise<SupabaseClient> {
   return createSupabaseClient(config.supabaseUrl, config.supabaseKey);
@@ -122,15 +122,17 @@ function extractMetadata(filename: string): Record<string, string> {
   result = result.replaceAll(/\s+/g, "_");
   result = result.replaceAll(/[^\w.-]/g, "");
   result = result.replaceAll(/-+/g, "-");
-  result = result.replaceAll(/_+/g, "_");
   return { processed: result };
 }
 
 export async function processDriveFile(fileId: string): Promise<void> {
   try {
     // TODO: Implement drive file processing
+    const config = loadIngestionConfig();
+    const client = await getSupabaseClient(config);
     const metadata = extractMetadata(fileId);
-    console.log("Processing:", metadata);
+    void client;
+    void metadata;
   } catch (error) {
     console.error("Drive ingest error:", error);
     throw error;

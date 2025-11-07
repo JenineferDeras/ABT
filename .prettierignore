@@ -1,0 +1,10 @@
+node_modules
+.next
+dist
+build
+coverage
+.vercel
+*.log
+.DS_Store
+.env*
+package-lock.json

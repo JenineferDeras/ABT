@@ -1,215 +1,132 @@
-# ABACO Financial Intelligence Platform
+# Next.js + Supabase Starter
 
-A Next.js 15 application with Supabase integration for financial analysis and risk assessment.
+A modern, production-ready starter template for building full-stack applications with Next.js and Supabase.
 
-## 🚀 Current Status
+## Features
 
-**Phase 1: Foundation** ✅ Complete
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Strict mode for type safety
+- **Supabase** - Open source Firebase alternative
+- **Tailwind CSS** - Utility-first CSS framework
+- **Authentication** - Built-in Supabase auth
+- **Dark Mode** - Theme switching with next-themes
+- **Testing** - Vitest + React Testing Library
+- **ESLint & Prettier** - Code quality tools
 
-- Next.js 15 + Supabase infrastructure
-- Authentication system
-- ML prediction framework (Continue Learning)
-- Basic API endpoints
-- Test suite with Jest
-
-**Phase 2: Deployment** 🔄 In Progress
-
-- Environment configuration
-- Production deployment
-- Monitoring setup
-
-## 📋 Project Phases
-
-### Phase 1: Foundation ✅ (Completed)
-
-- [x] Next.js 15 with App Router
-- [x] Supabase authentication and database
-- [x] TypeScript strict mode
-- [x] Tailwind CSS + shadcn/ui
-- [x] ML prediction tracking framework
-- [x] Jest test suite
-- [x] ESLint + Prettier
-
-### Phase 2: Deployment 🔄 (Current)
-
-- [ ] Configure production environment variables
-- [ ] Deploy to Vercel/Netlify
-- [ ] Set up monitoring
-- [ ] Configure CI/CD
-
-### Phase 3: Data Integration (Next 2-4 weeks)
-
-- [ ] Supabase database schema for factoring business
-- [ ] CRUD API endpoints
-- [ ] Data import tools
-- [ ] Google Drive integration (optional)
-
-### Phase 4: Analytics & AI (4-8 weeks)
-
-- [ ] Risk assessment algorithms
-- [ ] Financial analysis dashboards
-- [ ] Credit scoring models
-- [ ] Automated reporting
-
-### Phase 5: Advanced Features (8-12 weeks)
-
-- [ ] Advanced AI agents
-- [ ] Multi-market expansion
-- [ ] Automated decision engines
-- [ ] Scalability optimizations
-
-## 🛠️ Technology Stack
-
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Backend**: Supabase (PostgreSQL)
-- **Styling**: Tailwind CSS + shadcn/ui
-- **AI**: xAI Grok integration
-- **Testing**: Jest + React Testing Library
-- **Deployment**: Vercel (or Netlify)
-
-## 📦 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 20.x or later
-- npm (official package manager)
+- Node.js 20+
+- npm 10+
 - Supabase account
-- Git
 
-### Local Development
-
-1. **Clone repository**
-
-   ```bash
-   git clone https://github.com/Jeninefer/nextjs-with-supabase.git
-   cd nextjs-with-supabase
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment**
-
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your actual Supabase credentials
-   ```
-
-4. **Run database migrations**
-
-   ```bash
-   npx supabase db push
-   ```
-
-5. **Start development server**
-
-   ```bash
-   npm run dev
-   ```
-
-6. **Open browser**
-   ```
-   http://localhost:3000
-   ```
-
-## 🧪 Testing
+### Installation
 
 ```bash
-# Run all tests
-npm test
+# Clone repository
+git clone <your-repo>
+cd nextjs-with-supabase
 
-# Run tests in watch mode
-npm test -- --watch
+# Install dependencies
+npm ci
 
-# Run tests with coverage
-npm test -- --coverage
+# Setup environment
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
 
-# Run specific test file
-npm test -- __tests__/ml/continue-learning.test.ts
+# Run development server
+npm run dev
 ```
 
-## 📚 Documentation
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-- [Deployment Guide](./docs/DEPLOYMENT_QUICK_START.md)
-- [ML Framework](./docs/ML_FRAMEWORK.md)
-- [PR #270 Summary](./docs/PR_270_SUMMARY.md)
-- [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
-- [Troubleshooting](./docs/TROUBLESHOOTING.md)
+## Environment Variables
 
-## 🔐 Environment Variables
+Create `.env.local` with:
 
-Required variables (get from [Supabase Dashboard](https://supabase.com/dashboard)):
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
+
+## Development
 
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+# Development server
+npm run dev
+
+# Lint code
+npm run lint
+
+# Type checking
+npm run type-check
+
+# Format code
+npm run format
+
+# Run tests
+npm run test
+
+# Coverage
+npm run test:coverage
 ```
 
-Optional variables:
+## Project Structure
+
+```
+├── app/              # Next.js app directory
+├── components/       # React components
+├── lib/             # Utilities and types
+├── utils/           # Helper functions
+├── public/          # Static files
+├── supabase/        # Supabase config
+└── middleware.ts    # Next.js middleware
+```
+
+## Technology Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Database**: Supabase PostgreSQL
+- **Auth**: Supabase SSR
+- **Styling**: Tailwind CSS
+- **UI Components**: Custom + shadcn/ui pattern
+- **Testing**: Vitest + React Testing Library
+
+## Deployment
+
+### Vercel (Recommended)
 
 ```bash
-GROK_API_KEY=your-grok-api-key  # For AI features
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+npm run build
+vercel deploy
 ```
 
-## 🚢 Deployment
+### Other Platforms
 
-See [Deployment Quick Start](./docs/DEPLOYMENT_QUICK_START.md) for detailed instructions.
-
-**Quick deploy to Vercel:**
+Ensure Node.js 20+ is configured and run:
 
 ```bash
-vercel --prod
+npm run build
+npm run start
 ```
 
-**Alternative platforms:**
+## Security
 
-- Netlify (no deployment limits)
-- Railway (Docker support)
-- Supabase Edge Functions (backend only)
+- ✅ TypeScript strict mode
+- ✅ Input validation
+- ✅ Environment variables
+- ✅ Server-side authentication
+- ✅ CSRF protection via Next.js
 
-## 🐛 Known Issues
+## Contributing
 
-1. **Vercel Rate Limit**: Free tier limited to 100 deployments/day
-   - **Solution**: Use Git integration or upgrade to Pro
-2. **Missing Dependencies**: Ensure `zod` and `@testing-library/jest-dom` are installed
+1. Create a feature branch
+2. Commit your changes
+3. Push to the branch
+4. Create a Pull Request
 
-   - **Solution**: Run `npm install`
+## License
 
-3. **Textarea Component**: May need manual installation
-   - **Solution**: Run `npx shadcn@latest add textarea`
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🙏 Acknowledgments
-
-- Next.js team for the amazing framework
-- Supabase for the backend infrastructure
-- shadcn/ui for beautiful components
-- Vercel for hosting
-
-## 📞 Support
-
-- **Issues**: https://github.com/Jeninefer/nextjs-with-supabase/issues
-- **Discussions**: https://github.com/Jeninefer/nextjs-with-supabase/discussions
-- **Email**: support@abacocapital.co
-
----
-
-**Current Version**: 0.1.0  
-**Last Updated**: 2025-01-06  
-**Status**: 🟢 Development Active
+MIT
