@@ -18,7 +18,7 @@ export default function Home() {
           <Link href="/auth/login">
             <Button size="lg">Sign In</Button>
           </Link>
-          <Link href="/auth/signup">
+          <Link href="/auth/sign-up">
             <Button size="lg" variant="outline">
               Create Account
             </Button>
