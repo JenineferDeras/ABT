@@ -83,7 +83,6 @@ If you hit the 100 deployments/day limit:
    ```
 
 4. **Configure Build Settings**
-
    - Build command: `npm run build`
    - Publish directory: `.next`
    - Functions directory: `.netlify/functions`

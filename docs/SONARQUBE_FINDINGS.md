@@ -9,20 +9,17 @@ Current findings: 164 issues across the codebase
 Based on typical SonarQube analysis for Next.js projects, issues likely fall into:
 
 1. **Code Smells** (~60 issues)
-
    - Unused variables
    - Complex logic
    - Duplicate code
    - Empty catch blocks
 
 2. **Security Issues** (~40 issues)
-
    - Hardcoded credentials
    - Missing input validation
    - Unsafe DOM operations
 
 3. **Bugs** (~30 issues)
-
    - Logic errors
    - Type mismatches
    - Missing error handling

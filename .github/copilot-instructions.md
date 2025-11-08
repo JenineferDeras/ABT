@@ -52,7 +52,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Follow the established design system using CSS variables defined in `globals.css`
 - Use the `cn()` utility from `@/lib/utils` for conditional className combinations
 - Respect the dark mode implementation using `next-themes`
-- Custom colors: Primary purple gradient (`--brand-primary-light`, `--brand-primary-medium`, `--brand-primary-dark`, `--brand-primary-darker`) (see `globals.css`). 
+- Custom colors: Primary purple gradient (`--brand-primary-light`, `--brand-primary-medium`, `--brand-primary-dark`, `--brand-primary-darker`) (see `globals.css`).
   The `brand` prefix is a placeholder for your project's custom color palette. Please customize these variable names and color values to match your own branding and design system.
 
 ### Supabase Integration
@@ -110,6 +110,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 > **Note:** This project officially supports and tests only `npm` as the package manager. Using `yarn` or `pnpm` is not recommended and may result in deployment errors unless you manually maintain the corresponding lockfile (`yarn.lock` or `pnpm-lock.yaml`) and resolve any issues yourself. Only `npm` is guaranteed to work in CI/CD and deployment, **due to Vercel deployment requirements**.
 
 **Start development server**
+
 - `npm run dev`
 
 <!--
@@ -119,6 +120,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 -->
 
 **Build for production**
+
 - `npm run build`
 
 <!--
@@ -127,6 +129,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 -->
 
 **Start production server**
+
 - `npm run start`
 
 <!--
@@ -135,12 +138,14 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 -->
 
 **Run ESLint**
+
 - `npm run lint`
 
 <!--
 - `yarn lint`
 - `pnpm lint`
 -->
+
 ## Testing
 
 - Currently, no testing framework is configured.
@@ -159,11 +164,13 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Supabase URL and anon key are required for the app to function
 
 ## Runtime & CI (updated)
+
 - Preferred Node.js runtime for local development and CI: Node 20.x (update docker/devcontainer images and CI runner to Node 20).
 - Use npm as the canonical package manager in CI (Vercel and our pipelines expect npm lockfile handling).
 - Vercel: free-tier rate limits apply. If you see "api-deployments-free-per-day" errors, either retry later or consider upgrading the plan / throttling CI deployments.
 
 ## Security / System files (important)
+
 - Do NOT edit system-level files under /usr/lib, /usr/local, or other OS-level directories from the workspace.
 - If you need to patch a dependency installed globally or in node_modules system-wide, use approved strategies:
   - Fork the package and reference it in package.json
@@ -172,6 +179,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Attempts to modify system files will fail due to permissions and may break the development container.
 
 ## Troubleshooting tips
+
 - If devcontainer fails with 'unable to find user codespace' or similar, confirm your devcontainer config and base image support the current user mapping.
 - If Next.js fails on startup with EADDRINUSE, either stop the process on that port or run on a different port:
   - PORT=3001 npm run dev
@@ -182,6 +190,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
   - Ensure your test runner is present in dev and CI images.
 
 ## Alpine Linux notes
+
 - This workspace is running in a dev container on Alpine Linux v3.22.
 - Some common commands available: `apk`, `git`, `curl`, `lsof`, `netstat`, `ps`, etc.
 - Use `"$BROWSER" <url>` to open a webpage in the host's default browser.

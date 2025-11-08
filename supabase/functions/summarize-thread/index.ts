@@ -20,28 +20,21 @@ serve(async (req) => {
   try {
     const authorization = req.headers.get("Authorization");
     if (!authorization) {
-      return new Response(
-        JSON.stringify({ error: "Authorization required" }),
-        {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return new Response(JSON.stringify({ error: "Authorization required" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const { threadId } = await req.json();
 
-    return new Response(
-      JSON.stringify({ success: true, threadId }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: true, threadId }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

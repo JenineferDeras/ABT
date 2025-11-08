@@ -48,7 +48,7 @@ export async function GET() {
   headers.set("X-Total-Time-ms", responseBody.metadata.totalTimeMs.toString());
   headers.set(
     "Server-Timing",
-    `query;dur=${responseBody.metadata.queryTimeMs}, total;dur=${responseBody.metadata.totalTimeMs}`
+    `query;dur=${responseBody.metadata.queryTimeMs}, total;dur=${responseBody.metadata.totalTimeMs}`,
   );
 
   return NextResponse.json(responseBody, { headers });
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json(
         { error: "Invalid risk context data" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
         error: "Failed to generate risk summary",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

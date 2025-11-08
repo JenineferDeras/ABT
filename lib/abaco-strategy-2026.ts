@@ -293,7 +293,7 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
 
       if (successRate < 0.9) {
         result.issues?.push(
-          `Numeric conversion failures detected for ${column}`
+          `Numeric conversion failures detected for ${column}`,
         );
         result.passed = false;
       }
@@ -307,7 +307,7 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
   }
 
   result.completeness = Number(
-    ((1 - totalNulls / totalCells) * 100).toFixed(2)
+    ((1 - totalNulls / totalCells) * 100).toFixed(2),
   );
   result.qualityScore = Math.round(
     computeQualityScore({
@@ -316,7 +316,7 @@ export function validateDataQuality(data: ValidationData): QualityAuditResult {
       accuracy: totalCells - totalNulls,
       timeliness: totalCells,
       total: totalCells,
-    })
+    }),
   );
 
   return result;
@@ -345,7 +345,7 @@ export function validateFeatureEngineering(data: ValidationData): {
  * Checkpoints: Treasury reconciliation ±0.1%, thresholds verified
  */
 export function validateKPICalculation(
-  data: AUMCalculationData
+  data: AUMCalculationData,
 ): KPIValidationResult {
   const result: KPIValidationResult = {
     passed: true,
@@ -356,11 +356,11 @@ export function validateKPICalculation(
   const portfolio = data.portfolio || [];
   const sum = portfolio.reduce(
     (acc: number, position: PortfolioLoan) => acc + (position.aum || 0),
-    0
+    0,
   );
 
   const defaultCount = portfolio.filter(
-    (loan: PortfolioLoan) => loan.dpd >= 180
+    (loan: PortfolioLoan) => loan.dpd >= 180,
   ).length;
 
   result.kpis = {
@@ -376,7 +376,7 @@ export function validateKPICalculation(
  * Checkpoints: Only environment variables used, GitHub secrets configured
  */
 export function validateCredentialsManagement(
-  data: CredentialsValidationInput = {}
+  data: CredentialsValidationInput = {},
 ): CredentialsValidationResult {
   const result: CredentialsValidationResult = {
     secretsFound: 0,
@@ -462,7 +462,7 @@ export function validateAI2026Strategy(data: ValidationData): {
     passed:
       agents.length >= 8 &&
       validations.every(
-        (validation) => validation.hasPersona && validation.hasFallback
+        (validation) => validation.hasPersona && validation.hasFallback,
       ),
     validations,
     timestamp: new Date().toISOString(),

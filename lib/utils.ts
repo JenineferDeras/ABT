@@ -3,8 +3,7 @@ import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
-const SPECIAL_CHAR_PATTERN =
-  /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
+const SPECIAL_CHAR_PATTERN = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
 
 /**
  * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
@@ -57,7 +56,7 @@ export function formatDateTime(date: Date | string): string {
  */
 export function formatNumber(
   value: number,
-  options?: Intl.NumberFormatOptions
+  options?: Intl.NumberFormatOptions,
 ) {
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 1,
@@ -77,7 +76,7 @@ export function formatNumber(
 export function formatCurrency(
   value: number,
   currency: string = "USD",
-  options?: Intl.NumberFormatOptions
+  options?: Intl.NumberFormatOptions,
 ) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -96,7 +95,7 @@ export function formatCurrency(
  */
 export function formatPercent(
   value: number,
-  options?: Intl.NumberFormatOptions
+  options?: Intl.NumberFormatOptions,
 ) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "percent",
@@ -114,7 +113,7 @@ export function formatPercent(
 export const hasEnvVars = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
     (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
 );
 
 /**
@@ -141,7 +140,7 @@ export interface PasswordValidationResult {
  * @returns PasswordValidationResult with validation details
  */
 export function validatePasswordStrength(
-  password: string
+  password: string,
 ): PasswordValidationResult {
   const errors: string[] = [];
   let score = 0;
@@ -204,10 +203,9 @@ export function validatePasswordStrength(
 export function encodedRedirect(
   type: "error" | "success",
   path: string,
-  message: string
+  message: string,
 ): never {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const url = new URL(path, baseUrl);
   url.searchParams.set(type, message);
   return redirect(url.toString() as Route);

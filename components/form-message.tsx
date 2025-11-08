@@ -10,8 +10,8 @@ export function FormMessage({ message, type = "error" }: FormMessageProps) {
     type === "error"
       ? "text-red-500"
       : type === "success"
-      ? "text-green-500"
-      : "text-blue-500";
+        ? "text-green-500"
+        : "text-blue-500";
 
   return <output className={`text-sm ${colorClass}`}>{message}</output>;
 }

@@ -10,10 +10,11 @@
    - Referenciar en workflows como: `${{ secrets.SUPABASE_URL }}`
 
 2. **Usa Variables de Entorno Locales**
+
    ```bash
    # Copiar template
    cp .env.example.secure .env.local
-   
+
    # Llenar con credenciales REALES
    # NUNCA commitear este archivo
    ```
@@ -36,14 +37,14 @@
 
 ## 2. TIPOS DE SECRETOS Y DÓNDE GUARDARLOS
 
-| Secreto | Dónde Guardar | Acceso |
-|---------|---------------|--------|
-| `SUPABASE_SERVICE_ROLE_KEY` | GitHub Secrets + .env.local | Solo servidor |
-| `OPENAI_API_KEY` | GitHub Secrets + .env.local | Servidor y frontend |
-| `POSTGRES_CONNECTION_STRING` | GitHub Secrets solamente | Solo servidor |
-| `GITHUB_TOKEN` | GitHub Secrets solamente | CI/CD |
-| `SLACK_BOT_TOKEN` | GitHub Secrets solamente | Backend |
-| Claves públicas (ANON_KEY) | `.env.local` / Frontend | Público |
+| Secreto                      | Dónde Guardar               | Acceso              |
+| ---------------------------- | --------------------------- | ------------------- |
+| `SUPABASE_SERVICE_ROLE_KEY`  | GitHub Secrets + .env.local | Solo servidor       |
+| `OPENAI_API_KEY`             | GitHub Secrets + .env.local | Servidor y frontend |
+| `POSTGRES_CONNECTION_STRING` | GitHub Secrets solamente    | Solo servidor       |
+| `GITHUB_TOKEN`               | GitHub Secrets solamente    | CI/CD               |
+| `SLACK_BOT_TOKEN`            | GitHub Secrets solamente    | Backend             |
+| Claves públicas (ANON_KEY)   | `.env.local` / Frontend     | Público             |
 
 ---
 
@@ -98,6 +99,7 @@
 ## 4. CONFIGURACIÓN DE GITHUB SECRETS
 
 ### Para Supabase
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://your-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
@@ -105,6 +107,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...
 ```
 
 ### Para APIs
+
 ```
 OPENAI_API_KEY=sk-proj-...
 GOOGLE_API_KEY=AIzaSy...
@@ -114,6 +117,7 @@ XAI_API_KEY=xai-...
 ```
 
 ### Para Integraciones
+
 ```
 GITHUB_TOKEN=ghp_...
 SLACK_BOT_TOKEN=xoxb-...
@@ -126,12 +130,14 @@ FIGMA_TOKEN=figd_...
 ## 5. ROTACIÓN DE CREDENCIALES
 
 ### Cuando Rotar
+
 - [ ] Después de breach/exposición
 - [ ] Cada 90 días (política recomendada)
 - [ ] Cuando empleado sale de equipo
 - [ ] Cambios de permisos
 
 ### Cómo Rotar
+
 1. **Generar nuevas credenciales** en el servicio
 2. **Actualizar GitHub Secrets**
 3. **Actualizar `.env.local`** local
@@ -169,7 +175,7 @@ FIGMA_TOKEN=figd_...
 ## 7. CHECKLIST DE SEGURIDAD ANTES DE PUSH
 
 - [ ] ¿Removí `.env` files antes de commit?
-- [ ] ¿Executé `git diff --staged`** y verifiqué que no hay secretos?
+- [ ] ¿Executé `git diff --staged`\*\* y verifiqué que no hay secretos?
 - [ ] ¿Todos los secrets están en GitHub Secrets?
 - [ ] ¿El pre-commit hook pasó sin errores?
 - [ ] ¿Verifiqué `.gitignore` incluye `.env*`?
@@ -193,6 +199,7 @@ FIGMA_TOKEN=figd_...
 **NO** abrir issues públicas para vulnerabilidades.
 
 Reportar a: `security@abaco.finance` con detalles:
+
 - Descripción del issue
 - Pasos para reproducir
 - Impacto potencial

@@ -21,7 +21,7 @@ export async function GET() {
         },
         hint: "Check your .env or deployment environment variables.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -36,7 +36,7 @@ export async function GET() {
         },
         hint: "Your Supabase URL should look like https://xyzcompany.supabase.co",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -58,7 +58,7 @@ export async function GET() {
             NEXT_PUBLIC_SUPABASE_ANON_KEY: mask(anonKey),
           },
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -82,7 +82,7 @@ export async function GET() {
           NEXT_PUBLIC_SUPABASE_ANON_KEY: mask(anonKey),
         },
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

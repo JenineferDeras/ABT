@@ -14,14 +14,18 @@ export async function middleware(request: NextRequest) {
         get(name: string) {
           return request.cookies.get(name)?.value;
         },
-        set(name: string, value: string, options?: Parameters<typeof response.cookies.set>[2]) {
+        set(
+          name: string,
+          value: string,
+          options?: Parameters<typeof response.cookies.set>[2],
+        ) {
           response.cookies.set(name, value, options);
         },
         remove(name: string) {
           response.cookies.delete(name);
         },
       },
-    }
+    },
   );
 
   await supabase.auth.getUser();

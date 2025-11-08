@@ -170,6 +170,7 @@ gcloud billing projects describe YOUR-PROJECT-ID
 ## Common Error Solutions
 
 ### "You need additional access to the project"
+
 ```bash
 # Check your projects
 gcloud projects list
@@ -179,6 +180,7 @@ gcloud projects create YOUR-NEW-PROJECT-ID
 ```
 
 ### "API has not been used in project before"
+
 ```bash
 # Enable the specific API
 gcloud services enable API_NAME.googleapis.com
@@ -188,12 +190,14 @@ gcloud services enable dataproc.googleapis.com
 ```
 
 ### "The current branch has no upstream branch"
+
 ```bash
 # Set upstream and push
 git push -u origin main
 ```
 
 ### "Permission denied"
+
 ```bash
 # Grant yourself necessary permissions
 gcloud projects add-iam-policy-binding YOUR-PROJECT-ID \
@@ -248,4 +252,4 @@ alias gcm='git commit -m'
 
 ---
 
-*Keep this file handy for quick reference when working with Google Cloud!*
+_Keep this file handy for quick reference when working with Google Cloud!_

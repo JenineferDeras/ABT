@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,7 +49,7 @@ export function UpdatePasswordForm({
     try {
       // Update the user's password
       const { error: updateError } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
 
       if (updateError) {
@@ -73,7 +73,9 @@ export function UpdatePasswordForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="mx-auto max-w-sm bg-gradient-to-br from-purple-900/20 to-slate-900/40 backdrop-blur-sm border border-purple-500/20 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl text-white font-['Lato']">Reset Your Password</CardTitle>
+          <CardTitle className="text-2xl text-white font-['Lato']">
+            Reset Your Password
+          </CardTitle>
           <CardDescription className="text-purple-300 font-['Poppins']">
             Please enter your new password below.
           </CardDescription>
@@ -82,7 +84,10 @@ export function UpdatePasswordForm({
           <form onSubmit={handleUpdatePassword}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="password" className="text-purple-200 font-['Poppins']">
+                <Label
+                  htmlFor="password"
+                  className="text-purple-200 font-['Poppins']"
+                >
                   New password
                 </Label>
                 <Input
@@ -95,9 +100,12 @@ export function UpdatePasswordForm({
                   className="bg-slate-800/50 border-purple-400/20 text-white placeholder:text-gray-400 focus:border-purple-400"
                 />
               </div>
-              
+
               <div className="grid gap-2">
-                <Label htmlFor="confirmPassword" className="text-purple-200 font-['Poppins']">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-purple-200 font-['Poppins']"
+                >
                   Confirm new password
                 </Label>
                 <Input
@@ -113,19 +121,23 @@ export function UpdatePasswordForm({
 
               {error && (
                 <div className="p-3 bg-red-900/20 border border-red-400/20 rounded-lg">
-                  <p className="text-sm text-red-400 font-['Poppins']">{error}</p>
+                  <p className="text-sm text-red-400 font-['Poppins']">
+                    {error}
+                  </p>
                 </div>
               )}
 
               {success && (
                 <div className="p-3 bg-green-900/20 border border-green-400/20 rounded-lg">
-                  <p className="text-sm text-green-400 font-['Poppins']">{success}</p>
+                  <p className="text-sm text-green-400 font-['Poppins']">
+                    {success}
+                  </p>
                 </div>
               )}
 
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-['Poppins'] font-semibold transition-all duration-200" 
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-['Poppins'] font-semibold transition-all duration-200"
                 disabled={isLoading}
               >
                 {isLoading ? "Saving..." : "Save new password"}

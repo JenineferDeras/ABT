@@ -3,6 +3,7 @@
 ## Setup
 
 1. **Clone & Install**
+
    ```bash
    git clone <repo>
    cd nextjs-with-supabase
@@ -10,9 +11,11 @@
    ```
 
 2. **Configure Environment**
+
    ```bash
    cp .env.example .env.local
    ```
+
    - Get credentials from [Supabase Dashboard](https://supabase.com/dashboard)
    - Add to `.env.local`
 
@@ -24,16 +27,19 @@
 ## Code Style
 
 ### TypeScript
+
 - Use strict mode (enabled in tsconfig.json)
 - Avoid `any` - use `unknown` or proper types
 - Define return types for public functions
 
 ### React Components
+
 - Prefer Server Components
 - Use `"use client"` only when needed
 - Keep components focused and reusable
 
 ### File Organization
+
 ```
 components/
   ├── ui/              # Reusable UI components
@@ -70,16 +76,19 @@ npm run test:coverage
 ## Troubleshooting
 
 ### Port 3000 in use
+
 ```bash
 PORT=3001 npm run dev
 ```
 
 ### Supabase connection fails
+
 - Check `NEXT_PUBLIC_SUPABASE_URL`
 - Check `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - Verify Supabase project is active
 
 ### Type errors
+
 ```bash
 npm run type-check
 ```

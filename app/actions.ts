@@ -9,7 +9,7 @@ export interface ActionState {
 
 export async function updatePasswordAction(
   _prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   try {
     const password = formData.get("password") as string;
@@ -48,7 +48,7 @@ export async function updatePasswordAction(
 
 export async function signUpAction(
   _prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   try {
     const email = formData.get("email") as string;

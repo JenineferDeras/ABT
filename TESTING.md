@@ -67,12 +67,12 @@ A comprehensive unit testing suite has been implemented for the Next.js with Sup
 
 ### ✅ Test Categories Implemented
 
-| Category | Description | Examples |
-|----------|-------------|----------|
-| **Happy Path** | Normal usage scenarios | Successful login, correct risk calculation |
+| Category               | Description               | Examples                                    |
+| ---------------------- | ------------------------- | ------------------------------------------- |
+| **Happy Path**         | Normal usage scenarios    | Successful login, correct risk calculation  |
 | **Input Verification** | Edge cases and boundaries | Empty inputs, null values, threshold values |
-| **Branching** | Conditional logic paths | Authenticated vs unauthenticated states |
-| **Exception Handling** | Error scenarios | Failed auth, invalid inputs, network errors |
+| **Branching**          | Conditional logic paths   | Authenticated vs unauthenticated states     |
+| **Exception Handling** | Error scenarios           | Failed auth, invalid inputs, network errors |
 
 ### ✅ Test Scripts Added
 
@@ -219,7 +219,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm install
       - run: npm test -- --coverage --watchAll=false
 ```

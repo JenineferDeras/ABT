@@ -146,7 +146,7 @@ try {
   throw new Error(
     `Operation failed: ${
       error instanceof Error ? error.message : "Unknown error"
-    }`
+    }`,
   );
 }
 ```

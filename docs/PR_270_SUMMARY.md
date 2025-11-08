@@ -94,7 +94,7 @@ PR 270 introduces a complete machine learning prediction and feedback pipeline i
   ```typescript
   function computeMetrics(
     predictions: Prediction[],
-    feedback: Feedback[]
+    feedback: Feedback[],
   ): Metrics {
     // Calculate true positives, false positives, etc.
     // Compute accuracy, precision, recall, F1 score

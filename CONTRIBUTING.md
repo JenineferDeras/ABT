@@ -15,6 +15,7 @@
 ## Código de Conducta
 
 Esperamos que todos los contribuidores:
+
 - Respeten a otros miembros del equipo
 - Escriban código legible y mantenible
 - Sigan mejores prácticas de seguridad
@@ -26,6 +27,7 @@ Esperamos que todos los contribuidores:
 ## Empezar
 
 ### 1. Fork y Clone
+
 ```bash
 git clone https://github.com/your-org/nextjs-with-supabase.git
 cd nextjs-with-supabase
@@ -33,6 +35,7 @@ npm install
 ```
 
 ### 2. Crear rama de feature
+
 ```bash
 git checkout -b feature/your-feature-name
 # O para bugfixes
@@ -40,6 +43,7 @@ git checkout -b fix/bug-description
 ```
 
 ### 3. Setup de ambiente
+
 ```bash
 # Copiar template
 cp .env.example.secure .env.local
@@ -49,6 +53,7 @@ cp .env.example.secure .env.local
 ```
 
 ### 4. Instalar pre-commit hook
+
 ```bash
 chmod +x scripts/setup-pre-commit-hook.sh
 ./scripts/setup-pre-commit-hook.sh
@@ -59,6 +64,7 @@ chmod +x scripts/setup-pre-commit-hook.sh
 ## Proceso de Contribución
 
 ### Step 1: Crear Feature Branch
+
 ```bash
 # Actualizar main
 git fetch origin
@@ -79,12 +85,14 @@ git checkout -b feature/my-feature
 ### Step 2: Desarrollar
 
 **Escribir código siguiendo:**
+
 - Estándares del proyecto (ver abajo)
 - ESLint + Prettier (ejecutados automáticamente)
 - TypeScript strict mode
 - React best practices
 
 **Ejemplo de cambio**
+
 ```typescript
 // ❌ MALO
 const LoginForm = () => {
@@ -132,6 +140,7 @@ npm test -- __tests__/components/login-form.test.tsx
 ```
 
 **Requisitos de testing:**
+
 - Mínimo 80% coverage para componentes nuevos
 - Todos los happy paths testados
 - Casos de error cubiertos
@@ -157,6 +166,7 @@ git commit -m "feat(auth): add two-factor authentication
 ```
 
 **Commit message format:**
+
 ```
 <type>(<scope>): <subject>
 
@@ -166,6 +176,7 @@ git commit -m "feat(auth): add two-factor authentication
 ```
 
 Tipos válidos:
+
 - `feat`: Nueva feature
 - `fix`: Bugfix
 - `docs`: Documentación
@@ -185,32 +196,39 @@ git push origin feature/my-feature
 ```
 
 **PR Template:**
+
 ```markdown
 ## Descripción
+
 Descripción clara de los cambios.
 
 ## Tipo de Cambio
+
 - [ ] Bug fix
 - [ ] Nueva feature
 - [ ] Breaking change
 - [ ] Cambio de documentación
 
 ## Cambios Relacionados
+
 - Closes #123
 - Related to #456
 
 ## Testing
+
 - [ ] Testeé localmente
 - [ ] Coverage >= 80%
 - [ ] Tests nuevos agregados
 - [ ] Tests existentes pasan
 
 ## Checklist Seguridad
+
 - [ ] No incluí credenciales/secretos
 - [ ] No expuse información sensible
 - [ ] Seguí política de seguridad
 
 ## Screenshots (si aplica)
+
 Adjuntar screenshots de cambios visuales
 ```
 
@@ -224,6 +242,7 @@ Adjuntar screenshots de cambios visuales
 ### Step 7: Merge
 
 Una vez aprobado:
+
 - [ ] Todos los tests pasan
 - [ ] PR aprobada por mínimo 1 reviewer
 - [ ] Sin conflictos con main
@@ -238,27 +257,31 @@ Una vez aprobado:
 ```typescript
 // ✅ BUENO
 interface UserProfile {
-  id: string
-  email: string
-  name?: string
+  id: string;
+  email: string;
+  name?: string;
 }
 
 const getUserProfile = async (id: string): Promise<UserProfile> => {
   const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', id)
-    .single()
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  if (error) throw error
-  return data
-}
+  if (error) throw error;
+  return data;
+};
 
 // ❌ MALO
 const getProfile = async (id) => {
-  const result = await supabase.from('profiles').select('*').eq('id', id).single()
-  return result.data
-}
+  const result = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return result.data;
+};
 ```
 
 ### React Components
@@ -302,20 +325,20 @@ const Button = ({ variant, children, ...props }) => (
 
 ```typescript
 // Components (PascalCase)
-export const UserProfile = () => {}
-export const LoginForm = () => {}
+export const UserProfile = () => {};
+export const LoginForm = () => {};
 
 // Functions (camelCase)
-export const getUserData = () => {}
-export const formatCurrency = (amount: number) => {}
+export const getUserData = () => {};
+export const formatCurrency = (amount: number) => {};
 
 // Constants (UPPER_SNAKE_CASE)
-export const API_BASE_URL = 'https://api.abaco.finance'
-export const MAX_RETRIES = 3
+export const API_BASE_URL = "https://api.abaco.finance";
+export const MAX_RETRIES = 3;
 
 // Interfaces/Types (PascalCase with I prefix optional)
 interface UserData {}
-type Theme = 'light' | 'dark'
+type Theme = "light" | "dark";
 ```
 
 ### File Organization
@@ -350,20 +373,18 @@ __tests__/
 ```typescript
 // ✅ BUENO
 try {
-  const result = await riskyOperation()
-  return result
+  const result = await riskyOperation();
+  return result;
 } catch (error) {
-  console.error('Operation failed:', error)
+  console.error("Operation failed:", error);
   throw new Error(
-    error instanceof Error
-      ? error.message
-      : 'An unknown error occurred'
-  )
+    error instanceof Error ? error.message : "An unknown error occurred",
+  );
 }
 
 // ❌ MALO
 try {
-  return await riskyOperation()
+  return await riskyOperation();
 } catch {
   // Silently fail or generic error
 }
@@ -427,6 +448,7 @@ npm test -- __tests__/components/login-form.test.tsx
 ### Commit Messages
 
 Usar formato convencional:
+
 ```
 feat(scope): subject - máx 50 caracteres
      ↑         ↑       ↑
@@ -436,6 +458,7 @@ feat(scope): subject - máx 50 caracteres
 ```
 
 **Ejemplos:**
+
 ```
 feat(auth): add two-factor authentication
 fix(api): handle null response in getUserData

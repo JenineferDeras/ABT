@@ -23,7 +23,7 @@ export interface ClientRiskProfile {
  */
 export function calculateAverageDaysToPay(invoices: InvoiceData[]): number {
   const paidInvoices = invoices.filter(
-    (inv) => inv.payment_date && inv.payment_status === "paid"
+    (inv) => inv.payment_date && inv.payment_status === "paid",
   );
 
   if (paidInvoices.length === 0) return 0;
@@ -31,7 +31,7 @@ export function calculateAverageDaysToPay(invoices: InvoiceData[]): number {
   const totalDays = paidInvoices.reduce((sum, inv) => {
     const days = Math.floor(
       (inv.payment_date!.getTime() - inv.issue_date.getTime()) /
-        (1000 * 60 * 60 * 24)
+        (1000 * 60 * 60 * 24),
     );
     return sum + days;
   }, 0);
@@ -51,8 +51,8 @@ export function calculatePaymentConsistency(invoices: InvoiceData[]): number {
   const daysToPay = paidInvoices.map((inv) =>
     Math.floor(
       (inv.payment_date!.getTime() - inv.issue_date.getTime()) /
-        (1000 * 60 * 60 * 24)
-    )
+        (1000 * 60 * 60 * 24),
+    ),
   );
 
   const mean = daysToPay.reduce((a, b) => a + b, 0) / daysToPay.length;
@@ -120,19 +120,19 @@ export function calculatePortfolioMetrics(invoices: InvoiceData[]): {
   defaultRate: number;
 } {
   const activeInvoices = invoices.filter(
-    (inv) => inv.payment_status !== "paid"
+    (inv) => inv.payment_status !== "paid",
   );
 
   const totalAUM = activeInvoices.reduce(
     (sum, inv) => sum + inv.invoice_amount,
-    0
+    0,
   );
 
   const overdueDays = activeInvoices.map((inv) =>
     Math.max(
       0,
-      Math.floor((Date.now() - inv.due_date.getTime()) / (1000 * 60 * 60 * 24))
-    )
+      Math.floor((Date.now() - inv.due_date.getTime()) / (1000 * 60 * 60 * 24)),
+    ),
   );
 
   const avgDPD =
@@ -141,7 +141,7 @@ export function calculatePortfolioMetrics(invoices: InvoiceData[]): {
       : 0;
 
   const defaultedCount = invoices.filter(
-    (inv) => inv.payment_status === "defaulted"
+    (inv) => inv.payment_status === "defaulted",
   ).length;
   const defaultRate =
     invoices.length > 0 ? defaultedCount / invoices.length : 0;
@@ -163,23 +163,23 @@ export function getIndustryRiskScore(industry: string): number {
   const industryRisks: Record<string, number> = {
     // High-risk industries (15-18)
     construction: 18, // High project dependency, cash flow issues
-    hospitality: 15,  // Seasonal, high fixed costs
-    
+    hospitality: 15, // Seasonal, high fixed costs
+
     // Medium-high risk (12-14)
-    retail: 12,       // Market competition, thin margins
-    agriculture: 14,  // Weather dependency, commodity prices
-    
+    retail: 12, // Market competition, thin margins
+    agriculture: 14, // Weather dependency, commodity prices
+
     // Medium risk (10)
     transportation: 10,
     manufacturing: 10,
-    
+
     // Low-medium risk (6-8)
     healthcare: 8,
     finance: 6,
-    
+
     // Low risk (5)
     technology: 5,
-    
+
     // Default for unknown industries
     default: 10,
   };

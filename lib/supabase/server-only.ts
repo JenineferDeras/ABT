@@ -16,13 +16,17 @@ export async function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options?: Parameters<typeof cookieStore.set>[2]) {
+        set(
+          name: string,
+          value: string,
+          options?: Parameters<typeof cookieStore.set>[2],
+        ) {
           cookieStore.set(name, value, options);
         },
         remove(name: string) {
           cookieStore.delete(name);
         },
       },
-    }
+    },
   );
 }

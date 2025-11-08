@@ -2,20 +2,14 @@
   "mcpServers": {
     "perplexity-ask": {
       "command": "npx",
-      "args": [
-        "-y",
-        "server-perplexity-ask"
-      ],
+      "args": ["-y", "server-perplexity-ask"],
       "env": {
         "PERPLEXITY_API_KEY": "pplx-your-api-key-here"
       }
     },
     "brave-search": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-brave-search"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
       "env": {
         "BRAVE_API_KEY": "your-brave-api-key-here"
       }
@@ -30,20 +24,14 @@
     },
     "github": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "your-github-token-here"
       }
     },
     "postgres": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-postgres"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
       "env": {
         "POSTGRES_CONNECTION_STRING": "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
       }
@@ -59,10 +47,7 @@
     },
     "web-search": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-web-search"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-web-search"],
       "env": {
         "GOOGLE_SEARCH_API_KEY": "your-google-api-key-here",
         "GOOGLE_SEARCH_ENGINE_ID": "your-search-engine-id-here"
@@ -70,24 +55,15 @@
     },
     "fetch": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-fetch"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
     },
     "puppeteer": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-puppeteer"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
     },
     "memory": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
     }
   }
 }

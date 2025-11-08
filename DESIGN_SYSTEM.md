@@ -2,7 +2,7 @@
 
 ## Commercial Deck - Reglas de Diseño y Presentación
 
-*Última actualización: Enero 2025*
+_Última actualización: Enero 2025_
 
 ---
 
@@ -45,49 +45,51 @@
 ```css
 /* Backgrounds - Gradientes principales */
 .bg-primary {
-  background: linear-gradient(to bottom right, 
-    rgb(15, 23, 42),    /* slate-900 */
-    rgb(30, 58, 138),   /* blue-900 */
-    rgb(15, 23, 42)     /* slate-900 */
+  background: linear-gradient(
+    to bottom right,
+    rgb(15, 23, 42),
+    /* slate-900 */ rgb(30, 58, 138),
+    /* blue-900 */ rgb(15, 23, 42) /* slate-900 */
   );
 }
 
 .bg-secondary {
-  background: linear-gradient(to bottom right,
-    rgb(17, 24, 39),    /* gray-900 */
-    rgb(88, 28, 135),   /* purple-900 */
-    rgb(17, 24, 39)     /* gray-900 */
+  background: linear-gradient(
+    to bottom right,
+    rgb(17, 24, 39),
+    /* gray-900 */ rgb(88, 28, 135),
+    /* purple-900 */ rgb(17, 24, 39) /* gray-900 */
   );
 }
 ```
 
 ### Colores de Acento por Categoría
 
-| Color | Uso | Hex | Tailwind |
-|-------|-----|-----|----------|
+| Color      | Uso                          | Hex       | Tailwind             |
+| ---------- | ---------------------------- | --------- | -------------------- |
 | **Purple** | KPIs principales, highlights | `#C1A6FF` | `purple-300/400/500` |
-| **Blue** | Canales digitales, Meta | `#60A5FA` | `blue-300/400/500` |
-| **Green** | Success, growth, positivo | `#34D399` | `green-300/400` |
-| **Pink** | Digital small, social media | `#F472B6` | `pink-300/400` |
-| **Yellow** | Anchors, alertas | `#FCD34D` | `yellow-300` |
-| **Red** | Risk, warnings | `#F87171` | `red-300/500` |
+| **Blue**   | Canales digitales, Meta      | `#60A5FA` | `blue-300/400/500`   |
+| **Green**  | Success, growth, positivo    | `#34D399` | `green-300/400`      |
+| **Pink**   | Digital small, social media  | `#F472B6` | `pink-300/400`       |
+| **Yellow** | Anchors, alertas             | `#FCD34D` | `yellow-300`         |
+| **Red**    | Risk, warnings               | `#F87171` | `red-300/500`        |
 
 ### Colores de Texto
 
 ```javascript
 // Jerarquía de texto
 const textColors = {
-  primary: 'text-white',           // Títulos principales, números importantes
-  secondary: 'text-gray-300',      // Body text, descripciones
-  tertiary: 'text-gray-400',       // Subtítulos, labels
-  muted: 'text-gray-500',          // Footer, notas, timestamps
-  
+  primary: "text-white", // Títulos principales, números importantes
+  secondary: "text-gray-300", // Body text, descripciones
+  tertiary: "text-gray-400", // Subtítulos, labels
+  muted: "text-gray-500", // Footer, notas, timestamps
+
   // Highlights semánticos
-  success: 'text-green-400',       // Métricas positivas, objetivos cumplidos
-  warning: 'text-yellow-300',      // Alertas, atención
-  error: 'text-red-400',           // Errores, riesgos
-  info: 'text-blue-400',           // Información, datos neutrales
-  accent: 'text-purple-400'        // KPIs destacados, números clave
+  success: "text-green-400", // Métricas positivas, objetivos cumplidos
+  warning: "text-yellow-300", // Alertas, atención
+  error: "text-red-400", // Errores, riesgos
+  info: "text-blue-400", // Información, datos neutrales
+  accent: "text-purple-400", // KPIs destacados, números clave
 };
 ```
 
@@ -95,10 +97,10 @@ const textColors = {
 
 ```javascript
 // Bordes con transparencia
-border-purple-500/20   // Sutil, para cards normales
-border-purple-400/30   // Más visible, para highlights
-border-white/10        // Divisores internos muy sutiles
-border-white/20        // Divisores más visibles
+border - purple - 500 / 20; // Sutil, para cards normales
+border - purple - 400 / 30; // Más visible, para highlights
+border - white / 10; // Divisores internos muy sutiles
+border - white / 20; // Divisores más visibles
 ```
 
 ---
@@ -110,42 +112,48 @@ border-white/20        // Divisores más visibles
 ```javascript
 // Fuentes principales (Google Fonts)
 const fonts = {
-  titles: 'Lato',      // Títulos, headers, labels
-  numbers: 'Poppins',  // Números, KPIs, datos
-  body: 'Lato'         // Texto corrido, descripciones
+  titles: "Lato", // Títulos, headers, labels
+  numbers: "Poppins", // Números, KPIs, datos
+  body: "Lato", // Texto corrido, descripciones
 };
 
 // Pesos de fuente
 const fontWeights = {
   regular: 400,
   semibold: 600,
-  bold: 700
+  bold: 700,
 };
 ```
 
 ### Escala Tipográfica
 
-| Elemento | Tamaño | Peso | Clase Tailwind |
-|----------|--------|------|----------------|
-| **H1** (Números grandes) | 36-48px | Bold | `text-4xl` o `text-5xl font-bold` |
-| **H2** (Títulos de slide) | 24px | Bold | `text-2xl font-bold` |
-| **H3** (Secciones) | 12px | Semibold | `text-xs font-semibold` |
-| **Body** (Texto normal) | 12px | Regular | `text-xs` |
-| **Small** (Detalles) | 10px | Regular | `text-[10px]` |
-| **Tiny** (Footer, notas) | 9-8px | Regular | `text-[9px]` o `text-[8px]` |
+| Elemento                  | Tamaño  | Peso     | Clase Tailwind                    |
+| ------------------------- | ------- | -------- | --------------------------------- |
+| **H1** (Números grandes)  | 36-48px | Bold     | `text-4xl` o `text-5xl font-bold` |
+| **H2** (Títulos de slide) | 24px    | Bold     | `text-2xl font-bold`              |
+| **H3** (Secciones)        | 12px    | Semibold | `text-xs font-semibold`           |
+| **Body** (Texto normal)   | 12px    | Regular  | `text-xs`                         |
+| **Small** (Detalles)      | 10px    | Regular  | `text-[10px]`                     |
+| **Tiny** (Footer, notas)  | 9-8px   | Regular  | `text-[9px]` o `text-[8px]`       |
 
 ### Jerarquía Visual
 
 ```jsx
 // Ejemplo de jerarquía en un KPI card
 <div>
-  <h3 className="text-xs font-semibold text-purple-300">    {/* Label */}
+  <h3 className="text-xs font-semibold text-purple-300">
+    {" "}
+    {/* Label */}
     AUM (Live Portfolio)
   </h3>
-  <p className="text-4xl font-bold text-white">               {/* Número principal */}
+  <p className="text-4xl font-bold text-white">
+    {" "}
+    {/* Número principal */}
     $7.28M
   </p>
-  <p className="text-[10px] text-gray-400">                  {/* Contexto */}
+  <p className="text-[10px] text-gray-400">
+    {" "}
+    {/* Contexto */}
     As of Oct-2025
   </p>
 </div>
@@ -156,9 +164,9 @@ const fontWeights = {
 ```javascript
 // Interlineado por tipo de texto
 const lineHeight = {
-  tight: 'leading-tight',      // Títulos grandes (1.25)
-  normal: 'leading-normal',    // Body text (1.5)
-  relaxed: 'leading-relaxed'   // Texto largo (1.625)
+  tight: "leading-tight", // Títulos grandes (1.25)
+  normal: "leading-normal", // Body text (1.5)
+  relaxed: "leading-relaxed", // Texto largo (1.625)
 };
 ```
 
@@ -186,32 +194,37 @@ const lineHeight = {
 
 ```jsx
 // Card normal (información general)
-className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-purple-500/20"
+className =
+  "bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-purple-500/20";
 
 // Card destacada (KPIs importantes)
-className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur-sm rounded-lg p-3 border border-purple-400/30"
+className =
+  "bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur-sm rounded-lg p-3 border border-purple-400/30";
 
 // Card de alerta/warning
-className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-yellow-500/20"
+className =
+  "bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-yellow-500/20";
 
 // Card de riesgo
-className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-red-500/20"
+className =
+  "bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-red-500/20";
 
 // Card de éxito
-className="bg-gradient-to-r from-green-900/30 to-blue-900/30 backdrop-blur-sm rounded-lg p-3 border border-green-400/30"
+className =
+  "bg-gradient-to-r from-green-900/30 to-blue-900/30 backdrop-blur-sm rounded-lg p-3 border border-green-400/30";
 ```
 
 ### Gradientes para Highlights
 
 ```jsx
 // Gradiente purple-blue (más común)
-className="bg-gradient-to-r from-purple-900/30 to-blue-900/30"
+className = "bg-gradient-to-r from-purple-900/30 to-blue-900/30";
 
 // Gradiente green-blue (success)
-className="bg-gradient-to-r from-green-900/30 to-blue-900/30"
+className = "bg-gradient-to-r from-green-900/30 to-blue-900/30";
 
 // Gradiente completo de fondo
-className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
+className = "bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900";
 ```
 
 ### Sombras y Profundidad
@@ -235,20 +248,21 @@ className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
 // Componente reutilizable para mostrar métricas
 <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-purple-500/20">
   {/* Label/Título */}
-  <h3 className="text-xs font-semibold text-purple-300 mb-2">
-    Label del KPI
-  </h3>
-  
+  <h3 className="text-xs font-semibold text-purple-300 mb-2">Label del KPI</h3>
+
   {/* Valor principal */}
   <div className="space-y-1 text-xs text-white">
-    <p>• Métrica: <span className="text-green-400 font-bold">Valor</span></p>
-    <p>• Otra métrica: <span className="text-blue-400 font-bold">Otro valor</span></p>
+    <p>
+      • Métrica: <span className="text-green-400 font-bold">Valor</span>
+    </p>
+    <p>
+      • Otra métrica:{" "}
+      <span className="text-blue-400 font-bold">Otro valor</span>
+    </p>
   </div>
-  
+
   {/* Nota al pie (opcional) */}
-  <p className="text-[8px] text-gray-400 mt-2">
-    Contexto o explicación
-  </p>
+  <p className="text-[8px] text-gray-400 mt-2">Contexto o explicación</p>
 </div>
 ```
 
@@ -261,8 +275,9 @@ className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
     Título destacado
   </h3>
   <p className="text-[10px] text-gray-300 leading-relaxed">
-    Texto importante con <span className="text-green-400 font-bold">números</span> 
-    y <span className="text-purple-400">highlights</span>.
+    Texto importante con{" "}
+    <span className="text-green-400 font-bold">números</span>y{" "}
+    <span className="text-purple-400">highlights</span>.
   </p>
 </div>
 ```
@@ -272,9 +287,16 @@ className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
 ```jsx
 // Lista con bullets personalizados
 <div className="space-y-1 text-[9px] text-gray-300">
-  <p>• Item 1: <span className="text-white">valor destacado</span></p>
-  <p>• Item 2: <span className="text-green-400">métrica positiva</span></p>
-  <p>• Item 3: <span className="text-blue-400 font-semibold">dato importante</span></p>
+  <p>
+    • Item 1: <span className="text-white">valor destacado</span>
+  </p>
+  <p>
+    • Item 2: <span className="text-green-400">métrica positiva</span>
+  </p>
+  <p>
+    • Item 3:{" "}
+    <span className="text-blue-400 font-semibold">dato importante</span>
+  </p>
 </div>
 ```
 
@@ -329,30 +351,23 @@ className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
 
 ```jsx
 // Estructura estándar de un slide
-<div className="h-screen w-full bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 
-                flex flex-col justify-between p-8 overflow-hidden">
-  
+<div
+  className="h-screen w-full bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 
+                flex flex-col justify-between p-8 overflow-hidden"
+>
   {/* Header - Siempre centrado */}
   <div className="text-center mb-4">
-    <h2 className="text-2xl font-bold text-white mb-2">
-      Título del Slide
-    </h2>
-    <p className="text-sm text-gray-400">
-      Subtítulo o contexto
-    </p>
+    <h2 className="text-2xl font-bold text-white mb-2">Título del Slide</h2>
+    <p className="text-sm text-gray-400">Subtítulo o contexto</p>
   </div>
 
   {/* Content - Grid de 2 columnas, scrollable */}
   <div className="flex-1 grid grid-cols-2 gap-4 overflow-y-auto">
     {/* Columna izquierda */}
-    <div className="space-y-3">
-      {/* Cards */}
-    </div>
+    <div className="space-y-3">{/* Cards */}</div>
 
     {/* Columna derecha */}
-    <div className="space-y-3">
-      {/* Cards */}
-    </div>
+    <div className="space-y-3">{/* Cards */}</div>
   </div>
 
   {/* Footer - Nota al pie */}
@@ -366,26 +381,26 @@ className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
 
 ### Sistema de Espaciado
 
-| Uso | Clase | Valor (px) |
-|-----|-------|------------|
-| Padding contenedor principal | `p-8` | 32px |
-| Gap entre columnas | `gap-4` | 16px |
-| Gap entre cards pequeñas | `gap-3` | 12px |
-| Margin bottom sección | `mb-4` | 16px |
-| Margin bottom pequeño | `mb-2` | 8px |
-| Space-y entre items | `space-y-1` | 4px |
-| Space-y entre items | `space-y-2` | 8px |
-| Space-y entre cards | `space-y-3` | 12px |
-| Padding interno card | `p-3` | 12px |
-| Padding interno card grande | `p-4` | 16px |
+| Uso                          | Clase       | Valor (px) |
+| ---------------------------- | ----------- | ---------- |
+| Padding contenedor principal | `p-8`       | 32px       |
+| Gap entre columnas           | `gap-4`     | 16px       |
+| Gap entre cards pequeñas     | `gap-3`     | 12px       |
+| Margin bottom sección        | `mb-4`      | 16px       |
+| Margin bottom pequeño        | `mb-2`      | 8px        |
+| Space-y entre items          | `space-y-1` | 4px        |
+| Space-y entre items          | `space-y-2` | 8px        |
+| Space-y entre cards          | `space-y-3` | 12px       |
+| Padding interno card         | `p-3`       | 12px       |
+| Padding interno card grande  | `p-4`       | 16px       |
 
 ### Responsive Considerations
 
 ```javascript
 // Aunque el deck es para presentaciones (no responsive),
 // las proporciones están optimizadas para 16:9
-const aspectRatio = '16:9';
-const resolution = '1920x1080'; // Full HD estándar
+const aspectRatio = "16:9";
+const resolution = "1920x1080"; // Full HD estándar
 
 // El contenido usa overflow-y-auto para manejar exceso de contenido
 // en lugar de reducir tamaños de fuente
@@ -406,7 +421,7 @@ const formatCurrency = (value, decimals = 2) => {
   if (value >= 1000) {
     return `$${(value / 1000).toFixed(0)}k`;
   }
-  return `$${value.toLocaleString('en-US')}`;
+  return `$${value.toLocaleString("en-US")}`;
 };
 
 // Ejemplos:
@@ -420,50 +435,50 @@ const formatCurrency = (value, decimals = 2) => {
 
 ```javascript
 // Formato de porcentajes
-"37.4%"          // Con decimal para precisión
-"~20%"           // Aproximado (usar tilde ~)
-"≥96%"           // Mayor o igual
-"≤4%"            // Menor o igual
-"<12%"           // Menor que (usar &lt; en JSX)
-">$50k"          // Mayor que (usar &gt; en JSX)
+"37.4%"; // Con decimal para precisión
+"~20%"; // Aproximado (usar tilde ~)
+"≥96%"; // Mayor o igual
+"≤4%"; // Menor o igual
+"<12%"; // Menor que (usar &lt; en JSX)
+">$50k"; // Mayor que (usar &gt; en JSX)
 
 // Cambios y objetivos
-"93.6% → ≥96%"   // Estado actual → Objetivo
-"15.6% → <12%"   // Mejora esperada
+"93.6% → ≥96%"; // Estado actual → Objetivo
+"15.6% → <12%"; // Mejora esperada
 ```
 
 ### Rangos
 
 ```javascript
 // Rangos numéricos
-"$620–700k"      // Usar em dash (–), no guión (-)
-"10–16 clients"  // Rango de cantidad
-"$50–150k"       // Rango de montos
-"20–30k views"   // Vistas o impresiones
+"$620–700k"; // Usar em dash (–), no guión (-)
+"10–16 clients"; // Rango de cantidad
+"$50–150k"; // Rango de montos
+"20–30k views"; // Vistas o impresiones
 ```
 
 ### Multiplicadores y Ratios
 
 ```javascript
-"3.6×"           // Rotación de portafolio (usar ×, no x)
-"≥3×"            // Pipeline coverage
-"~4.5×/yr"       // Por año
+"3.6×"; // Rotación de portafolio (usar ×, no x)
+"≥3×"; // Pipeline coverage
+"~4.5×/yr"; // Por año
 ```
 
 ### Fechas
 
 ```javascript
 // Formato de fechas
-"Oct-25"         // Mes-Año (formato corto)
-"Oct-2025"       // Mes-Año (formato largo)
-"Oct 17, 2025"   // Fecha completa (en contexto)
-"Q4-2025"        // Quarter-Año
-"H1-26"          // Half (semestre)-Año corto
-"Dec-2026"       // Mes-Año objetivo
+"Oct-25"; // Mes-Año (formato corto)
+"Oct-2025"; // Mes-Año (formato largo)
+"Oct 17, 2025"; // Fecha completa (en contexto)
+"Q4-2025"; // Quarter-Año
+"H1-26"; // Half (semestre)-Año corto
+"Dec-2026"; // Mes-Año objetivo
 
 // Rangos de fechas
-"Oct-25 → Dec-26"    // Período completo
-"Q4-25 → H1-26"      // Quarters/Halfs
+"Oct-25 → Dec-26"; // Período completo
+"Q4-25 → H1-26"; // Quarters/Halfs
 ```
 
 ---
@@ -477,63 +492,79 @@ const formatCurrency = (value, decimals = 2) => {
 ```javascript
 // ✅ Usar inglés para:
 const englishTerms = [
-  'AUM', 'KPI', 'KAM', 'funnel', 'leads', 'pipeline',
-  'close rate', 'churn', 'default', 'ROI', 'CAC', 'LTV',
-  'SQL', 'MQL', 'SLA', 'API', 'CPL', 'ER', 'DPD'
+  "AUM",
+  "KPI",
+  "KAM",
+  "funnel",
+  "leads",
+  "pipeline",
+  "close rate",
+  "churn",
+  "default",
+  "ROI",
+  "CAC",
+  "LTV",
+  "SQL",
+  "MQL",
+  "SLA",
+  "API",
+  "CPL",
+  "ER",
+  "DPD",
 ];
 
 // ✅ Usar español para:
 const spanishPhrases = [
-  'Objetivo & Oportunidad',
-  'Estrategia por canal',
-  'Cartera viva',
-  'Líneas de crédito',
-  'Flujo de caja',
-  'Desembolsos',
-  'Cobranza'
+  "Objetivo & Oportunidad",
+  "Estrategia por canal",
+  "Cartera viva",
+  "Líneas de crédito",
+  "Flujo de caja",
+  "Desembolsos",
+  "Cobranza",
 ];
 
 // ✅ Mezclar naturalmente:
-"Pipeline coverage: ≥3× (3 anchors futuros por cada cierre mensual)"
-"Meta Q4-2025: 100–160k impresiones → 225–305 leads"
-"Convierte tus facturas en cash en <48h"
+("Pipeline coverage: ≥3× (3 anchors futuros por cada cierre mensual)");
+("Meta Q4-2025: 100–160k impresiones → 225–305 leads");
+("Convierte tus facturas en cash en <48h");
 ```
 
 ### Tono y Voz
 
-| Contexto | Tono | Ejemplo |
-|----------|------|---------|
-| **Títulos** | Directo, técnico | "4 KAMs Strategy" |
-| **KPIs** | Preciso, cuantitativo | "AUM (live): $7.28M" |
-| **Descripciones** | Claro, conciso | "After runoff/default allowance" |
-| **Objetivos** | Aspiracional, concreto | "Target (Dec-2026): $16.276M" |
-| **Notas** | Informativo, contextual | "Risk-adjusted path to $16.276M" |
+| Contexto          | Tono                    | Ejemplo                          |
+| ----------------- | ----------------------- | -------------------------------- |
+| **Títulos**       | Directo, técnico        | "4 KAMs Strategy"                |
+| **KPIs**          | Preciso, cuantitativo   | "AUM (live): $7.28M"             |
+| **Descripciones** | Claro, conciso          | "After runoff/default allowance" |
+| **Objetivos**     | Aspiracional, concreto  | "Target (Dec-2026): $16.276M"    |
+| **Notas**         | Informativo, contextual | "Risk-adjusted path to $16.276M" |
 
 ### Símbolos y Caracteres Especiales
 
 ```javascript
 // Símbolos matemáticos y lógicos
-"≥"  // Mayor o igual (ALT + 242)
-"≤"  // Menor o igual (ALT + 243)
-"≈"  // Aproximadamente (ALT + 247)
-"~"  // Aproximado (tilde)
-"±"  // Más/menos (ALT + 241)
-"×"  // Multiplicación (ALT + 0215)
+"≥"; // Mayor o igual (ALT + 242)
+"≤"; // Menor o igual (ALT + 243)
+"≈"; // Aproximadamente (ALT + 247)
+"~"; // Aproximado (tilde)
+"±"; // Más/menos (ALT + 241)
+"×"; // Multiplicación (ALT + 0215)
 
 // Flechas y direcciones
-"→"  // Flecha derecha (indica cambio, progreso)
-"⇒"  // Flecha doble (indica resultado, consecuencia)
+"→"; // Flecha derecha (indica cambio, progreso)
+"⇒"; // Flecha doble (indica resultado, consecuencia)
 
 // Bullets y separadores
-"•"  // Bullet point (ALT + 0149)
-"–"  // Em dash para rangos (ALT + 0150)
-"|"  // Pipe para separar (barra vertical)
-"/"  // Slash para fracciones o "por"
+"•"; // Bullet point (ALT + 0149)
+"–"; // Em dash para rangos (ALT + 0150)
+"|"; // Pipe para separar (barra vertical)
+"/"; // Slash para fracciones o "por"
 
 // En JSX, usar HTML entities:
-"&lt;"   // <
-"&gt;"   // >
-"&amp;"  // &
+"&lt;"; // <
+"&gt;"; // >
+"&amp;"; // &
 ```
 
 ---
@@ -609,7 +640,7 @@ const spanishPhrases = [
 
 ```jsx
 // Agregar interactividad para edición
-<h2 
+<h2
   className="text-2xl font-bold text-white mb-2 cursor-pointer hover:text-purple-300"
   onClick={() => setEditing(true)}
 >
@@ -656,7 +687,7 @@ const spanishPhrases = [
   <h3 className="text-xs font-semibold text-purple-300 mb-2">
     Current Base (Oct-2025)
   </h3>
-  
+
   {/* Métricas principales */}
   <div className="space-y-1 text-xs text-white">
     <p>
@@ -666,9 +697,10 @@ const spanishPhrases = [
       • Active clients: <span className="text-blue-400 font-bold">188</span>
     </p>
     <p>
-      • Target (Dec-2026): <span className="text-purple-400 font-bold">$16.276M</span>
+      • Target (Dec-2026):{" "}
+      <span className="text-purple-400 font-bold">$16.276M</span>
     </p>
-    
+
     {/* Contexto adicional */}
     <p className="text-[10px] text-gray-400 mt-1">
       +$8.908M net (~$0.636M/month avg)
@@ -680,13 +712,15 @@ const spanishPhrases = [
 ### Ejemplo 2: Highlighted Summary Box
 
 ```jsx
-<div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 
-                backdrop-blur-sm rounded-lg p-3 border border-purple-400/30">
+<div
+  className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 
+                backdrop-blur-sm rounded-lg p-3 border border-purple-400/30"
+>
   {/* Título */}
   <h3 className="text-xs font-semibold text-purple-300 mb-2">
     Total Monthly Growth Composition
   </h3>
-  
+
   {/* Lista de métricas */}
   <div className="space-y-2 text-[10px]">
     {/* Rows con key-value */}
@@ -702,13 +736,13 @@ const spanishPhrases = [
       <span className="text-gray-300">Digital Small (Meta/WA):</span>
       <span className="text-pink-400 font-bold">$120–160k</span>
     </div>
-    
+
     {/* Divisor */}
     <div className="border-t border-white/20 pt-2 flex justify-between items-center">
       <span className="text-white font-semibold">Total Net Lift:</span>
       <span className="text-purple-400 font-bold text-sm">$620–700k/mo</span>
     </div>
-    
+
     {/* Nota al pie */}
     <p className="text-[8px] text-gray-400 mt-1">
       Cubre trayectoria a $16.276M (Dec-2026)
@@ -724,38 +758,55 @@ const spanishPhrases = [
   <h3 className="text-xs font-semibold text-blue-300 mb-2">
     Line Buckets by Channel (Monthly)
   </h3>
-  
+
   {/* Subsección 1 */}
   <div className="mb-3 pb-2 border-b border-white/10">
     <p className="text-[10px] font-semibold text-yellow-300 mb-1">
       Anchors (&gt;$50–150k) - KAM Only
     </p>
     <div className="text-[9px] text-gray-300 space-y-0.5 ml-2">
-      <p>• Target: <span className="text-white">≥1 new client/KAM/month</span></p>
-      <p>• Ticket: <span className="text-white">$75–125k</span></p>
-      <p>• Net AUM contrib: <span className="text-blue-400 font-bold">~$320k/mo</span></p>
+      <p>
+        • Target: <span className="text-white">≥1 new client/KAM/month</span>
+      </p>
+      <p>
+        • Ticket: <span className="text-white">$75–125k</span>
+      </p>
+      <p>
+        • Net AUM contrib:{" "}
+        <span className="text-blue-400 font-bold">~$320k/mo</span>
+      </p>
     </div>
   </div>
-  
+
   {/* Subsección 2 */}
   <div className="mb-3 pb-2 border-b border-white/10">
     <p className="text-[10px] font-semibold text-green-300 mb-1">
       Mid ($10–50k) - Inbound + KAM
     </p>
     <div className="text-[9px] text-gray-300 space-y-0.5 ml-2">
-      <p>• Target: <span className="text-white">8–12 new clients/month</span></p>
-      <p>• Net AUM contrib: <span className="text-green-400 font-bold">~$180–220k/mo</span></p>
+      <p>
+        • Target: <span className="text-white">8–12 new clients/month</span>
+      </p>
+      <p>
+        • Net AUM contrib:{" "}
+        <span className="text-green-400 font-bold">~$180–220k/mo</span>
+      </p>
     </div>
   </div>
-  
+
   {/* Subsección 3 (última, sin border-b) */}
   <div className="mb-2">
     <p className="text-[10px] font-semibold text-pink-300 mb-1">
       Digital Small (≤$10k) - Meta/WA Only
     </p>
     <div className="text-[9px] text-gray-300 space-y-0.5 ml-2">
-      <p>• Target: <span className="text-white">20–30 new clients/month</span></p>
-      <p>• Net AUM contrib: <span className="text-pink-400 font-bold">~$120–160k/mo</span></p>
+      <p>
+        • Target: <span className="text-white">20–30 new clients/month</span>
+      </p>
+      <p>
+        • Net AUM contrib:{" "}
+        <span className="text-pink-400 font-bold">~$120–160k/mo</span>
+      </p>
     </div>
   </div>
 </div>
@@ -767,37 +818,37 @@ const spanishPhrases = [
 
 ### Colores por Categoría
 
-| Categoría | Color Primary | Border | Uso |
-|-----------|---------------|--------|-----|
-| General | Purple | `border-purple-500/20` | Default, KPIs |
-| Canales digitales | Blue | `border-blue-500/20` | Meta, LinkedIn |
-| Crecimiento | Green | `border-green-500/20` | Success, targets |
-| Social media | Pink | `border-pink-500/20` | Small tickets |
-| Alerts | Yellow | `border-yellow-500/20` | Anchors, warnings |
-| Risk | Red | `border-red-500/20` | Riesgos, DPD |
+| Categoría         | Color Primary | Border                 | Uso               |
+| ----------------- | ------------- | ---------------------- | ----------------- |
+| General           | Purple        | `border-purple-500/20` | Default, KPIs     |
+| Canales digitales | Blue          | `border-blue-500/20`   | Meta, LinkedIn    |
+| Crecimiento       | Green         | `border-green-500/20`  | Success, targets  |
+| Social media      | Pink          | `border-pink-500/20`   | Small tickets     |
+| Alerts            | Yellow        | `border-yellow-500/20` | Anchors, warnings |
+| Risk              | Red           | `border-red-500/20`    | Riesgos, DPD      |
 
 ### Tamaños de Fuente por Elemento
 
-| Elemento | Clase |
-|----------|-------|
-| Número KPI principal | `text-4xl font-bold text-white` |
-| Título slide | `text-2xl font-bold text-white` |
-| Label sección | `text-xs font-semibold text-purple-300` |
-| Body text | `text-xs text-gray-300` |
-| Small details | `text-[10px] text-gray-400` |
-| Footer notes | `text-[9px] text-gray-500` |
+| Elemento             | Clase                                   |
+| -------------------- | --------------------------------------- |
+| Número KPI principal | `text-4xl font-bold text-white`         |
+| Título slide         | `text-2xl font-bold text-white`         |
+| Label sección        | `text-xs font-semibold text-purple-300` |
+| Body text            | `text-xs text-gray-300`                 |
+| Small details        | `text-[10px] text-gray-400`             |
+| Footer notes         | `text-[9px] text-gray-500`              |
 
 ### Espaciado Común
 
-| Uso | Clase |
-|-----|-------|
-| Container padding | `p-8` |
-| Card padding | `p-3` |
-| Grid gap (2 cols) | `gap-4` |
-| Grid gap (3 cols) | `gap-3` |
+| Uso                    | Clase       |
+| ---------------------- | ----------- |
+| Container padding      | `p-8`       |
+| Card padding           | `p-3`       |
+| Grid gap (2 cols)      | `gap-4`     |
+| Grid gap (3 cols)      | `gap-3`     |
 | Vertical spacing cards | `space-y-3` |
 | Vertical spacing items | `space-y-1` |
-| Margin bottom section | `mb-4` |
+| Margin bottom section  | `mb-4`      |
 
 ---
 
@@ -820,4 +871,4 @@ Antes de finalizar un slide, verificar:
 
 ---
 
-*Documento vivo - actualizar según evolucione el design system*
+_Documento vivo - actualizar según evolucione el design system_

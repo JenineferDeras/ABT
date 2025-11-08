@@ -11,14 +11,14 @@ function getEnvVar(key: string, isPublic = false): string {
   if (!value) {
     throw new Error(
       `Missing required environment variable: ${key}. ` +
-        `Please check your .env.local or deployment configuration.`
+        `Please check your .env.local or deployment configuration.`,
     );
   }
 
   if (!isPublic && key.startsWith("NEXT_PUBLIC_")) {
     console.warn(
       `Warning: PUBLIC variable ${key} accessed in private context. ` +
-        `Consider using a private variable instead.`
+        `Consider using a private variable instead.`,
     );
   }
 
@@ -31,7 +31,7 @@ function getEnvVarOptional(key: string, isPublic = false): string | undefined {
   if (!isPublic && key.startsWith("NEXT_PUBLIC_") && value) {
     console.warn(
       `Warning: PUBLIC variable ${key} accessed in private context. ` +
-        `Consider using a private variable instead.`
+        `Consider using a private variable instead.`,
     );
   }
 

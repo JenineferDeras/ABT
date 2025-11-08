@@ -59,7 +59,7 @@ export abstract class BaseIntegration {
         const result = await Promise.race([
           fn(),
           new Promise<T>((_, rej) =>
-            setTimeout(() => rej(new Error("Timeout")), this.cfg.timeoutMs)
+            setTimeout(() => rej(new Error("Timeout")), this.cfg.timeoutMs),
           ),
         ]);
         return result;

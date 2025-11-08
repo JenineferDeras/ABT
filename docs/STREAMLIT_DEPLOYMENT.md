@@ -43,7 +43,6 @@
    ```
 
 2. **Deploy on Streamlit Cloud**
-
    - Go to https://share.streamlit.io
    - Connect your GitHub repo
    - Select `streamlit_app.py` as main file

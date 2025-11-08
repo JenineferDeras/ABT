@@ -130,7 +130,7 @@ export function validateKPICalculation(data: {
 }
 
 export function validateAuditTrail(
-  data: DataWithTransformations
+  data: DataWithTransformations,
 ): AuditTrailResult {
   data.transformations.forEach((t: TransformationLog) => {
     // Implementation

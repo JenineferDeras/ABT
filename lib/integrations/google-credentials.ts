@@ -4,10 +4,10 @@
 
 export function getGoogleCredentials() {
   const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  
+
   if (!credentialsPath) {
     console.warn(
-      "GOOGLE_APPLICATION_CREDENTIALS not set. Google Cloud services may not work."
+      "GOOGLE_APPLICATION_CREDENTIALS not set. Google Cloud services may not work.",
     );
     return null;
   }

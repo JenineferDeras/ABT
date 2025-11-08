@@ -10,7 +10,15 @@ export function DeployButton() {
   return (
     <Link href={CLOUD_RUN_DEPLOY_URL} target="_blank" rel="noreferrer">
       <Button className="flex items-center gap-2" size="sm" variant="secondary">
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M4 17v3h3" />
           <path d="M20 7V4h-3" />
           <path d="M4 20 9 15" />

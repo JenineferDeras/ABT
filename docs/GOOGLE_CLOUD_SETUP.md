@@ -202,6 +202,7 @@ If you don't have sufficient permissions:
 **Cause**: Your account lacks necessary IAM permissions.
 
 **Solution**:
+
 ```bash
 # Check your current permissions
 gcloud projects get-iam-policy YOUR-PROJECT-ID \
@@ -217,6 +218,7 @@ gcloud projects get-iam-policy YOUR-PROJECT-ID \
 **Cause**: Required API is not enabled for your project.
 
 **Solution**:
+
 ```bash
 # Enable the specific API (example with Dataproc)
 gcloud services enable dataproc.googleapis.com
@@ -226,6 +228,7 @@ gcloud services list --enabled | grep dataproc
 ```
 
 **Via Console**:
+
 1. Click the link in the error message
 2. Click **Enable API**
 3. Wait 1-2 minutes for propagation
@@ -235,6 +238,7 @@ gcloud services list --enabled | grep dataproc
 **Cause**: Git branch is not tracking a remote branch.
 
 **Solution**:
+
 ```bash
 # Set upstream for current branch
 git push --set-upstream origin main
@@ -251,6 +255,7 @@ git branch -vv
 **Cause**: Service account lacks deployment permissions.
 
 **Solution**:
+
 ```bash
 # Grant Cloud Run Admin to service account
 gcloud projects add-iam-policy-binding YOUR-PROJECT-ID \
@@ -268,6 +273,7 @@ gcloud projects add-iam-policy-binding YOUR-PROJECT-ID \
 **Cause**: Project doesn't have billing enabled.
 
 **Solution**:
+
 1. Go to [Billing](https://console.cloud.google.com/billing)
 2. Select your project
 3. Link a billing account
@@ -369,13 +375,15 @@ gcloud run deploy abaco-platform \
 ## Support
 
 For Google Cloud specific issues:
+
 - [Google Cloud Support](https://cloud.google.com/support)
 - [Stack Overflow - google-cloud-platform](https://stackoverflow.com/questions/tagged/google-cloud-platform)
 
 For ABACO platform issues:
+
 - Email: support@abaco-platform.com
 - GitHub Issues: [Create an issue](https://github.com/Jeninefer/nextjs-with-supabase/issues)
 
 ---
 
-*Last updated: October 2025*
+_Last updated: October 2025_

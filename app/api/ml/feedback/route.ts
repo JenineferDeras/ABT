@@ -15,14 +15,14 @@ export async function POST(request: Request) {
     if (!predictionId || typeof actualOutcome !== "number") {
       return NextResponse.json(
         { error: "predictionId and actualOutcome are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const { accuracy } = await ContinueLearning.submitFeedback(
       predictionId,
       actualOutcome,
-      userFeedback
+      userFeedback,
     );
 
     return NextResponse.json({
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     console.error("Error submitting feedback:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,14 +1,14 @@
-import "@testing-library/jest-dom"
-import { cleanup } from "@testing-library/react"
-import { afterEach, vi } from "vitest"
+import "@testing-library/jest-dom";
+import { cleanup } from "@testing-library/react";
+import { afterEach, vi } from "vitest";
 
 afterEach(() => {
-  cleanup()
-})
+  cleanup();
+});
 
 // Mock environment variables
-process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test.supabase.co"
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "test-key"
+process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test.supabase.co";
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "test-key";
 
 // Mock next/router
 vi.mock("next/router", () => ({
@@ -18,7 +18,7 @@ vi.mock("next/router", () => ({
     query: {},
     asPath: "/",
   }),
-}))
+}));
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -28,4 +28,4 @@ vi.mock("next/navigation", () => ({
   }),
   usePathname: () => "/",
   useSearchParams: () => new URLSearchParams(),
-}))
+}));

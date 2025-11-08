@@ -6,7 +6,7 @@ export class ContinueLearning {
    * Save a new prediction – returns the record id
    */
   static async recordPrediction(
-    pred: Omit<Prediction, "id" | "createdAt" | "status">
+    pred: Omit<Prediction, "id" | "createdAt" | "status">,
   ): Promise<string> {
     const supabase = await createClient();
 
@@ -36,7 +36,7 @@ export class ContinueLearning {
   static async submitFeedback(
     predictionId: string,
     actual: number,
-    userFeedback?: string
+    userFeedback?: string,
   ): Promise<{ accuracy: number }> {
     const supabase = await createClient();
 
@@ -133,7 +133,7 @@ export class ContinueLearning {
  */
 export async function updateModelMetrics(
   modelId: string,
-  metrics: ModelMetrics
+  metrics: ModelMetrics,
 ): Promise<void> {
   const clampedMetrics = {
     ...metrics,

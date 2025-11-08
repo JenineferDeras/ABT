@@ -19,7 +19,7 @@ export function UpdatePasswordForm({
     async (_prevState, formData) => {
       return updatePasswordAction(_prevState, formData);
     },
-    { error: "", success: false }
+    { error: "", success: false },
   );
 
   const [newPassword, setNewPassword] = useState("");

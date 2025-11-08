@@ -74,7 +74,7 @@ export function FetchDataSteps() {
           <code className="mx-1 rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
             analytics_portfolio_overview
           </code>
-          view is populated.  Run the production validation query below in the{" "}
+          view is populated. Run the production validation query below in the{" "}
           <a
             href="https://supabase.com/dashboard/project/_/sql/new"
             className="font-bold hover:underline text-foreground/80"
@@ -91,7 +91,7 @@ export function FetchDataSteps() {
 
       <TutorialStep title="Enable Row Level Security (RLS)">
         <p>
-          Supabase enables Row Level Security (RLS) by default.  Grant read
+          Supabase enables Row Level Security (RLS) by default. Grant read
           access to the analytics team by creating the policy below in the{" "}
           <a
             href="https://supabase.com/dashboard/project/_/sql/new"
@@ -101,7 +101,7 @@ export function FetchDataSteps() {
           >
             SQL Editor
           </a>
-          .  This matches the production deployment policy.
+          . This matches the production deployment policy.
         </p>
         <CodeBlock code={rls} />
         <p>
@@ -141,7 +141,7 @@ export function FetchDataSteps() {
           >
             Supabase UI library
           </a>{" "}
-          and install the blocks that match your ABACO workflows.  For instance,
+          and install the blocks that match your ABACO workflows. For instance,
           add the Realtime Chat block by running:
         </p>
         <CodeBlock

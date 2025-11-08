@@ -13,7 +13,10 @@ export interface PullRequestRecord {
 export interface CloseDuplicateOptions {
   aiIdentifiers?: readonly string[];
   closureReason?: string;
-  onClose?: (duplicate: PullRequestRecord, canonical: PullRequestRecord) => void;
+  onClose?: (
+    duplicate: PullRequestRecord,
+    canonical: PullRequestRecord,
+  ) => void;
 }
 
 export interface CloseDuplicateSummary {
@@ -106,11 +109,15 @@ const assertValidRecord = (record: PullRequestRecord): void => {
     throw new Error(`Invalid pull request title for #${record.number}`);
   }
   if (!Array.isArray(record.assignees)) {
-    throw new Error(`Assignees must be an array for pull request #${record.number}`);
+    throw new Error(
+      `Assignees must be an array for pull request #${record.number}`,
+    );
   }
   record.assignees.forEach((assignee) => {
     if (typeof assignee !== "string") {
-      throw new Error(`Invalid assignee entry for pull request #${record.number}`);
+      throw new Error(
+        `Invalid assignee entry for pull request #${record.number}`,
+      );
     }
   });
   if (record.status !== "open" && record.status !== "closed") {
@@ -120,7 +127,9 @@ const assertValidRecord = (record: PullRequestRecord): void => {
     record.duplicateOf !== undefined &&
     (!Number.isInteger(record.duplicateOf) || record.duplicateOf <= 0)
   ) {
-    throw new Error(`Invalid duplicateOf value for pull request #${record.number}`);
+    throw new Error(
+      `Invalid duplicateOf value for pull request #${record.number}`,
+    );
   }
 };
 

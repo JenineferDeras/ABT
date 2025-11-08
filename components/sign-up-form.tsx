@@ -24,13 +24,15 @@ function getPasswordStrength(password: string): PasswordStrength {
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
   const hasNumbers = /\d/.test(password);
-  const specialCharPattern =
-    /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
+  const specialCharPattern = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
   const hasSpecial = specialCharPattern.test(password);
   const isLongEnough = password.length >= 8;
 
   if (!isLongEnough) {
-    return { level: "weak", feedback: "Password must be at least 8 characters" };
+    return {
+      level: "weak",
+      feedback: "Password must be at least 8 characters",
+    };
   }
 
   if (hasUppercase && hasLowercase && hasNumbers && hasSpecial) {
@@ -38,7 +40,10 @@ function getPasswordStrength(password: string): PasswordStrength {
   }
 
   if ((hasUppercase || hasLowercase) && hasNumbers) {
-    return { level: "medium", feedback: "Medium password - add special characters" };
+    return {
+      level: "medium",
+      feedback: "Medium password - add special characters",
+    };
   }
 
   return {
@@ -62,7 +67,7 @@ export function SignUpForm() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
     },
-    []
+    [],
   );
 
   return (
@@ -105,8 +110,8 @@ export function SignUpForm() {
                 strength.level === "weak"
                   ? "w-1/3 bg-red-500"
                   : strength.level === "medium"
-                  ? "w-2/3 bg-yellow-500"
-                  : "w-full bg-green-500"
+                    ? "w-2/3 bg-yellow-500"
+                    : "w-full bg-green-500"
               }`}
             />
           </div>

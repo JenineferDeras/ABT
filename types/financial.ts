@@ -46,7 +46,7 @@ export interface MarketIntelligence {
   interestRates: {
     central: number;
     commercial: number;
-    trend: 'up' | 'down' | 'stable';
+    trend: "up" | "down" | "stable";
   };
   economicIndicators: {
     gdpGrowth: number;
@@ -62,11 +62,11 @@ export interface MarketIntelligence {
 
 export interface AIInsight {
   id: string;
-  type: 'trend' | 'risk' | 'opportunity' | 'alert';
+  type: "trend" | "risk" | "opportunity" | "alert";
   title: string;
   description: string;
   confidence: number; // 0-1
-  impact: 'low' | 'medium' | 'high';
+  impact: "low" | "medium" | "high";
   priority: number; // 1-5
   timestamp: Date;
   actionItems?: string[];
@@ -107,8 +107,8 @@ export interface AbacoConfig {
 
 export interface DataUpload {
   fileName: string;
-  fileType: 'csv' | 'excel' | 'pdf';
-  status: 'pending' | 'processing' | 'completed' | 'error';
+  fileType: "csv" | "excel" | "pdf";
+  status: "pending" | "processing" | "completed" | "error";
   uploadedAt: Date;
   processedAt?: Date;
   recordCount?: number;
@@ -121,19 +121,19 @@ export interface KPIDashboard {
   metrics: {
     label: string;
     value: number | string;
-    format: 'currency' | 'percentage' | 'number' | 'text';
+    format: "currency" | "percentage" | "number" | "text";
     trend?: {
-      direction: 'up' | 'down' | 'stable';
+      direction: "up" | "down" | "stable";
       value: number;
       period: string;
     };
-    status?: 'good' | 'warning' | 'critical';
+    status?: "good" | "warning" | "critical";
   }[];
 }
 
 export interface ExportOptions {
-  format: 'csv' | 'pdf' | 'png' | 'svg' | 'figma';
-  resolution?: '1080p' | '4k' | 'print';
+  format: "csv" | "pdf" | "png" | "svg" | "figma";
+  resolution?: "1080p" | "4k" | "print";
   includeCharts: boolean;
   includeSummary: boolean;
   customBranding: boolean;

@@ -1,6 +1,6 @@
 import {
-    createClient as createSupabaseClient,
-    type SupabaseClient,
+  createClient as createSupabaseClient,
+  type SupabaseClient,
 } from "@supabase/supabase-js";
 
 type NormalizedRecord = Record<string, unknown>;
@@ -33,20 +33,20 @@ export function loadIngestionConfig(): IngestionConfig {
     supabaseUrl: required(
       "SUPABASE_SERVICE_ROLE_URL",
       process.env.SUPABASE_SERVICE_ROLE_URL ||
-        process.env.NEXT_PUBLIC_SUPABASE_URL
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
     ),
     supabaseKey: required(
       "SUPABASE_SERVICE_ROLE_KEY",
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
     ),
     driveFolderId: required("GDRIVE_FOLDER_ID", process.env.GDRIVE_FOLDER_ID),
     serviceAccountEmail: required(
       "GDRIVE_SERVICE_ACCOUNT_EMAIL",
-      process.env.GDRIVE_SERVICE_ACCOUNT_EMAIL
+      process.env.GDRIVE_SERVICE_ACCOUNT_EMAIL,
     ),
     privateKey: required(
       "GDRIVE_PRIVATE_KEY",
-      process.env.GDRIVE_PRIVATE_KEY
+      process.env.GDRIVE_PRIVATE_KEY,
     )?.replace(/\\n/g, "\n"),
   };
 }
@@ -91,7 +91,7 @@ function normaliseValue(key: string, value: unknown): unknown {
 
 export function normaliseRecords(
   workbookName: string,
-  rows: NormalizedRecord[]
+  rows: NormalizedRecord[],
 ): NormalizedRecord[] {
   const refreshDate = new Date().toISOString();
   return rows.map((row) => {
@@ -112,7 +112,7 @@ export function normaliseRecords(
 }
 
 export async function getSupabaseClient(
-  config: IngestionConfig
+  config: IngestionConfig,
 ): Promise<SupabaseClient> {
   return createSupabaseClient(config.supabaseUrl, config.supabaseKey);
 }

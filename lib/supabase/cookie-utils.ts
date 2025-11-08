@@ -5,7 +5,7 @@ type NormalizedSameSite = "lax" | "strict" | "none";
 const SAME_SITE_VALUES: NormalizedSameSite[] = ["lax", "strict", "none"];
 
 export function normalizeCookieOptions(
-  options?: CookieOptions
+  options?: CookieOptions,
 ): CookieOptions | undefined {
   if (!options) {
     return undefined;

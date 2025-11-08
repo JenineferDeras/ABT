@@ -12,9 +12,9 @@ export default function UpdatePasswordPage() {
             Secure Password Update
           </p>
         </div>
-        
+
         <UpdatePasswordForm />
-        
+
         <div className="text-center mt-6">
           <p className="text-xs text-purple-400 font-['Poppins']">
             Protected by enterprise-grade security

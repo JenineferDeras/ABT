@@ -7,21 +7,25 @@ This guide explains how to configure Model Context Protocol (MCP) servers for th
 ## Required API Keys
 
 ### 1. Perplexity API Key
+
 - **Purpose**: Financial market research and analysis
 - **Sign up**: https://www.perplexity.ai/
 - **Key format**: `pplx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
 ### 2. Brave Search API Key
+
 - **Purpose**: Web search for financial news and data
 - **Sign up**: https://api.search.brave.com/
 - **Key format**: `BSAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
 ### 3. GitHub Personal Access Token
+
 - **Purpose**: Repository management and code analysis
 - **Create**: GitHub Settings > Developer settings > Personal access tokens
 - **Scopes**: `repo`, `read:org`
 
 ### 4. Google Search API Key
+
 - **Purpose**: Enhanced web search capabilities
 - **Setup**: Google Cloud Console > APIs & Services > Credentials
 - **Also need**: Custom Search Engine ID
@@ -61,11 +65,11 @@ npx -y @modelcontextprotocol/server-fetch --help
 ### 4. Initialize in Your Application
 
 ```typescript
-import { useMCPIntegration } from '@/app/dashboard/financial/hooks/useMCPIntegration';
+import { useMCPIntegration } from "@/app/dashboard/financial/hooks/useMCPIntegration";
 
 function FinancialDashboard() {
   const { isInitialized, searchFinancialInsights } = useMCPIntegration();
-  
+
   // Use MCP capabilities in your components
 }
 ```
@@ -94,7 +98,7 @@ function FinancialDashboard() {
 
 ```typescript
 const insights = await searchFinancialInsights(
-  "Current trends in lending market and default rates"
+  "Current trends in lending market and default rates",
 );
 ```
 
@@ -102,7 +106,7 @@ const insights = await searchFinancialInsights(
 
 ```typescript
 const marketData = await fetchMarketData(
-  "https://api.abaco.finance/financial-data"
+  "https://api.abaco.finance/financial-data",
 );
 ```
 
@@ -112,7 +116,7 @@ const marketData = await fetchMarketData(
 await storeAnalysisResult("portfolio_2024_q4", {
   metrics: financialMetrics,
   risks: riskAnalysis,
-  projections: growthProjections
+  projections: growthProjections,
 });
 ```
 
@@ -141,6 +145,7 @@ npx -y server-perplexity-ask --version
 ### Fallback Mode
 
 If MCP servers fail to initialize, the ABACO platform will automatically fall back to:
+
 - Rule-based analysis instead of AI insights
 - Direct HTTP requests instead of MCP fetch
 - Local storage instead of MCP memory
@@ -191,6 +196,7 @@ ENV GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
 ## Support
 
 For MCP-related issues:
+
 1. Check MCP server documentation
 2. Verify API key validity
 3. Test with minimal configuration
@@ -205,4 +211,4 @@ For MCP-related issues:
 
 ---
 
-*This guide is part of the ABACO Financial Intelligence Platform documentation.*
+_This guide is part of the ABACO Financial Intelligence Platform documentation._

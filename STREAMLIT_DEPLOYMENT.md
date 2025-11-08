@@ -74,7 +74,6 @@ This guide covers deploying a Streamlit dashboard alongside the Next.js applicat
    ```
 
 2. **Deploy on Streamlit Cloud**
-
    - Go to https://share.streamlit.io
    - Click "New app"
    - Select your repository
@@ -82,7 +81,6 @@ This guide covers deploying a Streamlit dashboard alongside the Next.js applicat
    - Set main file path: `streamlit_app.py`
 
 3. **Configure Secrets**
-
    - Go to App settings (⋮ menu) → Secrets
    - Paste the contents of `.streamlit/secrets.toml`
    - Secrets are automatically encrypted
