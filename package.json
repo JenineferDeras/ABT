@@ -20,7 +20,10 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "validate": "npm run type-check && npm run lint"
+    "validate": "npm run type-check && npm run lint",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "quality": "npm run lint && npm run type-check && npm run format:check",
+    "quality:fix": "npm run lint -- --fix && npm run format"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.4",
