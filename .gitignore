@@ -70,3 +70,5 @@ venv/
 env/
 .env
 .streamlit/secrets.toml
+node-v24.11.0/
+node-v24.11.0/
