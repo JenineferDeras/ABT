@@ -1,28 +1,21 @@
-# CodeRabbit Configuration
-# Reference: https://docs.coderabbit.ai/guides/configure
-
-language: en
+language: en-US
 early_access: false
-
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  tools:
+    shellcheck:
+      enabled: true
+    ruff:
+      enabled: true
+    markdownlint:
+      enabled: true
 chat:
   auto_reply: true
-
-review:
-  auto_review: true
-  review_status: true
-  review_comment_sort_order: newest
-  high_level_summary: true
-  auto_label_based_review: true
-
-exclude:
-  - node_modules/**
-  - .next/**
-  - dist/**
-  - build/**
-  - coverage/**
-  - .scannerwork/**
-  - "*.pyc"
-  - __pycache__/**
-  - .env.local
-  - .env
-  - package-lock.json

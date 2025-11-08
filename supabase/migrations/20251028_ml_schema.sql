@@ -54,7 +54,7 @@ create table if not exists ml.learning_metrics (
   id bigserial primary key,
   model_name text not null,
   model_version text not null,
-  window text not null,             -- e.g. '30d'
+  time_window text not null,             -- e.g. '30d'
   metrics jsonb not null,           -- {brier:..., auc:..., acc:...}
   created_at timestamptz not null default now()
 );
