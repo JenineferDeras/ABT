@@ -10,8 +10,8 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 
 ### 1.1 Información Básica
 
-- **Nombre de la empresa:** ******\_\_\_******
-- **Industria:** ******\_\_\_******
+- **Nombre de la empresa:** **\*\***\_\_\_**\*\***
+- **Industria:** **\*\***\_\_\_**\*\***
 - **Tamaño de la empresa:**
   - [ ] 1-10 empleados
   - [ ] 11-50 empleados
@@ -89,7 +89,7 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 - [ ] Cubrir gastos operativos
 - [ ] Invertir en crecimiento
 - [ ] Aprovechar oportunidades de negocio
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 3.3 Frecuencia de Uso
 
@@ -122,7 +122,7 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 - [ ] Préstamos personales
 - [ ] Financiamiento de proveedores
 - [ ] No tenía alternativa
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 4.2 Ventajas de Abaco
 
@@ -135,7 +135,7 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 - [ ] Atención personalizada
 - [ ] Flexibilidad en montos
 - [ ] Transparencia
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ---
 
@@ -188,7 +188,7 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 - [ ] Abaco me ayuda con cobranza
 - [ ] Extensión de plazo
 - [ ] Asumo el costo
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 5.4 Eficiencia Operativa (Tesis: 93.6% → ≥96%)
 
@@ -217,13 +217,13 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 **¿Cómo conoció Abaco?**
 
 - [ ] Búsqueda en Google
-- [ ] Redes sociales (¿Cuál? ****\_\_\_\_****)
+- [ ] Redes sociales (¿Cuál? \***\*\_\_\_\_\*\***)
 - [ ] Referido por otro empresario
 - [ ] LinkedIn
 - [ ] Ejecutivo de cuenta (KAM)
 - [ ] Evento o conferencia
 - [ ] Publicidad digital
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 6.2 Canal Preferido
 
@@ -275,7 +275,7 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 - [ ] Integración con mi software de facturación
 - [ ] Dashboard de análisis
 - [ ] Alertas personalizadas
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 8.3 Comentarios Adicionales
 
@@ -296,13 +296,13 @@ Medir la satisfacción de clientes actuales y profundizar en las tesis de factor
 
 **¿Le gustaría participar en una entrevista más profunda (30 min)?**
 
-- [ ] Sí, contacto: ******\_\_\_******
+- [ ] Sí, contacto: **\*\***\_\_\_**\*\***
 - [ ] No
 
 ---
 
-**Fecha:** ******\_\_\_******
-**Firma:** ******\_\_\_******
+**Fecha:** **\*\***\_\_\_**\*\***
+**Firma:** **\*\***\_\_\_**\*\***
 
 ---
 

@@ -26,7 +26,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Construcción
 - [ ] Tecnología
 - [ ] Retail
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ---
 
@@ -126,7 +126,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Mala atención al cliente
 - [ ] Plazos inflexibles
 - [ ] Montos insuficientes
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 4.2 Ventaja Competitiva
 
@@ -138,7 +138,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Flexibilidad en montos
 - [ ] Atención personalizada
 - [ ] Tasas competitivas
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ---
 
@@ -161,7 +161,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Proceso más rápido
 - [ ] Más flexibilidad
 - [ ] Crecimiento de mi negocio
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 5.2 Servicios Adicionales
 
@@ -173,7 +173,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Financiamiento de inventario
 - [ ] Crédito para equipo
 - [ ] Asesoría financiera
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ---
 
@@ -251,7 +251,7 @@ Identificar nuevas oportunidades de mercado y validar tesis de expansión.
 - [ ] Cashback
 - [ ] Línea de crédito adicional
 - [ ] Servicio premium gratis
-- [ ] Otro: ******\_\_\_******
+- [ ] Otro: **\*\***\_\_\_**\*\***
 
 ### 8.2 Red de Contactos
 
