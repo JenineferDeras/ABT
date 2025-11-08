@@ -39,16 +39,17 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "ABACO: Python Streamlit App",
-            "type": "debugpy",
+            "name": "ABACO: Streamlit Dashboard",
+            "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/streamlit_app/app.py",
+            "module": "streamlit",
+            "args": [
+                "run",
+                "${workspaceFolder}/streamlit_app.py"
+            ],
             "console": "integratedTerminal",
             "justMyCode": true,
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}/streamlit_app"
-            },
-            "cwd": "${workspaceFolder}/streamlit_app"
+            "cwd": "${workspaceFolder}"
         },
         {
             "name": "ABACO: TypeScript Type Check",
