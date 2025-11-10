@@ -12,7 +12,9 @@
 ## 🎯 Review Assignment for Sourcery
 
 ### Objective
+
 Perform comprehensive code refactoring analysis focusing on:
+
 - Code quality improvements
 - Refactoring opportunities
 - Anti-pattern detection
@@ -24,6 +26,7 @@ Perform comprehensive code refactoring analysis focusing on:
 ## 📋 Repository Overview
 
 ### Project Details
+
 - **Name:** ABACO Financial Intelligence Platform
 - **Type:** Next.js 15 Full-Stack Application
 - **Language:** TypeScript (strict mode)
@@ -32,6 +35,7 @@ Perform comprehensive code refactoring analysis focusing on:
 - **Current Grade:** A+ (96/100)
 
 ### Statistics
+
 - **Total Files:** 200+ files
 - **TypeScript Files:** 101 files
 - **Lines of Code:** ~15,000+
@@ -45,6 +49,7 @@ Perform comprehensive code refactoring analysis focusing on:
 ### 1. **Code Quality Analysis** ✨
 
 **Focus Areas:**
+
 - [ ] Function complexity reduction
 - [ ] Code duplication detection
 - [ ] Naming convention improvements
@@ -54,6 +59,7 @@ Perform comprehensive code refactoring analysis focusing on:
 - [ ] Dead code elimination
 
 **Metrics to Analyze:**
+
 - Cyclomatic complexity per function
 - Lines per function
 - Number of parameters per function
@@ -62,9 +68,10 @@ Perform comprehensive code refactoring analysis focusing on:
 - Test coverage gaps
 
 **Files to Review:**
+
 ```
 app/                   # Application routes
-components/            # React components  
+components/            # React components
 lib/                   # Utility libraries
 utils/                 # Helper functions
 types/                 # Type definitions
@@ -77,6 +84,7 @@ types/                 # Type definitions
 **Primary Focus:**
 
 #### A. **Extract Function**
+
 ```typescript
 // BEFORE: Long function doing multiple things
 async function processUserData(user: User) {
@@ -93,17 +101,21 @@ async function processUserData(user: User) {
 ```
 
 #### B. **Extract Constant**
+
 ```typescript
 // BEFORE: Magic numbers
-if (user.age > 18 && user.score > 75) { }
+if (user.age > 18 && user.score > 75) {
+}
 
 // AFTER: Named constants
 const LEGAL_AGE = 18;
 const PASSING_SCORE = 75;
-if (user.age > LEGAL_AGE && user.score > PASSING_SCORE) { }
+if (user.age > LEGAL_AGE && user.score > PASSING_SCORE) {
+}
 ```
 
 #### C. **Simplify Conditionals**
+
 ```typescript
 // BEFORE: Complex nested conditions
 if (user) {
@@ -120,6 +132,7 @@ if (!user || !user.isActive || !user.hasPermission) return;
 ```
 
 #### D. **Replace Nested Conditional with Guard Clauses**
+
 ```typescript
 // BEFORE: Deep nesting
 function getDiscount(user: User) {
@@ -149,31 +162,37 @@ function getDiscount(user: User) {
 **Patterns to Identify:**
 
 #### A. **God Objects/Functions**
+
 - Functions with 50+ lines
 - Classes with 10+ methods
 - Components with 200+ lines
 
 #### B. **Code Duplication**
+
 - Repeated logic across files
 - Similar function implementations
 - Copy-pasted code blocks
 
 #### C. **Deeply Nested Code**
+
 - Nesting depth > 4 levels
 - Callback hell
 - Complex conditional chains
 
 #### D. **Poor Naming**
+
 - Single-letter variables (except loops)
 - Unclear function names
 - Inconsistent naming conventions
 
 #### E. **Magic Numbers/Strings**
+
 - Hardcoded values
 - Unexplained constants
 - Configuration in code
 
 #### F. **Tight Coupling**
+
 - Direct dependencies between modules
 - Hardcoded integrations
 - No dependency injection
@@ -184,15 +203,16 @@ function getDiscount(user: User) {
 
 **Target Metrics:**
 
-| Metric | Current | Target | Priority |
-|--------|---------|--------|----------|
-| Cyclomatic Complexity | ? | < 10 per function | High |
-| Function Length | ? | < 50 lines | High |
-| Nesting Depth | ? | < 4 levels | Medium |
-| Parameters | ? | < 4 per function | Medium |
-| Code Duplication | ? | < 5% | High |
+| Metric                | Current | Target            | Priority |
+| --------------------- | ------- | ----------------- | -------- |
+| Cyclomatic Complexity | ?       | < 10 per function | High     |
+| Function Length       | ?       | < 50 lines        | High     |
+| Nesting Depth         | ?       | < 4 levels        | Medium   |
+| Parameters            | ?       | < 4 per function  | Medium   |
+| Code Duplication      | ?       | < 5%              | High     |
 
 **Strategies:**
+
 1. Extract complex logic into smaller functions
 2. Use early returns to reduce nesting
 3. Replace conditionals with polymorphism
@@ -206,9 +226,10 @@ function getDiscount(user: User) {
 **Focus Areas:**
 
 #### A. **Strengthen Type Definitions**
+
 ```typescript
 // BEFORE: Weak typing
-function processData(data: any) { }
+function processData(data: any) {}
 
 // AFTER: Strong typing
 interface UserData {
@@ -216,10 +237,11 @@ interface UserData {
   name: string;
   email: string;
 }
-function processData(data: UserData) { }
+function processData(data: UserData) {}
 ```
 
 #### B. **Use Discriminated Unions**
+
 ```typescript
 // BEFORE: Boolean flags
 interface Response {
@@ -229,19 +251,19 @@ interface Response {
 }
 
 // AFTER: Discriminated union
-type Response = 
+type Response =
   | { success: true; data: Data }
   | { success: false; error: string };
 ```
 
 #### C. **Leverage Type Guards**
+
 ```typescript
 // Type guard for runtime safety
 function isUser(obj: unknown): obj is User {
-  return typeof obj === 'object' 
-    && obj !== null 
-    && 'id' in obj 
-    && 'email' in obj;
+  return (
+    typeof obj === "object" && obj !== null && "id" in obj && "email" in obj
+  );
 }
 ```
 
@@ -252,12 +274,13 @@ function isUser(obj: unknown): obj is User {
 **Patterns to Implement:**
 
 #### A. **Consistent Error Handling**
+
 ```typescript
 // Create custom error types
 class AuthenticationError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'AuthenticationError';
+    this.name = "AuthenticationError";
   }
 }
 
@@ -274,6 +297,7 @@ try {
 ```
 
 #### B. **Error Boundaries (React)**
+
 ```typescript
 // Implement error boundaries for components
 class ErrorBoundary extends React.Component {
@@ -282,6 +306,7 @@ class ErrorBoundary extends React.Component {
 ```
 
 #### C. **API Error Handling**
+
 ```typescript
 // Consistent API error responses
 interface ApiError {
@@ -298,6 +323,7 @@ interface ApiError {
 **Opportunities to Identify:**
 
 #### A. **Memoization**
+
 ```typescript
 // BEFORE: Expensive calculation on every render
 function Component({ items }) {
@@ -309,22 +335,24 @@ function Component({ items }) {
 function Component({ items }) {
   const total = useMemo(
     () => items.reduce((sum, item) => sum + item.price, 0),
-    [items]
+    [items],
   );
   return <div>{total}</div>;
 }
 ```
 
 #### B. **Lazy Loading**
+
 ```typescript
 // BEFORE: Import everything upfront
-import { HeavyComponent } from './HeavyComponent';
+import { HeavyComponent } from "./HeavyComponent";
 
 // AFTER: Lazy load
-const HeavyComponent = lazy(() => import('./HeavyComponent'));
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
 ```
 
 #### C. **Debouncing/Throttling**
+
 ```typescript
 // BEFORE: Fires on every keystroke
 onChange={(e) => search(e.target.value)}
@@ -344,6 +372,7 @@ onChange={(e) => debouncedSearch(e.target.value)}
 **Review Focus:**
 
 #### A. **Component Optimization**
+
 - [ ] Use Server Components by default
 - [ ] Minimize Client Components
 - [ ] Proper use of `"use client"` directive
@@ -351,6 +380,7 @@ onChange={(e) => debouncedSearch(e.target.value)}
 - [ ] Use proper loading states
 
 #### B. **Hooks Best Practices**
+
 - [ ] Custom hooks for reusable logic
 - [ ] Proper dependency arrays
 - [ ] No hooks in conditionals
@@ -358,6 +388,7 @@ onChange={(e) => debouncedSearch(e.target.value)}
 - [ ] useMemo for expensive calculations
 
 #### C. **State Management**
+
 - [ ] Minimize state
 - [ ] Lift state appropriately
 - [ ] Use Context wisely
@@ -370,12 +401,14 @@ onChange={(e) => debouncedSearch(e.target.value)}
 **Standardization:**
 
 #### A. **Naming Conventions**
+
 - PascalCase for components
 - camelCase for functions/variables
 - UPPER_CASE for constants
 - Descriptive names over short names
 
 #### B. **File Organization**
+
 ```
 components/
   ├── ComponentName/
@@ -386,19 +419,20 @@ components/
 ```
 
 #### C. **Import Organization**
+
 ```typescript
 // 1. External libraries
-import React from 'react';
-import { useState } from 'react';
+import React from "react";
+import { useState } from "react";
 
 // 2. Internal absolute imports
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 // 3. Relative imports
-import { localHelper } from './utils';
+import { localHelper } from "./utils";
 
 // 4. Type imports
-import type { User } from './types';
+import type { User } from "./types";
 ```
 
 ---
@@ -406,6 +440,7 @@ import type { User } from './types';
 ### 10. **Testing Improvements** 🧪
 
 **Focus Areas:**
+
 - [ ] Identify untested code
 - [ ] Suggest test cases
 - [ ] Improve test readability
@@ -417,12 +452,14 @@ import type { User } from './types';
 ## 📊 Expected Deliverables
 
 ### 1. **Refactoring Report**
+
 - Total refactoring opportunities found
 - Categorized by type and priority
 - Estimated effort for each
 - Expected impact (high/medium/low)
 
 ### 2. **Code Quality Metrics**
+
 ```
 - Average Cyclomatic Complexity: __
 - Average Function Length: __ lines
@@ -432,25 +469,31 @@ import type { User } from './types';
 ```
 
 ### 3. **Prioritized Improvements**
+
 **High Priority:**
+
 1. [Issue description]
 2. [Issue description]
 3. [Issue description]
 
 **Medium Priority:**
+
 1. [Issue description]
 2. [Issue description]
 
 **Low Priority (Nice to Have):**
+
 1. [Issue description]
 2. [Issue description]
 
 ### 4. **Code Examples**
+
 - Before/After comparisons
 - Refactoring patterns
 - Best practice implementations
 
 ### 5. **Automated Refactorings**
+
 - List of safe automatic refactorings
 - Review required for complex changes
 
@@ -459,23 +502,25 @@ import type { User } from './types';
 ## 🛠️ Sourcery Configuration
 
 ### Current Setup
+
 - **Extension:** sourcery.sourcery v1.41.1 (installed)
 - **Token:** Configured in GitHub Secrets (SOURCERY_TOKEN)
 - **Integration:** Active in VS Code
 - **Mode:** Real-time suggestions
 
 ### Review Settings
+
 ```yaml
 # .sourcery.yaml (if needed)
 rules:
   - id: refactor-long-function
     description: Functions should be < 50 lines
     severity: warning
-    
+
   - id: reduce-complexity
     description: Cyclomatic complexity should be < 10
     severity: error
-    
+
   - id: no-code-duplication
     description: Avoid duplicated code blocks
     severity: warning
@@ -488,44 +533,52 @@ rules:
 ### Code Quality Score (100 points)
 
 **Maintainability (30 points)**
-- Function length: __/10
-- Complexity: __/10
-- Code duplication: __/10
+
+- Function length: \_\_/10
+- Complexity: \_\_/10
+- Code duplication: \_\_/10
 
 **Readability (25 points)**
-- Naming: __/10
-- Comments: __/8
-- Structure: __/7
+
+- Naming: \_\_/10
+- Comments: \_\_/8
+- Structure: \_\_/7
 
 **Type Safety (20 points)**
-- Type coverage: __/10
-- Type strength: __/10
+
+- Type coverage: \_\_/10
+- Type strength: \_\_/10
 
 **Performance (15 points)**
-- Algorithm efficiency: __/8
-- React optimization: __/7
+
+- Algorithm efficiency: \_\_/8
+- React optimization: \_\_/7
 
 **Testing (10 points)**
-- Test coverage: __/5
-- Test quality: __/5
+
+- Test coverage: \_\_/5
+- Test quality: \_\_/5
 
 ---
 
 ## 🚀 Refactoring Priorities
 
 ### Phase 1: Quick Wins (1 week)
+
 - Extract magic numbers to constants
 - Simplify nested conditionals
 - Rename unclear variables
 - Remove dead code
 
 ### Phase 2: Medium Refactorings (2-3 weeks)
+
 - Break down long functions
 - Reduce code duplication
 - Improve error handling
 - Enhance type safety
 
 ### Phase 3: Major Refactorings (1-2 months)
+
 - Redesign complex modules
 - Implement design patterns
 - Optimize performance
@@ -551,6 +604,7 @@ rules:
 ## 📈 Success Metrics
 
 ### Target Improvements
+
 - Reduce average function length by 30%
 - Decrease cyclomatic complexity to < 10
 - Eliminate code duplication below 5%
@@ -558,6 +612,7 @@ rules:
 - Improve test coverage to 80%+
 
 ### Expected Outcomes
+
 1. More maintainable codebase
 2. Easier onboarding for new developers
 3. Fewer bugs in production
@@ -569,6 +624,7 @@ rules:
 ## 🎖️ Review Methodology
 
 ### Sourcery Analysis Approach
+
 1. **Static Analysis:** Parse and analyze all files
 2. **Pattern Recognition:** Identify refactoring opportunities
 3. **Complexity Calculation:** Measure code complexity
@@ -585,6 +641,7 @@ Please provide comprehensive refactoring analysis with actionable, prioritized r
 ---
 
 **Repository Stats:**
+
 - Commit: 33060992
 - Files: 200+
 - TypeScript: 101 files
