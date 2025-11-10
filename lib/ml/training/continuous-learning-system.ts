@@ -194,7 +194,7 @@ export class ContinuousLearningSystem {
     return job.id;
   }
 
-  private static async queueTrainingJob(jobId: string, modelId: string, config: RetrainingConfig): Promise<void> {
+  private static async queueTrainingJob(jobId: string, modelId: string, _config: RetrainingConfig): Promise<void> {
     console.log(`Training job ${jobId} queued for model ${modelId}`);
   }
 

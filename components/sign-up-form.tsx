@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useActionState, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
+import { useFormState } from "react-dom";
 
 /**
  * Password strength levels with visual feedback
@@ -55,7 +56,7 @@ function getPasswordStrength(password: string): PasswordStrength {
 export function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [state, formAction] = useActionState(signUpAction, {
+  const [state, formAction] = useFormState(signUpAction, {
     error: "",
     success: false,
   });
