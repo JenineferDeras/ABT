@@ -1,11 +1,45 @@
-# ABACO Streamlit Application Dependencies
-# For complete data science dependencies, see notebooks/requirements.txt
+# ==============================================================================
+# ABACO - Complete Python Dependencies
+# ==============================================================================
 
+# Core Framework
 streamlit>=1.39.0
 pandas>=2.0.0
-plotly>=5.18.0
+numpy>=1.24.0
+
+# Database & Backend
 supabase>=2.3.0
 python-dotenv>=1.0.0
 
-# Note: For Jupyter notebooks and ML development, install from:
-# pip install -r notebooks/requirements.txt
+# Data Visualization
+plotly>=5.18.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# AI & Machine Learning
+openai>=1.0.0
+google-generativeai>=0.3.0
+transformers>=4.35.0
+torch>=2.0.0
+scikit-learn>=1.3.0
+
+# Communication & CRM
+slack-sdk>=3.23.0
+hubspot-api-client>=8.0.0
+
+# Development Tools
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.1.0
+mypy>=1.7.0
+
+# Additional Integrations
+requests>=2.31.0
+pydantic>=2.5.0
+python-dateutil>=2.8.0
+pytz>=2023.3
+
+# Optional: Jupyter Support
+ipykernel>=6.27.0
+jupyter>=1.0.0
+notebook>=7.0.0
