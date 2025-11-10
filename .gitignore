@@ -110,5 +110,4 @@ __azurite_db_table__.json
 __blobstorage__/
 eslint.config.mjs
 .eslintcache
-package-lock.json
 eslint.config.ts
