@@ -39,3 +39,25 @@ beautifulsoup4>=4.12.0
 # Dashboard & Backend Integration
 streamlit>=1.39.0
 supabase>=2.0.0
+
+# Machine Learning & Deep Learning
+tensorflow>=2.15.0
+torch>=2.1.0
+transformers>=4.35.0
+keras>=3.0.0
+
+# Reinforcement Learning
+gym>=0.26.0
+stable-baselines3>=2.2.0
+
+# Agent Frameworks
+langchain>=0.1.0
+autogen>=0.2.0
+
+# Model Versioning & Tracking
+mlflow>=2.9.0
+wandb>=0.16.0
+
+# Online Learning
+river>=0.20.0
+scikit-multiflow>=0.5.3
