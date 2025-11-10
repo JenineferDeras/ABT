@@ -1,0 +1,33 @@
+# ABACO Financial Intelligence Platform - Streamlit Requirements
+# Production-ready dependencies for analytics dashboard
+
+# Core Framework
+streamlit>=1.28.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Visualization
+plotly>=5.17.0
+
+# Google Drive Integration
+google-api-python-client>=2.100.0
+google-auth>=2.23.0
+google-auth-oauthlib>=1.1.0
+google-auth-httplib2>=0.1.1
+
+# Supabase
+supabase>=2.0.0
+
+# Optional: AI Integration
+google-generativeai>=0.3.0  # Gemini API
+
+# Excel Support
+openpyxl>=3.1.0
+xlrd>=2.0.1
+
+# Utilities
+python-dateutil>=2.8.2
+pytz>=2023.3
