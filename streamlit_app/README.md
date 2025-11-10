@@ -37,6 +37,7 @@
 ## ✨ Features
 
 ### 📥 **Automated Data Ingestion**
+
 - **Google Drive → Supabase Pipeline**: Automatic streaming from 9+ source types
 - **Smart Normalization**: Lowercase/underscore columns, tolerant numeric conversion, date standardization
 - **Data Quality Scoring**: Completeness metrics, null detection, critical column validation
@@ -44,6 +45,7 @@
 - **Deduplication**: Automatic removal of duplicate records
 
 ### 🧠 **28+ Feature Dimensions**
+
 - **Customer Classification**: B2B, B2C, B2G automatic detection
 - **Segmentation (A-F)**: Performance-based tiering with DPD, utilization, payment ratio
 - **DPD Analytics**: Max, mean, median, std, percentiles, bucketing (Current, 1-14, 15-29...180+)
@@ -53,6 +55,7 @@
 - **Behavioral Flags**: Activity scores, roll-rate movement, outlier detection
 
 ### 📊 **Comprehensive KPI Engine**
+
 - **Portfolio Metrics**: AUM, active clients, facility counts, line utilization
 - **Performance KPIs**: Churn rate, default rate, DPD buckets, rotation (5.5x target)
 - **Revenue Analytics**: Total revenue, EBITDA, weighted APR, LTV:CAC by channel/segment
@@ -61,6 +64,7 @@
 - **Growth Tracking**: Current vs targets, gap analysis, B2G percentage
 
 ### 🎨 **4K Visualization Dashboards**
+
 - **Risk Assessment**: DPD distributions, high-risk client tables, risk score heatmaps
 - **Growth Analysis**: Current vs target gaps, monthly path projections, funnel tiers
 - **Marketing & Sales**: LTV:CAC breakdowns, channel performance, TPV treemaps
@@ -68,12 +72,14 @@
 - **Data Quality Audit**: Completeness scores with color-coded tables
 
 ### 🤖 **AI Integration**
+
 - **Gemini API**: Conditional AI-powered insights and summaries
 - **Rule-Based Fallback**: Guaranteed analysis even without API availability
 - **Behavioral Modeling**: Usury detection in micro-segments
 - **Predictive Scoring**: ML-ready feature snapshots for advanced models
 
 ### 📤 **Export & Distribution**
+
 - **CSV Fact Tables**: Looker-ready data exports
 - **4K Chart Exports**: PNG at 3840x2160, 300 DPI
 - **HTML Tables**: Styled dataframes with brand theme
@@ -134,18 +140,21 @@
 ### Tech Stack
 
 **Frontend & Analytics:**
+
 - **Next.js 14**: App Router, Server Components, TypeScript strict mode
 - **Streamlit 1.28+**: Interactive analytics dashboard
 - **Plotly**: 4K charts (3840x2160, 300 DPI)
 - **Tailwind CSS**: Dark theme with purple gradients
 
 **Backend & Data:**
+
 - **Supabase**: PostgreSQL with RLS, Edge Functions, Cron
 - **Python 3.11+**: Feature engineering, data processing
 - **Pandas & NumPy**: Data manipulation and analysis
 - **SciPy**: Statistical analysis, Z-scores, outlier detection
 
 **Integrations:**
+
 - **Google Drive API**: Service account authentication
 - **Gemini API**: AI-powered insights (optional)
 - **Vercel**: Edge deployment, cron jobs
@@ -184,6 +193,7 @@ pip install -r requirements.txt
 ### 3. Configure Secrets
 
 **Supabase:**
+
 ```bash
 # Create .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
@@ -192,6 +202,7 @@ SUPABASE_SERVICE_KEY=your-service-key
 ```
 
 **Streamlit:**
+
 ```bash
 # Create .streamlit/secrets.toml
 cp .streamlit/secrets.toml.template .streamlit/secrets.toml
@@ -208,12 +219,14 @@ cat supabase/migrations/20241110_abaco_schema.sql
 ### 5. Run Locally
 
 **Next.js:**
+
 ```bash
 npm run dev
 # Opens at http://localhost:3000
 ```
 
 **Streamlit:**
+
 ```bash
 streamlit run streamlit_app/app.py
 # Opens at http://localhost:8501
@@ -300,6 +313,7 @@ ABT/
 ## 🎨 Design System
 
 **4K Theme Specifications:**
+
 - **Resolution**: 3840x2160 (4K UHD)
 - **DPI**: 300
 - **Color Palette**: Purple gradients (#9b87f5, #7E69AB, #6E59A5)
@@ -347,6 +361,7 @@ This project is proprietary software developed for ABACO Financial Intelligence 
 ## 🤝 Support
 
 For deployment assistance or technical support, see:
+
 - [Deployment Guide](docs/ABACO_DEPLOYMENT_GUIDE.md)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Streamlit Documentation](https://docs.streamlit.io)

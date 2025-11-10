@@ -40,6 +40,7 @@ docs/
 ## 🎯 All Requirements Met
 
 ### ✅ **1. Data Ingestion & Normalization**
+
 - **File:** `streamlit_app/utils/ingestion.py`
 - **Features:**
   - 9+ source types (portfolios, facilities, customers, payments, risk, revenue, collections, marketing, industry)
@@ -52,29 +53,31 @@ docs/
   - Detailed ingestion reports
 
 ### ✅ **2. Feature Engineering (28+ Dimensions)**
+
 - **File:** `streamlit_app/utils/feature_engineering.py`
 - **Dimensions:**
   1. Customer Type (B2B, B2C, B2G)
   2. B2G Flag
   3. Segmentation (A-F based on DPD, utilization, payment ratio)
-  4-9. DPD Statistics (max, mean, median, std, p90, p95)
-  10. DPD Bucket (Current, 1-14, 15-29...180+)
-  11. Delinquency Flag
-  12. Utilization %
-  13. Weighted APR
-  14. Payment Ratio
-  15. Collection Rate
-  16-20. Z-Scores (balance, utilization, DPD, payment ratio, revenue)
-  21. LTV (Lifetime Value)
-  22. Churn Risk Score
-  23. Default Risk Score
-  24. Activity Score
-  25. Profitability Score
-  26. Customer Age (months)
-  27. Industry Classification
-  28. Roll-Rate Movement
+     4-9. DPD Statistics (max, mean, median, std, p90, p95)
+  4. DPD Bucket (Current, 1-14, 15-29...180+)
+  5. Delinquency Flag
+  6. Utilization %
+  7. Weighted APR
+  8. Payment Ratio
+  9. Collection Rate
+     16-20. Z-Scores (balance, utilization, DPD, payment ratio, revenue)
+  10. LTV (Lifetime Value)
+  11. Churn Risk Score
+  12. Default Risk Score
+  13. Activity Score
+  14. Profitability Score
+  15. Customer Age (months)
+  16. Industry Classification
+  17. Roll-Rate Movement
 
 ### ✅ **3. KPI Engine**
+
 - **File:** `streamlit_app/utils/kpi_engine.py`
 - **KPIs:**
   - AUM (Assets Under Management)
@@ -87,6 +90,7 @@ docs/
   - POD (Probability of Default)
 
 ### ✅ **4-7. Analysis Dashboards**
+
 - **File:** `streamlit_app/app.py`
 - **Modules:**
   - 📊 Dashboard Overview: Executive KPIs, growth trends
@@ -99,6 +103,7 @@ docs/
   - 🤖 AI Insights: (Gemini integration ready)
 
 ### ✅ **8. Data Quality Audit**
+
 - **Implementation:** Built into `DataIngestionEngine`
 - **Metrics:**
   - Completeness score (100% - null%)
@@ -108,35 +113,42 @@ docs/
   - Final quality score (0-100)
 
 ### ✅ **9. AI Integration**
+
 - **Setup:** Gemini API key in secrets.toml
 - **Logic:** Conditional execution with rule-based fallback
 - **Status:** Framework ready, can be activated when API key provided
 
 ### ✅ **10. Visualizations & Exports**
+
 - **Theme:** Dark mode with purple gradients (#9b87f5, #7E69AB, #6E59A5)
 - **Resolution:** 4K (3840x2160, 300 DPI)
 - **Charts:** Plotly with ABACO_THEME styling
 - **Exports:** PNG (4K), CSV (fact tables), HTML (styled dataframes)
 
 ### ✅ **11. Market Analysis from PDF**
+
 - **Status:** Placeholder ready in dashboard modules
 - **Plan:** Integrate PDF parsing with embedded stats
 
 ### ✅ **12. Outlier Detection**
+
 - **Method:** Z-score based (threshold = 3.0)
 - **Output:** Structured alerts DataFrame with severity levels
 
 ### ✅ **13. Conditional Execution**
+
 - **Logic:** Check data availability before processing
 - **Handling:** Graceful skipping with user alerts
 - **No dummies:** All placeholders clearly marked as "TBD" or "Coming Soon"
 
 ### ✅ **14. Styling Standardization**
+
 - **Theme File:** `streamlit_app/config/theme.py`
 - **Coverage:** Unified colors, typography, spacing, shadows
 - **Widgets:** Target input widgets (number inputs for goals)
 
 ### ✅ **15. Exports**
+
 - **CSV:** Fact tables with all features
 - **Looker-Ready:** Column naming compatible
 - **Slack/HubSpot:** Integration placeholders with webhook URLs
@@ -235,18 +247,21 @@ Industry_Codes.xlsx     → raw_industry
 ## 🎨 4K Theme Specifications
 
 **Colors:**
+
 - Primary: `#9b87f5` (brand_primary_light)
 - Medium: `#7E69AB` (brand_primary_medium)
 - Dark: `#6E59A5` (brand_primary_dark)
 - Background: `#0a0a0a` (bg_primary)
 
 **Chart Settings:**
+
 - Width: 3840px (4K)
 - Height: 2160px (4K)
 - DPI: 300
 - Export Scale: 4x
 
 **Typography:**
+
 - Font: Inter
 - Base Size: 16px
 - Large: 20px
@@ -257,6 +272,7 @@ Industry_Codes.xlsx     → raw_industry
 ## 📈 Next Steps (Optional Enhancements)
 
 ### **Coming Soon:**
+
 - [ ] Complete Growth Analysis visualizations
 - [ ] Revenue & Profitability dashboards
 - [ ] Roll-Rate cascade matrix visualization
@@ -267,6 +283,7 @@ Industry_Codes.xlsx     → raw_industry
 - [ ] Advanced ML model integration
 
 ### **Database Optimizations:**
+
 ```sql
 -- Additional performance indexes
 CREATE INDEX idx_ml_features_dpd ON ml_feature_snapshots(dpd_mean);
@@ -279,32 +296,37 @@ CREATE INDEX idx_portfolios_balance ON raw_portfolios(balance);
 ## 🔧 Troubleshooting
 
 ### **"Supabase not configured"**
+
 → Check `.streamlit/secrets.toml` has correct SUPABASE_URL and keys
 
 ### **"Google Drive credentials invalid"**
+
 → Verify service account JSON is complete and Drive API is enabled
 
 ### **"Missing required columns"**
+
 → File doesn't match naming pattern or lacks core columns
 
 ### **"No feature data available"**
+
 → Run ingestion first to populate ml_feature_snapshots
 
 ### **Cron job not running**
+
 → Verify `app.vercel_ingest_url` is set in Supabase config
 
 ---
 
 ## 📚 Key Files Reference
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `streamlit_app/app.py` | Main dashboard | 312 |
-| `streamlit_app/utils/ingestion.py` | Data ingestion engine | 318 |
-| `streamlit_app/config/theme.py` | 4K theme config | 252 |
-| `app/api/ingest/route.ts` | Vercel API endpoint | 118 |
-| `supabase/migrations/20241110_abaco_schema.sql` | Database schema | 379 |
-| `docs/ABACO_DEPLOYMENT_GUIDE.md` | Deployment guide | 381 |
+| File                                            | Purpose               | Lines |
+| ----------------------------------------------- | --------------------- | ----- |
+| `streamlit_app/app.py`                          | Main dashboard        | 312   |
+| `streamlit_app/utils/ingestion.py`              | Data ingestion engine | 318   |
+| `streamlit_app/config/theme.py`                 | 4K theme config       | 252   |
+| `app/api/ingest/route.ts`                       | Vercel API endpoint   | 118   |
+| `supabase/migrations/20241110_abaco_schema.sql` | Database schema       | 379   |
+| `docs/ABACO_DEPLOYMENT_GUIDE.md`                | Deployment guide      | 381   |
 
 ---
 
