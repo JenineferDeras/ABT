@@ -1,17 +1,16 @@
 {
-    "recommendations": [
-        "ms-vscode.vscode-typescript-next",
-        "bradlc.vscode-tailwindcss",
-        "esbenp.prettier-vscode",
-        "ms-vscode.vscode-eslint",
-        "ms-python.python",
-        "ms-python.debugpy",
-        "nextjs.nextjs",
-        "ms-toolsai.jupyter",
-        "ms-python.flake8",
-        "ms-python.pylint",
-        "oleg-shilo.cs-script",
-        "ms-dotnettools.csharp",
-        "formulahendry.code-runner"
-    ]
+  "recommendations": [
+    "figma.figma-vscode-extension",
+    "googlecloudtools.cloudcode",
+    "google.geminicodeassist",
+    "hubspot.hubl",
+    "sourcery.sourcery",
+    "sonarsource.sonarlint-vscode",
+    "continue.continue",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ]
 }
