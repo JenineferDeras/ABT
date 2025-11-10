@@ -1,5 +1,11 @@
-streamlit>=1.32.0
+# ABACO Streamlit Application Dependencies
+# For complete data science dependencies, see notebooks/requirements.txt
+
+streamlit>=1.39.0
 pandas>=2.0.0
 plotly>=5.18.0
 supabase>=2.3.0
 python-dotenv>=1.0.0
+
+# Note: For Jupyter notebooks and ML development, install from:
+# pip install -r notebooks/requirements.txt
