@@ -45,7 +45,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.0",
+    "@eslint/js": "^8.57.1",
     "@microsoft/kiota-abstractions": "^1.0.0-preview.99",
     "@microsoft/kiota-serialization-form": "^1.0.0-preview.99",
     "@microsoft/kiota-serialization-json": "^1.0.0-preview.99",
@@ -63,10 +63,10 @@
     "@vitest/ui": "^4.0.7",
     "autoprefixer": "^10.4.16",
     "dotenv-cli": "^11.0.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "globals": "^15.12.0",
+    "globals": "^15.15.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
     "jsdom": "^23.0.1",
@@ -78,7 +78,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.15.0",
+    "typescript-eslint": "^8.46.3",
     "vitest": "^4.0.7"
   }
 }
