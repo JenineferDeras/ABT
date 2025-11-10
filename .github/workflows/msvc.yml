@@ -1,0 +1,85 @@
+# This workflow uses actions that are not certified by GitHub.
+# See: https://github.com/microsoft/msvc-code-analysis-action
+
+name: Microsoft C++ Code Analysis
+
+on:
+  push:
+    paths:
+      - 'CMakeLists.txt'
+      - 'native/**'
+      - 'src/**/*.cpp'
+      - 'src/**/*.c'
+      - 'src/**/*.h'
+    branches: [ "main" ]
+  pull_request:
+    paths:
+      - 'CMakeLists.txt'
+      - 'native/**'
+      - 'src/**/*.cpp'
+      - 'src/**/*.c'
+      - 'src/**/*.h'
+    branches: [ "main" ]
+  schedule:
+    - cron: '19 10 * * 2'
+
+env:
+  build: '${{ github.workspace }}/build'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    name: Analyze
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for CMakeLists
+        id: cmake-check
+        shell: pwsh
+        run: |
+          if (Test-Path -Path "$env:GITHUB_WORKSPACE\CMakeLists.txt") {
+            Write-Output "Found CMakeLists.txt in repo root"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "exists=true"
+          } else {
+            Write-Output "No CMakeLists.txt in repo root"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "exists=false"
+          }
+
+      - name: Configure CMake
+        if: steps.cmake-check.outputs.exists == 'true'
+        run: cmake -S . -B ${{ env.build }}
+
+      # Build is not required unless generated source files are used
+      # - name: Build CMake
+      #   if: steps.cmake-check.outputs.exists == 'true'
+      #   run: cmake --build ${{ env.build }}
+
+      - name: Initialize MSVC Code Analysis
+        if: steps.cmake-check.outputs.exists == 'true'
+        uses: microsoft/msvc-code-analysis-action@04825f6d9e00f87422d6bf04e1a38b1f3ed60d99
+        id: run-analysis
+        with:
+          cmakeBuildDirectory: ${{ env.build }}
+          ruleset: NativeRecommendedRules.ruleset
+
+      - name: Upload SARIF to GitHub
+        if: steps.cmake-check.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.run-analysis.outputs.sarif }}
+
+      # - name: Upload SARIF as an Artifact
+      #   if: steps.cmake-check.outputs.exists == 'true'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: sarif-file
+      #     path: ${{ steps.run-analysis.outputs.sarif }}
